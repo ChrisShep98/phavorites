@@ -1,5 +1,5 @@
 "use client";
-import { Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
@@ -37,13 +37,40 @@ const LoginForm = () => {
   };
 
   return (
-    <Stack height={"100vh"} justifyContent={"center"}>
-      <Stack justifyContent={"center"} alignItems={"center"} spacing={1}>
-        <Typography>Enter your login details</Typography>
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column" }}>
-          <input onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Username"></input>
-          <input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password"></input>
-          <button type="submit">Login</button>
+    <Stack height={"100vh"} flexDirection={"row"}>
+      <Stack
+        sx={{
+          height: "100vh",
+          width: "70%",
+          backgroundImage: "url(/images/phishfisheye.jpg)",
+          backgroundSize: "cover",
+        }}
+      ></Stack>
+      <Stack justifyContent={"center"} ml={5} width={"30%"}>
+        <Typography variant="h3" color={"blue"} fontWeight={""}>
+          Login
+        </Typography>
+        <Typography>Welcome ! Login below</Typography>
+        <form onSubmit={handleSubmit} className="loginForm">
+          <input
+            className="loginInput"
+            onChange={(e) => setUsername(e.target.value)}
+            type="text"
+            placeholder="Username"
+            color="red"
+          ></input>
+          <input
+            className="loginInput"
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            placeholder="Password"
+          ></input>
+          <button className="loginButton" type="submit">
+            Login
+          </button>
+          {/* <button className="bg-blue-500 rounded-lg p-3 max-w-32 background text-white" type="submit">
+            Login
+          </button> */}
         </form>
         {error && <Typography color={"red"}>{error}</Typography>}
         <Link href={"/register"}>Don't have an account? Register here</Link>
