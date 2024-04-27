@@ -19,12 +19,15 @@ import { shows } from "../types/showTypes";
 import { tracks } from "../types/showTypes";
 import { getTrackList } from "../services/phishin";
 import { getShows } from "../services/phishin";
+import Nav from "./Nav";
 
 const UserInfo = () => {
   const { data: session } = useSession();
-
   const [year, setYear] = useState("");
   const [allYearShows, setAllYearShows] = useState<shows[]>([]);
+
+  const [audioSource, setAudioSource] = useState("");
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const [date, setDate] = useState("");
   const [trackList, setTrackList] = useState<tracks[]>([]);
@@ -42,33 +45,44 @@ const UserInfo = () => {
     console.log(trackList);
   }
 
+  console.log(audioSource);
+  console.log(isPlaying);
+
   return (
     <Stack>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          ></IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
-          </Typography>
-          <Typography sx={{ flexGrow: 1 }}>View Shows</Typography>
-          <Button onClick={() => signOut()} color="inherit">
-            Sign out
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <div>
-        <FormControl variant="filled" sx={{ m: 10, minWidth: 120 }}>
-          <InputLabel id="demo-simple-select-filled-label">Years</InputLabel>
-          <Select
-            labelId="demo-simple-select-filled-label"
-            id="demo-simple-select-filled"
-            value={year}
+      <Nav />
+      <Stack alignItems={"center"}>
+        <audio controls autoPlay={isPlaying} src={audioSource}></audio>
+      </Stack>
+      <FormControl variant="filled" sx={{ m: 10, width: "150px" }}>
+        <InputLabel id="demo-simple-select-filled-label">Years</InputLabel>
+        <Select
+          labelId="demo-simple-select-filled-label"
+          id="demo-simple-select-filled"
+          value={year}
+        >
+          {years.map((el) => {
+            return (
+              <MenuItem
+                key={el}
+                value={el}
+                onClick={async () => fetchAllShowsFromYear(el)}
+              >
+                {el}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
+
+      <Stack m={7} flexDirection={"row"} gap={5}>
+        <Stack flexDirection={"row"}>
+          <Typography variant="h5">Years</Typography>
+          <Stack
+            overflow={"scroll"}
+            maxHeight={"500px"}
+            pr={2}
+            sx={{ overflowX: "hidden" }}
           >
             {years.map((el) => {
               return (
@@ -81,12 +95,8 @@ const UserInfo = () => {
                 </MenuItem>
               );
             })}
-          </Select>
-        </FormControl>
-      </div>
-      <Stack m={7} flexDirection={"row"} gap={5}>
-        <Stack>
-          <Typography variant="h5">Year</Typography>
+          </Stack>
+          <Typography variant="h5">Shows</Typography>
           <Stack
             overflow={"scroll"}
             maxHeight={"500px"}
@@ -112,8 +122,19 @@ const UserInfo = () => {
         <Stack>
           <Typography variant="h5">{date}</Typography>
 
-          {trackList.map(({ title }) => (
-            <Stack key={title}>{title}</Stack>
+          {trackList.map(({ title, id, mp3 }) => (
+            <Typography
+              sx={{
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setIsPlaying(!isPlaying);
+                setAudioSource(mp3);
+              }}
+              key={id}
+            >
+              {title}
+            </Typography>
           ))}
         </Stack>
       </Stack>
