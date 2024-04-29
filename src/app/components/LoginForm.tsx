@@ -1,5 +1,5 @@
 "use client";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
@@ -52,25 +52,17 @@ const LoginForm = () => {
         </Typography>
         <Typography>Welcome ! Login below</Typography>
         <form onSubmit={handleSubmit} className="loginForm">
-          <input
-            className="loginInput"
+          <TextField
             onChange={(e) => setUsername(e.target.value)}
-            type="text"
             placeholder="Username"
-            color="red"
-          ></input>
-          <input
-            className="loginInput"
+            type="text"
+          ></TextField>
+          <TextField
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
-          ></input>
-          <button className="loginButton" type="submit">
-            Login
-          </button>
-          {/* <button className="bg-blue-500 rounded-lg p-3 max-w-32 background text-white" type="submit">
-            Login
-          </button> */}
+          ></TextField>
+          <Button type="submit">Login</Button>
         </form>
         {error && <Typography color={"red"}>{error}</Typography>}
         <Link href={"/register"}>Don't have an account? Register here</Link>
