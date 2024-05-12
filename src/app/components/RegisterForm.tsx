@@ -69,7 +69,7 @@ const RegisterForm = () => {
           <button typeof="submit">Login</button>
         </form>
         {error && <Typography color={"red"}>{error}</Typography>}
-        <Link href={"/"}>Already have an account? Login here</Link>
+        <Link href={"/login"}>Already have an account? Login here</Link>
       </Stack>
     </Stack>
   );

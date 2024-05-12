@@ -14,11 +14,13 @@ import {
 import { signOut } from "next-auth/react";
 import React, { useState } from "react";
 import { songs } from "../constants/songs";
-import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Nav = () => {
+  const session = useSession();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
-
   const toggleSongsList = () => {
     setOpen(!open);
   };
@@ -40,13 +42,16 @@ const Nav = () => {
         ml={1}
       >
         <List sx={{ width: "100%", color: "#fff" }}>
-          {/* check if session exists and replace with login button if not */}
           <ListItem>
             <ListItemAvatar>
               <Avatar>{/* <ImageIcon /> */}</Avatar>
             </ListItemAvatar>
             <ListItemText
-              primary="Anonymous"
+              primary={
+                session.status == "authenticated"
+                  ? `${session.data.user.username}`
+                  : "Anonymous"
+              }
               secondary="Date joined?"
               sx={{
                 // kinda gross should fix this
@@ -59,7 +64,11 @@ const Nav = () => {
           <Divider variant="middle" sx={{ borderColor: "#fff" }} />
           <ListItem>
             <ListItemButton>
-              <ListItemText primary="Sign Out" />
+              {session.status == "unauthenticated" ? (
+                <ListItemText primary="Sign In" onClick={() => router.push("/login")} />
+              ) : (
+                <ListItemText primary="Sign Out" onClick={() => signOut()} />
+              )}
             </ListItemButton>
           </ListItem>
           <ListItem>
