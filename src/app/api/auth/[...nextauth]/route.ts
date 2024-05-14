@@ -66,6 +66,8 @@ const handler = NextAuth({
       session.user = {
         username: String(token.user.username),
         token: token.jti,
+        createdAt: token.user.createdAt,
+        userId: token.user._id,
       };
       // console.log("session", session)
       // session {

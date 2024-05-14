@@ -19,6 +19,12 @@ import { useRouter } from "next/navigation";
 
 const Nav = () => {
   const session = useSession();
+  const date = new Date(String(session.data?.user.createdAt));
+  const formattedDate = date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const toggleSongsList = () => {
@@ -52,7 +58,11 @@ const Nav = () => {
                   ? `${session.data.user.username}`
                   : "Anonymous"
               }
-              secondary="Date joined?"
+              secondary={
+                session.status == "authenticated"
+                  ? `Joined ${formattedDate}`
+                  : "Date joined?"
+              }
               sx={{
                 // kinda gross should fix this
                 ".css-83ijpv-MuiTypography-root": {
