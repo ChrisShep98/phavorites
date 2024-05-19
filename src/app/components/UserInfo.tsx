@@ -1,18 +1,13 @@
 "use client";
 import {
-  AppBar,
-  Button,
   FormControl,
-  IconButton,
   InputLabel,
   MenuItem,
   Select,
   Stack,
-  Toolbar,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { years } from "../constants/shows";
 import { shows } from "../types/showTypes";
@@ -46,7 +41,6 @@ const UserInfo = () => {
   }
 
   console.log(audioSource);
-  console.log(isPlaying);
 
   return (
     <Stack>
