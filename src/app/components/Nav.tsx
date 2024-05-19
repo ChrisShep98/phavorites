@@ -12,13 +12,15 @@ import {
   TextField,
 } from "@mui/material";
 import { signOut } from "next-auth/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { songs } from "../constants/songs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { getAllPreformancesOfSongs } from "@/app/services/phishin";
 
 const Nav = () => {
   const session = useSession();
+
   const date = new Date(String(session.data?.user.createdAt));
   const formattedDate = date.toLocaleDateString("en-US", {
     month: "long",
@@ -30,6 +32,17 @@ const Nav = () => {
   const toggleSongsList = () => {
     setOpen(!open);
   };
+  // use for future submit model
+  const fetchData = async () => {
+    await getAllPreformancesOfSongs();
+  };
+  fetchData();
+  // async function fetchTracksFromData(song) {
+  //   const dateSelected = await getTrackList(date);
+  //   setTrackList(dateSelected);
+  //   console.log(trackList);
+  // }
+
   return (
     <Box
       display={"flex"}
@@ -44,7 +57,7 @@ const Nav = () => {
         borderRadius={"25px"}
         sx={{ backgroundColor: "#0a0a0a" }}
         width={"250px"}
-        height={"700px"}
+        height={"80%"}
         ml={1}
       >
         <List sx={{ width: "100%", color: "#fff" }}>
@@ -82,6 +95,7 @@ const Nav = () => {
             </ListItemButton>
           </ListItem>
           <ListItem>
+            {/* this will only direct user to dynamic route to show submitions of the song seleted */}
             <ListItemButton>
               <ListItemText onClick={() => toggleSongsList()} primary="Songs" />
             </ListItemButton>
@@ -89,6 +103,11 @@ const Nav = () => {
           <ListItem>
             <ListItemButton>
               <ListItemText primary="Search Shows" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton>
+              <ListItemText primary="Submit a song" />
             </ListItemButton>
           </ListItem>
           <ListItem>
@@ -107,7 +126,7 @@ const Nav = () => {
           marginLeft: open ? "250px" : 1,
         }}
         width={"250px"}
-        height={"700px"}
+        height={"80%"}
       >
         <List sx={{ width: "100%", color: "#fff" }}>
           <ListItem>Phish Icon</ListItem>
