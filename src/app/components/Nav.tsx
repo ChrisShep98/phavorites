@@ -12,14 +12,20 @@ import {
   TextField,
 } from "@mui/material";
 import { signOut } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { songs } from "../constants/songs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { getAllPreformancesOfSongs } from "@/app/services/phishin";
+import SubmitPostModal from "./SubmitPostModal";
 
 const Nav = () => {
   const session = useSession();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  console.log(isModalOpen, "modal is open");
 
   const date = new Date(String(session.data?.user.createdAt));
   const formattedDate = date.toLocaleDateString("en-US", {
@@ -28,20 +34,10 @@ const Nav = () => {
     year: "numeric",
   });
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [openSongSearch, setOpenSongSearch] = useState(false);
   const toggleSongsList = () => {
-    setOpen(!open);
+    setOpenSongSearch(!openSongSearch);
   };
-  // use for future submit model
-  const fetchData = async () => {
-    await getAllPreformancesOfSongs();
-  };
-  fetchData();
-  // async function fetchTracksFromData(song) {
-  //   const dateSelected = await getTrackList(date);
-  //   setTrackList(dateSelected);
-  //   console.log(trackList);
-  // }
 
   return (
     <Box
@@ -51,6 +47,7 @@ const Nav = () => {
       height={"100vh"}
       justifyContent={"center"}
     >
+      <SubmitPostModal isOpen={isModalOpen} onClose={closeModal} />
       <Box
         position={"absolute"}
         zIndex={999}
@@ -107,7 +104,7 @@ const Nav = () => {
           </ListItem>
           <ListItem>
             <ListItemButton>
-              <ListItemText primary="Submit a song" />
+              <ListItemText primary="Submit a song" onClick={openModal} />
             </ListItemButton>
           </ListItem>
           <ListItem>
@@ -123,7 +120,7 @@ const Nav = () => {
         sx={{
           backgroundColor: "#1c1c1c",
           transition: "all 0.5s ease",
-          marginLeft: open ? "250px" : 1,
+          marginLeft: openSongSearch ? "250px" : 1,
         }}
         width={"250px"}
         height={"80%"}
