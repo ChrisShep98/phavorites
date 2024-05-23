@@ -28,12 +28,13 @@ interface modalTypes {
 export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
   const [songSelected, setSongSelected] = useState("");
 
-  //write a func that takes the strings selected and if includes " " replace with "-" and lowercase all letters
   useEffect(() => {
-    const apiFriendlyString = songSelected.toLowerCase(); //still needs to check for spaces
+    const apiFriendlyString = songSelected
+      .toLowerCase()
+      .replace(" ", "-")
+      .replace("/", "-");
     const fetchData = async () => {
       songSelected ? await getAllPreformancesOfSongs(apiFriendlyString) : null;
-      // await getAllPreformancesOfSongs(songSelected);
     };
     fetchData();
   }, [songSelected]);

@@ -25,8 +25,6 @@ const Nav = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  console.log(isModalOpen, "modal is open");
-
   const date = new Date(String(session.data?.user.createdAt));
   const formattedDate = date.toLocaleDateString("en-US", {
     month: "long",
