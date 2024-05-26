@@ -28,14 +28,26 @@ interface modalTypes {
 export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
   const [songSelected, setSongSelected] = useState("");
 
+  const [allDatesOfSong, setAllDatesOfSong] = useState<any[]>([""]);
+
   useEffect(() => {
     const apiFriendlyString = songSelected
       .toLowerCase()
       .replace(" ", "-")
       .replace("/", "-");
     const fetchData = async () => {
-      songSelected ? await getAllPreformancesOfSongs(apiFriendlyString) : null;
+      try {
+        if (songSelected !== "") {
+          const myData = await getAllPreformancesOfSongs(apiFriendlyString);
+          setAllDatesOfSong(myData);
+        } else {
+          return null;
+        }
+      } catch (error) {
+        console.log(error);
+      }
     };
+
     fetchData();
   }, [songSelected]);
 
@@ -68,6 +80,21 @@ export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
               <TextField sx={{ color: "white" }} {...params} label="Songs" />
             )}
           />
+          {songSelected ? (
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={allDatesOfSong}
+              // onChange={(event, newValue) => {
+              //   setSongSelected(newValue!);
+              // }}
+              sx={{ width: 300, backgroundColor: "white" }}
+              renderInput={(params) => (
+                <TextField sx={{ color: "white" }} {...params} label="Dates" />
+              )}
+            />
+          ) : null}
+
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
           </Typography>
