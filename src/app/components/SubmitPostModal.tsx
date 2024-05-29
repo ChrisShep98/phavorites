@@ -31,8 +31,8 @@ export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
   useEffect(() => {
     const apiFriendlyString = songSelected
       .toLowerCase()
-      .replace(" ", "-")
-      .replace("/", "-");
+      .replaceAll(" ", "-")
+      .replaceAll("/", "-");
     const fetchData = async () => {
       songSelected ? await getAllPreformancesOfSongs(apiFriendlyString) : null;
     };
@@ -68,9 +68,6 @@ export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
               <TextField sx={{ color: "white" }} {...params} label="Songs" />
             )}
           />
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
         </Box>
       </Modal>
     </div>
