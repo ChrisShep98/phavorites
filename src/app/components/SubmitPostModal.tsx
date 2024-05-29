@@ -31,24 +31,26 @@ export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
   const [allDatesOfSong, setAllDatesOfSong] = useState<any[]>([""]);
 
   useEffect(() => {
-    const apiFriendlyString = songSelected
-      .toLowerCase()
-      .replaceAll(" ", "-")
-      .replaceAll("/", "-");
-    const fetchData = async () => {
-      try {
-        if (songSelected !== "") {
-          const myData = await getAllPreformancesOfSongs(apiFriendlyString);
-          setAllDatesOfSong(myData);
-        } else {
-          return null;
+    if (songSelected !== null) {
+      const apiFriendlyString = songSelected
+        .toLowerCase()
+        .replaceAll(" ", "-")
+        .replaceAll("/", "-");
+      const fetchData = async () => {
+        try {
+          if (songSelected !== "") {
+            const myData = await getAllPreformancesOfSongs(apiFriendlyString);
+            setAllDatesOfSong(myData);
+          } else {
+            return null;
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
-      }
-    };
+      };
 
-    fetchData();
+      fetchData();
+    }
   }, [songSelected]);
 
   return (
