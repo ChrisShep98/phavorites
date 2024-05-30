@@ -40,6 +40,7 @@ export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
         try {
           if (songSelected !== "") {
             const myData = await getAllPreformancesOfSongs(apiFriendlyString);
+            // filter through allDatesOfSongs and remove duplicates because there are some
             setAllDatesOfSong(myData);
           } else {
             return null;
@@ -87,15 +88,13 @@ export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
               disablePortal
               id="combo-box-demo"
               options={allDatesOfSong}
-              // onChange={(event, newValue) => {
-              //   setSongSelected(newValue!);
-              // }}
               sx={{ width: 300, backgroundColor: "white" }}
               renderInput={(params) => (
                 <TextField sx={{ color: "white" }} {...params} label="Dates" />
               )}
             />
           ) : null}
+          <TextField label="Description"></TextField>
 
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
