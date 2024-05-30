@@ -1,7 +1,7 @@
 "use client";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -18,7 +18,7 @@ const LoginForm = () => {
     }
   }, [session, router]);
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       const res = await signIn("credentials", {
