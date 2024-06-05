@@ -34,10 +34,14 @@ export async function getAllPreformancesOfSongs(songSlug: string) {
   });
   const shows = await response.json();
   const allShows = shows.data.tracks;
-  // upgrade this so it can return array of objects with: show_date prop, venue_name, venue_location
   const dates = [];
   for (let i = 0; i < allShows.length; i++) {
-    dates.push(allShows[i].show_date);
+    const singleShowData = {
+      date: allShows[i].show_date,
+      venueName: allShows[i].venue_name,
+      venmueLocation: allShows[i].venue_location,
+    };
+    dates.push(singleShowData);
   }
   return dates;
 }
