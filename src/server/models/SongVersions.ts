@@ -10,18 +10,18 @@ const songVersionSchema = new Schema(
       type: String,
       required: true,
     },
-    // venueName: {
-    //   type: String,
-    //   required: true,
-    // },
-    // venueLocation: {
-    //   type: String,
-    //   required: true,
-    // },
-    // userWhoPosted: {
-    //   type: String,
-    //   required: true,
-    // },
+    venueName: {
+      type: String,
+      required: true,
+    },
+    venueLocation: {
+      type: String,
+      required: true,
+    },
+    userWhoPosted: {
+      type: String,
+      required: true,
+    },
     description: {
       type: String,
       required: true,

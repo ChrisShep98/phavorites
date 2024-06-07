@@ -8,6 +8,7 @@ import { getAllPreformancesOfSongs } from "@/app/services/phishin";
 import { songs } from "../constants/songs";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const style = {
   position: "absolute" as "absolute",
@@ -16,7 +17,6 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "background.paper",
-  // border: "2px solid #fff",
   borderRadius: "25px",
   boxShadow: 24,
   p: 4,
@@ -26,21 +26,33 @@ const style = {
   textAlign: "center",
 };
 
-interface modalTypes {
+interface modalType {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
+interface dateSelectedType {
+  date: string;
+  venueName: string;
+  venueLocation: string;
+}
+
+export default function SubmitPostModal({ isOpen, onClose }: modalType) {
   //TODO: form data (change into an object later on probably)
   const [songSelected, setSongSelected] = useState("");
   const [dateSelected, setDateSelected] = useState("");
+  const [myVenueInfo, setMyVenueInfo] = useState<dateSelectedType | undefined>({
+    date: "",
+    venueName: "",
+    venueLocation: "",
+  });
   const [description, setDescription] = useState("");
-  //TODO: add error to UI
+  //TODO: add error to UI providing link and name of user who posted or no description
   const [error, setError] = useState("");
+  const session = useSession();
   const router = useRouter();
 
-  const [allDatesOfSong, setAllDatesOfSong] = useState<any[]>([""]);
+  const [allDatesOfSong, setAllDatesOfSong] = useState<string[]>([]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,6 +70,9 @@ export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
           songName: songSelected,
           description,
           date: dateSelected,
+          userWhoPosted: session.data?.user.username,
+          venueLocation: myVenueInfo?.venueLocation,
+          venueName: myVenueInfo?.venueName,
         }),
       });
       if (res.status == 400) {
@@ -80,7 +95,11 @@ export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
           if (songSelected !== "") {
             const myData = await getAllPreformancesOfSongs(apiFriendlyString);
             // TODO: filter through allDatesOfSongs and remove duplicates because there are some
-            setAllDatesOfSong(myData);
+            setAllDatesOfSong(myData.map((el) => el.date));
+            if (dateSelected !== "") {
+              const myDateData = myData.find((obj) => obj.date === dateSelected);
+              setMyVenueInfo(myDateData);
+            }
           } else {
             return null;
           }
@@ -91,7 +110,7 @@ export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
 
       fetchData();
     }
-  }, [songSelected]);
+  }, [songSelected, dateSelected]);
 
   return (
     <div>
@@ -107,10 +126,14 @@ export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
             id="modal-modal-title"
             variant="h6"
             component="h2"
+            mb={2}
           >
             Submit a song
           </Typography>
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={handleSubmit}
+            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+          >
             <Autocomplete
               disablePortal
               id="combo-box-demo"
@@ -118,7 +141,7 @@ export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
               onChange={(event, newValue) => {
                 setSongSelected(newValue!); // Update state with the selected value
               }}
-              sx={{ width: 300, backgroundColor: "white" }}
+              sx={{ backgroundColor: "white" }}
               renderInput={(params) => (
                 <TextField sx={{ color: "white" }} {...params} label="Songs" />
               )}
@@ -128,9 +151,10 @@ export default function SubmitPostModal({ isOpen, onClose }: modalTypes) {
               id="combo-box-demo"
               options={songSelected ? allDatesOfSong : []}
               onChange={(event, newValue) => {
-                setDateSelected(newValue!); // Update state with the selected value
+                setDateSelected(newValue!);
               }}
-              sx={{ width: 300, backgroundColor: "white" }}
+              // onChange={() => handleChange}
+              sx={{ backgroundColor: "white" }}
               renderInput={(params) => (
                 <TextField sx={{ color: "white" }} {...params} label="Dates" />
               )}
