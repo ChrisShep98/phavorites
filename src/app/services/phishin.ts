@@ -39,7 +39,7 @@ export async function getAllPreformancesOfSongs(songSlug: string) {
     const singleShowData = {
       date: allShows[i].show_date,
       venueName: allShows[i].venue_name,
-      venmueLocation: allShows[i].venue_location,
+      venueLocation: allShows[i].venue_location,
     };
     dates.push(singleShowData);
   }
