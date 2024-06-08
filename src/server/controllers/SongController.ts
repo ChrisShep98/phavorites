@@ -7,6 +7,14 @@ class SongController {
       const { songName, date, venueName, venueLocation, userWhoPosted, description } =
         await req.body;
 
+      const alreadyExists = await SongVersions.findOne({ date: date });
+
+      if (alreadyExists) {
+        return res.status(400).json({
+          message: `This version was already posted by - ${alreadyExists.userWhoPosted}`,
+        });
+      }
+
       await SongVersions.create({
         songName,
         date,
@@ -15,7 +23,6 @@ class SongController {
         venueName,
         venueLocation,
       });
-      // TODO: logic to check if the song version has already been posted
 
       return res.status(200).json({ message: "Song version created!" });
     } catch (error) {

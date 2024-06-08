@@ -75,8 +75,10 @@ export default function SubmitPostModal({ isOpen, onClose }: modalType) {
           venueName: myVenueInfo?.venueName,
         }),
       });
-      if (res.status == 400) {
-        setError(""); // set error that tells user if post is already made and link to the post or display user who posted it
+      if (res.status === 400) {
+        res.json().then((data) => {
+          setError(data.message);
+        });
       } else {
         // TODO: maybe close modal here?
         // router.replace("/dashboard"); // old code
@@ -167,6 +169,7 @@ export default function SubmitPostModal({ isOpen, onClose }: modalType) {
             {/* TODO: close modal after submit */}
             <Button type="submit">Submit</Button>
           </form>
+          {error ? <Typography>{error}</Typography> : null}
         </Box>
       </Modal>
     </div>
