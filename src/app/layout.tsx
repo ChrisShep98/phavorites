@@ -3,6 +3,7 @@ import { AR_One_Sans } from "next/font/google";
 import { AuthProvder } from "./providers/SessionProvider";
 import "./globals.css";
 import { getServerSession } from "next-auth";
+import { ThemeProvider } from "./lib/ThemeProvider";
 
 const arOneSans = AR_One_Sans({
   subsets: ["latin"],
@@ -25,7 +26,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <body className={arOneSans.className}>
-        <AuthProvder session={session}>{children}</AuthProvder>
+        <ThemeProvider>
+          <AuthProvder session={session}>{children}</AuthProvder>
+        </ThemeProvider>
       </body>
     </html>
   );

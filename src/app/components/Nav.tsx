@@ -50,7 +50,7 @@ const Nav = () => {
         position={"absolute"}
         zIndex={999}
         borderRadius={"25px"}
-        sx={{ backgroundColor: "#0a0a0a" }}
+        sx={{ backgroundColor: "primary.main" }}
         width={"250px"}
         height={"80%"}
         ml={1}
