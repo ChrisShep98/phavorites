@@ -43,11 +43,6 @@ const handler = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
-    async redirect({ baseUrl }: any) {
-      // Allows relative callback URLs
-      // Allows callback URLs on the same origin
-      return baseUrl;
-    },
     // I used these two callbacks to move some values around so that user.id is available in both the token and the session objects. might come in handy. this data is accessible in the client via getToken and getSession/useSession. since a token (token.jti) and the user id are both available in the token object, we'll call getToken to get those two values and use them as arguments for the me query
     async jwt({ token, user }: any) {
       // user is the value returned from the authorize function above

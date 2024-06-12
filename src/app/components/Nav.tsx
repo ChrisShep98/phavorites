@@ -85,7 +85,10 @@ const Nav = () => {
               {session.status == "unauthenticated" ? (
                 <ListItemText primary="Sign In" onClick={() => router.push("/login")} />
               ) : (
-                <ListItemText primary="Sign Out" onClick={() => signOut()} />
+                <ListItemText
+                  primary="Sign Out"
+                  onClick={() => signOut({ callbackUrl: "/login" })}
+                />
               )}
             </ListItemButton>
           </ListItem>
