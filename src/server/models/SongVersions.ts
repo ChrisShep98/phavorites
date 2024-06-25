@@ -1,5 +1,7 @@
 import mongoose, { Schema, models } from "mongoose";
 
+// TO DO: add comments and # of upvotes to this schema
+
 const songVersionSchema = new Schema(
   {
     songName: {

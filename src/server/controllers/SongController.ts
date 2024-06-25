@@ -1,6 +1,8 @@
 import SongVersions from "../models/SongVersions";
 import { Request, Response } from "express";
 
+// TO DO: add GET method for getting all submited songs and GET for specific songs
+
 class SongController {
   submitSong = async (req: Request, res: Response) => {
     try {
