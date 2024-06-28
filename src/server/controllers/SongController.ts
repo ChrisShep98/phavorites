@@ -31,6 +31,15 @@ class SongController {
       return res.sendStatus(400);
     }
   };
+
+  getAllSubmissions = async (res: Response) => {
+    try {
+      const allSubmissions = await SongVersions.find();
+      return res.status(200).json({ data: allSubmissions });
+    } catch (error) {
+      return res.sendStatus(400);
+    }
+  };
 }
 
 export default new SongController();
