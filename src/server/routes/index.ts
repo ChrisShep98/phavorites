@@ -8,5 +8,6 @@ router.get("/user/:id", UserController.getUserById);
 router.post("/register", UserController.registerUser);
 
 router.post("/songSubmittion", SongController.submitSong);
+router.get("/allSubmissions", SongController.getAllSubmissions);
 
 export default router;

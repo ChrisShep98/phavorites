@@ -32,7 +32,7 @@ class SongController {
     }
   };
 
-  getAllSubmissions = async (res: Response) => {
+  getAllSubmissions = async (req: Request, res: Response) => {
     try {
       const allSubmissions = await SongVersions.find();
       return res.status(200).json({ data: allSubmissions });
