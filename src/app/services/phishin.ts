@@ -45,3 +45,9 @@ export async function getAllPreformancesOfSongs(songSlug: string) {
   }
   return dates;
 }
+
+export async function getAllSongSubmissions() {
+  const response = await fetch(`http://localhost:8000/allSubmissions`);
+  const allSubmissions = await response.json();
+  return allSubmissions.data;
+}
