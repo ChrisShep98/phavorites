@@ -59,12 +59,13 @@ export interface shows {
   venue_name: string;
 }
 
-export interface songSubmissionCardProps {
+export interface songSubmissionCard {
   // upvotes: string;
+  _id: string;
   songName: string;
   venueLocation: string;
   venueName: string;
   date: string;
-  description: string;
+  description: string; // possibly undefined?
   // comments: string[];
 }

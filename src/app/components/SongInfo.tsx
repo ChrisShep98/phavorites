@@ -1,8 +1,14 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
-import { songSubmissionCardProps } from "../types/showTypes";
 
-// TO DO: delete div, add props
+interface songSubmissionCardProps {
+  songName: string;
+  venueLocation: string;
+  venueName: string;
+  date: string;
+  description: string;
+}
+
 const SongInfo = ({
   songName,
   venueLocation,

@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from "react";
 import SongInfo from "./SongInfo";
 import { getAllSongSubmissions } from "../services/phishin";
-import { songSubmissionCardProps } from "../types/showTypes";
+import { songSubmissionCard } from "../types/showTypes";
 
 const RecentSubmissions = () => {
-  const [songSubmissions, setSongSubmissions] = useState<songSubmissionCardProps[]>();
+  const [songSubmissions, setSongSubmissions] = useState<songSubmissionCard[]>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,13 +21,12 @@ const RecentSubmissions = () => {
     fetchData();
   }, []);
 
-  console.log(songSubmissions);
   return (
     <div>
       {songSubmissions?.map((el) => {
-        // TODO: Add a key
         return (
           <SongInfo
+            key={el._id}
             date={el.date}
             songName={el.songName}
             venueLocation={el.venueLocation}
@@ -39,9 +38,5 @@ const RecentSubmissions = () => {
     </div>
   );
 };
-
-{
-  /* <div style={{ display: "flex", justifyContent: "center", marginTop: "10rem" }}> */
-}
 
 export default RecentSubmissions;
