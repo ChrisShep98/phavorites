@@ -1,11 +1,11 @@
-import LoginForm from "./components/LoginForm";
-import UserInfo from "../app/components/UserInfo";
 import Nav from "./components/Nav";
+import RecentSubmissions from "./components/RecentSubmissions";
 
 export default function Home() {
   return (
     <>
       <Nav />
+      <RecentSubmissions />
     </>
   );
 }
