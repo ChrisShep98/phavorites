@@ -18,7 +18,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import SubmitPostModal from "@/app/components/SubmitPostModal";
 
-const Nav = () => {
+const SideNavWithSlidingComponent = () => {
   const session = useSession();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -146,4 +146,4 @@ const Nav = () => {
   );
 };
 
-export default Nav;
+export default SideNavWithSlidingComponent;
