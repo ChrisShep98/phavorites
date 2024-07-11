@@ -3,7 +3,7 @@ import { AR_One_Sans } from "next/font/google";
 import { AuthProvder } from "./providers/SessionProvider";
 import "./globals.css";
 import { getServerSession } from "next-auth";
-import { ThemeProvider } from "./lib/ThemeProvider";
+import { ThemeProvider } from "./providers/ThemeProvider";
 
 const arOneSans = AR_One_Sans({
   subsets: ["latin"],

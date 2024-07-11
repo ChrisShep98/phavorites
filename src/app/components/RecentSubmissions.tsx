@@ -1,9 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import SongInfo from "./SongInfo";
+import SongCard from "./SongCard";
 import { getAllSongSubmissions } from "../services/phishin";
 import { songSubmissionCard } from "../types/showTypes";
-import { Box } from "@mui/material";
 
 const RecentSubmissions = () => {
   const [songSubmissions, setSongSubmissions] = useState<songSubmissionCard[]>();
@@ -26,7 +25,7 @@ const RecentSubmissions = () => {
     <div>
       {songSubmissions?.map((el) => {
         return (
-          <SongInfo
+          <SongCard
             key={el._id}
             date={el.date}
             songName={el.songName}

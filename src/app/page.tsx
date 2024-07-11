@@ -6,7 +6,9 @@ export default function Home() {
   return (
     <>
       <Nav />
-      <Box display={"flex"} justifyContent={"center"}>
+      {/* TODO: cheap fix with height on line 10, property subtrack of nav height and
+      standardize */}
+      <Box height={"87vh"} display={"flex"} justifyContent={"center"}>
         <RecentSubmissions />
       </Box>
     </>

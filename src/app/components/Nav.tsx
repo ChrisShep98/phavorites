@@ -96,10 +96,10 @@ const Nav = () => {
               src={phishLogo}
               height={100}
               width={100}
-              alt="cracker"
-              style={{
-                backgroundColor: "#fff",
-              }}
+              alt="phishLogo"
+              // style={{
+              //   backgroundColor: "#fff",
+              // }}
             />
           </Link>
         </Box>
