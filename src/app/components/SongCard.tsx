@@ -9,7 +9,7 @@ interface songSubmissionCardProps {
   description: string;
 }
 
-const SongInfo = ({
+const SongCard = ({
   songName,
   venueLocation,
   venueName,
@@ -17,17 +17,36 @@ const SongInfo = ({
   description,
 }: songSubmissionCardProps) => {
   return (
-    <Box width={"35rem"} mt={1} border={"2px solid black"} p={1} borderRadius={3}>
+    <Box
+      width={"35rem"}
+      mt={1}
+      // border={"1px solid black"}
+      p={1}
+      borderRadius={3}
+      boxShadow={
+        "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;"
+      }
+    >
       <Stack direction={"row"}>
-        <Box my={"auto"} mx={3} border={"1px solid blue"} p={2} borderRadius={"50%"}>
+        <Typography
+          my={"auto"}
+          mx={3}
+          border={"3px solid #4162ff"}
+          p={2}
+          borderRadius={"50%"}
+          fontWeight={600}
+        >
           352
-        </Box>
+        </Typography>
         <Stack gap={1}>
-          <Typography>{songName}</Typography>
+          <Typography fontWeight={500}>{songName}</Typography>
           <Divider />
           <Typography>
             {date} - {venueLocation}, {venueName}
-            Aug. 27, 1972 - Old Renaissance Faire Grounds Veneta, OR
+          </Typography>
+          {/* TODO set a new Typography variant with correct styles using rem or em */}
+          <Typography fontSize={"13px"} color={"grey"}>
+            Description:
           </Typography>
           <Typography>{description}</Typography>
           <Stack direction={"row"} gap={1}>
@@ -41,4 +60,4 @@ const SongInfo = ({
   );
 };
 
-export default SongInfo;
+export default SongCard;
