@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import SongInfo from "./SongInfo";
 import { getAllSongSubmissions } from "../services/phishin";
 import { songSubmissionCard } from "../types/showTypes";
+import { Box } from "@mui/material";
 
 const RecentSubmissions = () => {
   const [songSubmissions, setSongSubmissions] = useState<songSubmissionCard[]>();
@@ -25,14 +26,16 @@ const RecentSubmissions = () => {
     <div>
       {songSubmissions?.map((el) => {
         return (
-          <SongInfo
-            key={el._id}
-            date={el.date}
-            songName={el.songName}
-            venueLocation={el.venueLocation}
-            venueName={el.venueName}
-            description={el.description}
-          />
+          <Box mt={2}>
+            <SongInfo
+              key={el._id}
+              date={el.date}
+              songName={el.songName}
+              venueLocation={el.venueLocation}
+              venueName={el.venueName}
+              description={el.description}
+            />
+          </Box>
         );
       })}
     </div>

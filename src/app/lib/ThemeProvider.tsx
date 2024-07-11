@@ -2,12 +2,12 @@
 import React from "react";
 import { ThemeProvider as MuiProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-// import { Inter } from "@next/font/google";
+import { Outfit } from "next/font/google";
 
-// const inter = Inter({
-//   subsets: ["latin"],
-//   weight: ["400", "500", "600", "700"],
-// });
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const theme = createTheme({
@@ -17,9 +17,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       },
     },
     components: {},
-    // typography: {
-    //   fontFamily: inter.style.fontFamily,
-    // },
+    typography: {
+      fontFamily: outfit.style.fontFamily,
+    },
   });
 
   return <MuiProvider theme={theme}>{children}</MuiProvider>;
