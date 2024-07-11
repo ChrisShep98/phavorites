@@ -17,7 +17,7 @@ const SongInfo = ({
   description,
 }: songSubmissionCardProps) => {
   return (
-    <Box width={"35rem"} border={"2px solid black"} p={1} borderRadius={3}>
+    <Box width={"35rem"} mt={1} border={"2px solid black"} p={1} borderRadius={3}>
       <Stack direction={"row"}>
         <Box my={"auto"} mx={3} border={"1px solid blue"} p={2} borderRadius={"50%"}>
           352

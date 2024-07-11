@@ -26,16 +26,14 @@ const RecentSubmissions = () => {
     <div>
       {songSubmissions?.map((el) => {
         return (
-          <Box mt={2}>
-            <SongInfo
-              key={el._id}
-              date={el.date}
-              songName={el.songName}
-              venueLocation={el.venueLocation}
-              venueName={el.venueName}
-              description={el.description}
-            />
-          </Box>
+          <SongInfo
+            key={el._id}
+            date={el.date}
+            songName={el.songName}
+            venueLocation={el.venueLocation}
+            venueName={el.venueName}
+            description={el.description}
+          />
         );
       })}
     </div>
