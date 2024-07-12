@@ -60,7 +60,7 @@ export interface shows {
 }
 
 export interface songSubmissionCard {
-  // upvotes: string;
+  voteCount: string;
   _id: string;
   songName: string;
   venueLocation: string;

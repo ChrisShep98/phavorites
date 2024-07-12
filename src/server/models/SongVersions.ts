@@ -20,6 +20,10 @@ const songVersionSchema = new Schema(
       type: String,
       required: true,
     },
+    voteCount: {
+      type: Number,
+      default: 1,
+    },
     userWhoPosted: {
       type: String,
       required: true,

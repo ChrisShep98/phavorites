@@ -9,5 +9,6 @@ router.post("/register", UserController.registerUser);
 
 router.post("/songSubmittion", SongController.submitSong);
 router.get("/allSubmissions", SongController.getAllSubmissions);
+router.patch("/:id/upVote", SongController.updateVoteCount);
 
 export default router;

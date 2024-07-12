@@ -40,6 +40,21 @@ class SongController {
       return res.sendStatus(400);
     }
   };
+
+  updateVoteCount = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const songSubmission = await SongVersions.findByIdAndUpdate(id);
+      console.log(songSubmission);
+
+      songSubmission.voteCount += 1;
+
+      songSubmission.save();
+      return res.status(200).json({ message: "Up vote successfully added!" });
+    } catch (error) {
+      return res.sendStatus(400);
+    }
+  };
 }
 
 export default new SongController();
