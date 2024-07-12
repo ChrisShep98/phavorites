@@ -1,5 +1,7 @@
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Stack, Typography } from "@mui/material";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import React from "react";
+import { songSubmissionCard } from "../types/showTypes";
 
 interface songSubmissionCardProps {
   songName: string;
@@ -7,6 +9,8 @@ interface songSubmissionCardProps {
   venueName: string;
   date: string;
   description: string;
+  voteCount: string;
+  onClick: () => Promise<songSubmissionCard>;
 }
 
 const SongCard = ({
@@ -15,12 +19,13 @@ const SongCard = ({
   venueName,
   date,
   description,
+  voteCount,
+  onClick,
 }: songSubmissionCardProps) => {
   return (
     <Box
       width={"35rem"}
       mt={1}
-      // border={"1px solid black"}
       p={1}
       borderRadius={3}
       boxShadow={
@@ -28,16 +33,22 @@ const SongCard = ({
       }
     >
       <Stack direction={"row"}>
-        <Typography
-          my={"auto"}
-          mx={3}
-          border={"3px solid #4162ff"}
-          p={2}
-          borderRadius={"50%"}
-          fontWeight={600}
-        >
-          352
-        </Typography>
+        <Stack>
+          <IconButton onClick={onClick}>
+            <ArrowUpwardIcon />
+          </IconButton>
+          <Typography
+            my={"auto"}
+            mx={3}
+            border={"3px solid #4162ff"}
+            p={2}
+            borderRadius={"50%"}
+            fontWeight={600}
+            padding={"10px 15px"}
+          >
+            {voteCount}
+          </Typography>
+        </Stack>
         <Stack gap={1}>
           <Typography fontWeight={500}>{songName}</Typography>
           <Divider />
@@ -52,7 +63,6 @@ const SongCard = ({
           <Stack direction={"row"} gap={1}>
             <Typography>69 Comments</Typography>
             <Typography>Make a comment</Typography>
-            <Typography>Upvote</Typography>
           </Stack>
         </Stack>
       </Stack>
