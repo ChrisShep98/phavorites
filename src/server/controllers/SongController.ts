@@ -43,11 +43,24 @@ class SongController {
 
   updateVoteCount = async (req: Request, res: Response) => {
     try {
+      const { userId } = req.body;
       const { id } = req.params;
       const songSubmission = await SongVersions.findByIdAndUpdate(id);
-      console.log(songSubmission);
+      const usersWhoVoted = songSubmission.votedBy;
+
+      if (usersWhoVoted.includes(userId)) {
+        songSubmission.voteCount -= 1;
+
+        // find userId in array and remove
+        const index = usersWhoVoted.indexOf(userId);
+        usersWhoVoted.splice(index, 1);
+
+        songSubmission.save();
+        return res.status(200).json({ message: "Down successfully removed!" });
+      }
 
       songSubmission.voteCount += 1;
+      usersWhoVoted.push(userId);
 
       songSubmission.save();
       return res.status(200).json({ message: "Up vote successfully added!" });
