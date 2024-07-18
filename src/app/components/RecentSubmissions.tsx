@@ -1,38 +1,30 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import SongCard from "./SongCard";
-import { getAllSongSubmissions } from "../services/phishin";
-import { songSubmissionCard } from "../types/showTypes";
+import { SongContext } from "../context/SongContext";
+import { useSession } from "next-auth/react";
 
 const RecentSubmissions = () => {
-  const [songSubmissions, setSongSubmissions] = useState<songSubmissionCard[]>([]);
+  const session = useSession();
+  const [refetchVote, setRefetchVote] = useState(false);
+  const { songSubmissions, fetchSubmissions } = useContext(SongContext);
+
+  useEffect(() => {
+    fetchSubmissions();
+  }, [refetchVote]);
 
   const handleUpvote = async (id: string) => {
-    const response = await fetch(`http://localhost:8000/${id}/upVote`, {
+    await fetch(`http://localhost:8000/${id}/upVote`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        userId: session.data?.user.userId,
+      }),
     });
-    const updatedVoteCount = await response.json();
-    setSongSubmissions((oldSubmissions) => [...oldSubmissions, updatedVoteCount]);
-    // TODO: updateVoteCount doesn't need to be returned, changed later
-    return updatedVoteCount;
+    setRefetchVote((prevState) => !prevState);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const allSubmissions = await getAllSongSubmissions();
-        setSongSubmissions(allSubmissions);
-      } catch (error) {
-        // TODO: create state to set error
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, [songSubmissions]);
 
   return (
     <div>
