@@ -4,6 +4,7 @@ import { AuthProvder } from "./providers/SessionProvider";
 import "./globals.css";
 import { getServerSession } from "next-auth";
 import { ThemeProvider } from "./providers/ThemeProvider";
+import { SongContextProvider } from "./providers/SongContextProvider";
 
 const arOneSans = AR_One_Sans({
   subsets: ["latin"],
@@ -27,7 +28,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en">
       <body className={arOneSans.className}>
         <ThemeProvider>
-          <AuthProvder session={session}>{children}</AuthProvder>
+          <SongContextProvider>
+            <AuthProvder session={session}>{children}</AuthProvder>
+          </SongContextProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -10,7 +10,7 @@ interface songSubmissionCardProps {
   date: string;
   description: string;
   voteCount: string;
-  onClick: () => Promise<songSubmissionCard>;
+  onClick: () => Promise<void>;
 }
 
 const SongCard = ({

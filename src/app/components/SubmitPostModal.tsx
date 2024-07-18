@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState, useContext } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -9,6 +9,7 @@ import { songs } from "../constants/songs";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { SongContext } from "../context/SongContext";
 
 const style = {
   position: "absolute" as "absolute",
@@ -39,6 +40,8 @@ interface dateSelectedType {
 
 export default function SubmitPostModal({ isOpen, onClose }: modalType) {
   //TODO: form data (change into an object later on probably)
+
+  const { fetchSubmissions } = useContext(SongContext);
   const [songSelected, setSongSelected] = useState("");
   const [dateSelected, setDateSelected] = useState("");
   const [myVenueInfo, setMyVenueInfo] = useState<dateSelectedType | undefined>({
@@ -80,6 +83,7 @@ export default function SubmitPostModal({ isOpen, onClose }: modalType) {
           setError(data.message);
         });
       } else {
+        fetchSubmissions();
         // TODO: maybe close modal here?
         // router.replace("/dashboard"); // old code
       }
