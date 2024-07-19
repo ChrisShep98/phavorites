@@ -34,7 +34,7 @@ const SongCard = ({
     >
       <Stack direction={"row"}>
         <Stack>
-          <IconButton onClick={onClick}>
+          <IconButton disableRipple onClick={onClick}>
             <ArrowUpwardIcon />
           </IconButton>
           <Typography

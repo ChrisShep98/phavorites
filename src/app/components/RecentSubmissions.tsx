@@ -3,11 +3,13 @@ import React, { useEffect, useContext, useState } from "react";
 import SongCard from "./SongCard";
 import { SongContext } from "../context/SongContext";
 import { useSession } from "next-auth/react";
+import { getAllSongSubmissions } from "../services/phishin";
 
 const RecentSubmissions = () => {
   const session = useSession();
   const [refetchVote, setRefetchVote] = useState(false);
-  const { songSubmissions, fetchSubmissions } = useContext(SongContext);
+  const { songSubmissions, setSongSubmissions, fetchSubmissions } =
+    useContext(SongContext);
 
   useEffect(() => {
     fetchSubmissions();
@@ -23,6 +25,9 @@ const RecentSubmissions = () => {
         userId: session.data?.user.userId,
       }),
     });
+    // Weird stuff - if I fetch from the api on the line below and set the state to the return value then call the api again via useEffect with refetchVote state change then the upvote/downvote weirdness goes away. My take is setting the songSubmissions state twice here just assures the state will reflect correctly in the UI. There is definitely a better way to do this but going to leave for now.
+    const allSubmissions = await getAllSongSubmissions();
+    setSongSubmissions(allSubmissions);
     setRefetchVote((prevState) => !prevState);
   };
 
