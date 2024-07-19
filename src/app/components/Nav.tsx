@@ -171,7 +171,10 @@ const Nav = () => {
                 aria-haspopup="true"
                 aria-expanded={openProfileMenu ? "true" : undefined}
               >
-                <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                <Avatar sx={{ width: 32, height: 32 }}>
+                  {/* set loading state for this later */}
+                  {session.data?.user.username ? session.data?.user.username[0] : ""}
+                </Avatar>
               </IconButton>
               {/* <Avatar sx={{ bgcolor: "black" }}>CS</Avatar> */}
               {/* </Box> */}
