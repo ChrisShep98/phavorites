@@ -1,8 +1,6 @@
-import { connectMongoDB } from "@/server/lib/mongodb";
-import User from "@/server/models/Users";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
+import { loginUser } from "@/app/services/userServices";
 
 const handler = NextAuth({
   providers: [
@@ -19,20 +17,8 @@ const handler = NextAuth({
       },
       async authorize(credentials: any) {
         try {
-          await connectMongoDB();
-          const user = await User.findOne({ username: credentials.username });
-          const passwordsMatch = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
-
-          if (!user) {
-            return null;
-          } else if (!passwordsMatch) {
-            return null;
-          } else {
-            return user;
-          }
+          const response = await loginUser(credentials.username, credentials.password);
+          return response;
         } catch (error) {
           console.log("Error: ", error);
         }
