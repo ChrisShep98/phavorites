@@ -1,7 +1,14 @@
-import { Box, Divider, IconButton, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import React from "react";
-import { songSubmissionCard } from "../types/showTypes";
 
 interface songSubmissionCardProps {
   songName: string;
@@ -10,7 +17,10 @@ interface songSubmissionCardProps {
   date: string;
   description: string;
   voteCount: string;
-  onClick: () => Promise<void>;
+  addComment: () => Promise<void>;
+  commentTyped: React.Dispatch<React.SetStateAction<string>>;
+  // comments: { comment: string; user: string }[];
+  upVote: () => Promise<void>;
 }
 
 const SongCard = ({
@@ -20,8 +30,10 @@ const SongCard = ({
   date,
   description,
   voteCount,
-  onClick,
-}: songSubmissionCardProps) => {
+  upVote,
+}: // addComment,
+// commentTyped,
+songSubmissionCardProps) => {
   return (
     <Box
       width={"35rem"}
@@ -34,7 +46,7 @@ const SongCard = ({
     >
       <Stack direction={"row"}>
         <Stack>
-          <IconButton disableRipple onClick={onClick}>
+          <IconButton disableRipple onClick={upVote}>
             <ArrowUpwardIcon />
           </IconButton>
           <Typography
@@ -61,7 +73,21 @@ const SongCard = ({
           </Typography>
           <Typography>{description}</Typography>
           <Stack direction={"row"} gap={1}>
-            <Typography>69 Comments</Typography>
+            {/* <form onSubmit={addComment}>
+              <TextField
+                onChange={(e) => commentTyped(e.target.value)}
+                fullWidth
+                label="comment"
+              ></TextField>
+              <Button
+                sx={{ borderRadius: 2 }}
+                color={"primary"}
+                variant="contained"
+                type="submit"
+              >
+                Submit
+              </Button>
+            </form> */}
             <Typography>Make a comment</Typography>
           </Stack>
         </Stack>

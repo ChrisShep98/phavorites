@@ -8,6 +8,7 @@ import { getAllSongSubmissions } from "../services/phishin";
 const RecentSubmissions = () => {
   const session = useSession();
   const [refetchVote, setRefetchVote] = useState(false);
+  const [comment, setComment] = useState("");
   const { songSubmissions, setSongSubmissions, fetchSubmissions } =
     useContext(SongContext);
 
@@ -31,12 +32,27 @@ const RecentSubmissions = () => {
     setRefetchVote((prevState) => !prevState);
   };
 
+  const submitComment = async (postId: string) => {
+    await fetch(`http://localhost:8000/addComment/${postId}`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        comment,
+        username: session.data?.user.username,
+      }),
+    });
+  };
+
   return (
     <div>
       {songSubmissions?.map((el) => {
         return (
           <SongCard
-            onClick={() => handleUpvote(el._id)}
+            commentTyped={setComment}
+            addComment={() => submitComment(el._id)}
+            upVote={() => handleUpvote(el._id)}
             voteCount={el.voteCount}
             key={el._id}
             date={el.date}
