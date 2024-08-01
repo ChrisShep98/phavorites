@@ -8,8 +8,9 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import React from "react";
+import React, { useState } from "react";
 
+// TODO: extend this with songSubmissionCard
 interface songSubmissionCardProps {
   songName: string;
   venueLocation: string;
@@ -19,7 +20,7 @@ interface songSubmissionCardProps {
   voteCount: string;
   addComment: () => Promise<void>;
   commentTyped: React.Dispatch<React.SetStateAction<string>>;
-  // comments: { comment: string; user: string }[];
+  comments: { comment: string; username: string; _id: string }[];
   upVote: () => Promise<void>;
 }
 
@@ -31,20 +32,26 @@ const SongCard = ({
   description,
   voteCount,
   upVote,
-}: // addComment,
-// commentTyped,
-songSubmissionCardProps) => {
+  addComment,
+  commentTyped,
+  comments,
+}: songSubmissionCardProps) => {
+  const [openComments, setOpenComments] = useState(false);
+  const toggleOpenComments = () => {
+    setOpenComments(!openComments);
+  };
   return (
-    <Box
-      width={"35rem"}
-      mt={1}
-      p={1}
-      borderRadius={3}
-      boxShadow={
-        "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;"
-      }
-    >
-      <Stack direction={"row"}>
+    <>
+      <Stack
+        width={"30rem"}
+        position={"absolute"}
+        zIndex={999}
+        borderRadius={openComments ? "16px 16px 0px 0px" : 4}
+        sx={{ backgroundColor: "white" }}
+        direction={"row"}
+        p={1}
+        height={"204px"}
+      >
         <Stack>
           <IconButton disableRipple onClick={upVote}>
             <ArrowUpwardIcon />
@@ -73,26 +80,47 @@ songSubmissionCardProps) => {
           </Typography>
           <Typography>{description}</Typography>
           <Stack direction={"row"} gap={1}>
-            {/* <form onSubmit={addComment}>
-              <TextField
-                onChange={(e) => commentTyped(e.target.value)}
-                fullWidth
-                label="comment"
-              ></TextField>
-              <Button
-                sx={{ borderRadius: 2 }}
-                color={"primary"}
-                variant="contained"
-                type="submit"
-              >
-                Submit
-              </Button>
-            </form> */}
-            <Typography>Make a comment</Typography>
+            <Button onClick={() => toggleOpenComments()}>View Comments</Button>
           </Stack>
         </Stack>
       </Stack>
-    </Box>
+      <Box
+        borderRadius={openComments ? "0px 0px 16px 16px" : 4}
+        flexDirection={"column"}
+        sx={{
+          transition: "all 0.5s ease",
+          marginTop: openComments ? "200px" : 1,
+          height: openComments ? "250px" : "195px",
+        }}
+        width={"30rem"}
+        p={1}
+      >
+        {comments.map(({ username, comment, _id }) => {
+          return (
+            <Stack direction={"row"} gap={1} key={_id} p={1}>
+              <Typography color={"primary"}>{username}:</Typography>
+              <Typography color={"primary"}>{comment}</Typography>
+            </Stack>
+          );
+        })}
+        <form onSubmit={addComment}>
+          <TextField
+            sx={{ display: "flex", alignItems: "center" }}
+            color="primary"
+            onChange={(e) => commentTyped(e.target.value)}
+            // fullWidth
+            label="comment"
+          ></TextField>
+          <Button
+            sx={{ borderRadius: 2, color: "white" }}
+            variant="contained"
+            type="submit"
+          >
+            Submit
+          </Button>
+        </form>
+      </Box>
+    </>
   );
 };
 

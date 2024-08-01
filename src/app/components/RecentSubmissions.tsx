@@ -60,6 +60,7 @@ const RecentSubmissions = () => {
             venueLocation={el.venueLocation}
             venueName={el.venueName}
             description={el.description}
+            comments={el.comments}
           />
         );
       })}
