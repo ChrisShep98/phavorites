@@ -60,7 +60,7 @@ export default function SubmitPostModal({ isOpen, onClose }: modalType) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!description) {
-      setError("Please provide a quick description");
+      setError("Please provide a description");
       return;
     }
     try {
