@@ -27,24 +27,24 @@ const style = {
   textAlign: "center",
 };
 
-interface modalType {
+interface ModalType {
   isOpen: boolean;
   onClose: () => void;
 }
 
-interface dateSelectedType {
+interface DateSelectedType {
   date: string;
   venueName: string;
   venueLocation: string;
 }
 
-export default function SubmitPostModal({ isOpen, onClose }: modalType) {
+export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   //TODO: form data (change into an object later on probably)
 
   const { fetchSubmissions } = useContext(SongContext);
   const [songSelected, setSongSelected] = useState("");
   const [dateSelected, setDateSelected] = useState("");
-  const [myVenueInfo, setMyVenueInfo] = useState<dateSelectedType | undefined>({
+  const [myVenueInfo, setMyVenueInfo] = useState<DateSelectedType | undefined>({
     date: "",
     venueName: "",
     venueLocation: "",

@@ -12,7 +12,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import React, { FormEvent } from "react";
 
 // TODO: extend this with songSubmissionCard
-interface songSubmissionCardProps {
+interface SongSubmissionCardProps {
   songName: string;
   venueLocation: string;
   venueName: string;
@@ -38,7 +38,7 @@ const SongCard = ({
   commentTyped,
   comments,
   comment,
-}: songSubmissionCardProps) => {
+}: SongSubmissionCardProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const closeComments = () => {
