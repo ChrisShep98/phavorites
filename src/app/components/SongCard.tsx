@@ -1,8 +1,9 @@
 import {
-  Box,
   Button,
   Divider,
+  Fade,
   IconButton,
+  Menu,
   Stack,
   TextField,
   Typography,
@@ -36,17 +37,21 @@ const SongCard = ({
   commentTyped,
   comments,
 }: songSubmissionCardProps) => {
-  const [openComments, setOpenComments] = useState(false);
-  const toggleOpenComments = () => {
-    setOpenComments(!openComments);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const closeComments = () => {
+    setAnchorEl(null);
   };
+  const openComments = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
   return (
     <>
       <Stack
         width={"30rem"}
-        position={"absolute"}
         zIndex={999}
-        borderRadius={openComments ? "16px 16px 0px 0px" : 4}
+        borderRadius={open ? "16px 16px 0px 0px" : 4}
         sx={{ backgroundColor: "white" }}
         direction={"row"}
         p={1}
@@ -80,46 +85,41 @@ const SongCard = ({
           </Typography>
           <Typography>{description}</Typography>
           <Stack direction={"row"} gap={1}>
-            <Button onClick={() => toggleOpenComments()}>View Comments</Button>
+            <Button onClick={openComments}>View Comments</Button>
+            <Menu
+              onClose={closeComments}
+              anchorEl={anchorEl}
+              open={open}
+              TransitionComponent={Fade}
+            >
+              {comments.map(({ username, comment, _id }) => {
+                return (
+                  <Stack direction={"row"} gap={1} key={_id} p={1}>
+                    <Typography color={"primary"}>{username}:</Typography>
+                    <Typography color={"primary"}>{comment}</Typography>
+                  </Stack>
+                );
+              })}
+              <form onSubmit={addComment}>
+                <TextField
+                  sx={{ display: "flex", alignItems: "center" }}
+                  color="primary"
+                  onChange={(e) => commentTyped(e.target.value)}
+                  fullWidth
+                  label="comment"
+                ></TextField>
+                <Button
+                  sx={{ borderRadius: 2, color: "white" }}
+                  variant="contained"
+                  type="submit"
+                >
+                  Submit
+                </Button>
+              </form>
+            </Menu>
           </Stack>
         </Stack>
       </Stack>
-      <Box
-        borderRadius={openComments ? "0px 0px 16px 16px" : 4}
-        flexDirection={"column"}
-        sx={{
-          transition: "all 0.5s ease",
-          marginTop: openComments ? "200px" : 1,
-          height: openComments ? "250px" : "195px",
-        }}
-        width={"30rem"}
-        p={1}
-      >
-        {comments.map(({ username, comment, _id }) => {
-          return (
-            <Stack direction={"row"} gap={1} key={_id} p={1}>
-              <Typography color={"primary"}>{username}:</Typography>
-              <Typography color={"primary"}>{comment}</Typography>
-            </Stack>
-          );
-        })}
-        <form onSubmit={addComment}>
-          <TextField
-            sx={{ display: "flex", alignItems: "center" }}
-            color="primary"
-            onChange={(e) => commentTyped(e.target.value)}
-            // fullWidth
-            label="comment"
-          ></TextField>
-          <Button
-            sx={{ borderRadius: 2, color: "white" }}
-            variant="contained"
-            type="submit"
-          >
-            Submit
-          </Button>
-        </form>
-      </Box>
     </>
   );
 };
