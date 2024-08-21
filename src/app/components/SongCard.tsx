@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import React, { useState } from "react";
+import React, { FormEvent } from "react";
 
 // TODO: extend this with songSubmissionCard
 interface songSubmissionCardProps {
@@ -19,10 +19,11 @@ interface songSubmissionCardProps {
   date: string;
   description: string;
   voteCount: string;
-  addComment: () => Promise<void>;
+  addComment: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   commentTyped: React.Dispatch<React.SetStateAction<string>>;
   comments: { comment: string; username: string; _id: string }[];
   upVote: () => Promise<void>;
+  comment: string;
 }
 
 const SongCard = ({
@@ -36,6 +37,7 @@ const SongCard = ({
   addComment,
   commentTyped,
   comments,
+  comment,
 }: songSubmissionCardProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -102,6 +104,7 @@ const SongCard = ({
               })}
               <form onSubmit={addComment}>
                 <TextField
+                  value={comment}
                   sx={{ display: "flex", alignItems: "center" }}
                   color="primary"
                   onChange={(e) => commentTyped(e.target.value)}

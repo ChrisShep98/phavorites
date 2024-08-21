@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, FormEvent } from "react";
 import SongCard from "./SongCard";
 import { SongContext } from "../context/SongContext";
 import { useSession } from "next-auth/react";
@@ -11,6 +11,7 @@ const RecentSubmissions = () => {
   const [comment, setComment] = useState("");
   const { songSubmissions, setSongSubmissions, fetchSubmissions } =
     useContext(SongContext);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchSubmissions();
@@ -32,17 +33,24 @@ const RecentSubmissions = () => {
     setRefetchVote((prevState) => !prevState);
   };
 
-  const submitComment = async (postId: string) => {
-    await fetch(`http://localhost:8000/addComment/${postId}`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        comment,
-        username: session.data?.user.username,
-      }),
-    });
+  const submitComment = async (event: FormEvent<HTMLFormElement>, postId: string) => {
+    event.preventDefault();
+    if (session.status == "authenticated") {
+      await fetch(`http://localhost:8000/addComment/${postId}`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          comment,
+          username: session.data?.user.username,
+        }),
+      });
+      setRefetchVote((prevState) => !prevState);
+      setComment("");
+    } else {
+      setError("Please login to submit a comment");
+    }
   };
 
   return (
@@ -50,8 +58,9 @@ const RecentSubmissions = () => {
       {songSubmissions?.map((el) => {
         return (
           <SongCard
+            comment={comment}
             commentTyped={setComment}
-            addComment={() => submitComment(el._id)}
+            addComment={(event) => submitComment(event, el._id)}
             upVote={() => handleUpvote(el._id)}
             voteCount={el.voteCount}
             key={el._id}
