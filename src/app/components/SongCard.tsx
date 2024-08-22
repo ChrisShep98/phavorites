@@ -57,12 +57,15 @@ const SongCard = ({
     <>
       <Stack
         width={"30rem"}
-        zIndex={999}
-        borderRadius={open ? "16px 16px 0px 0px" : 4}
-        sx={{ backgroundColor: "white" }}
+        borderRadius={4}
         direction={"row"}
         p={1}
         height={"204px"}
+        mb={3}
+        mt={2}
+        boxShadow={
+          "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px"
+        }
       >
         <Stack>
           <IconButton disableRipple onClick={upVote}>
@@ -75,7 +78,7 @@ const SongCard = ({
             p={2}
             borderRadius={"50%"}
             fontWeight={600}
-            padding={"10px 15px"}
+            padding={"10px 17px"}
           >
             {voteCount}
           </Typography>
@@ -98,6 +101,7 @@ const SongCard = ({
               anchorEl={anchorEl}
               open={open}
               TransitionComponent={Fade}
+              anchorOrigin={{ horizontal: "right", vertical: "center" }}
             >
               {comments.map(({ username, comment, _id }) => {
                 return (

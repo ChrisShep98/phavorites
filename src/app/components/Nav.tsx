@@ -144,13 +144,6 @@ const Nav = () => {
         </Stack>
         <Stack justifyContent={"center"}>
           {session.status === "authenticated" && (
-            // <Box
-            //   p={1}
-            //   borderLeft="solid 1px #bbb"
-            //   sx={{
-            //     backgroundColor: "grey",
-            //   }}
-            // >
             <>
               <IconButton
                 onClick={handleProfileClick}
@@ -161,6 +154,7 @@ const Nav = () => {
                 aria-expanded={openProfileMenu ? "true" : undefined}
               >
                 <Avatar
+                  className="animate__animated animate__bounceInDown"
                   sx={{
                     width: 62,
                     height: 62,
@@ -177,30 +171,9 @@ const Nav = () => {
                 open={openProfileMenu}
                 onClose={handleProfileClose}
                 onClick={handleProfileClose}
-                PaperProps={{
-                  elevation: 0,
-                  sx: {
-                    overflow: "visible",
-                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                    mt: 1.5,
-                    "& .MuiAvatar-root": {
-                      width: 32,
-                      height: 32,
-                      ml: -0.5,
-                      mr: 1,
-                    },
-                    "&::before": {
-                      content: '""',
-                      display: "block",
-                      position: "absolute",
-                      top: 0,
-                      right: 14,
-                      width: 10,
-                      height: 10,
-                      bgcolor: "background.paper",
-                      transform: "translateY(-50%) rotate(45deg)",
-                      zIndex: 0,
-                    },
+                sx={{
+                  "& .MuiAvatar-root": {
+                    mr: 1,
                   },
                 }}
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
@@ -213,10 +186,6 @@ const Nav = () => {
                   <Avatar /> My account
                 </MenuItem>
                 <Divider />
-                <MenuItem>
-                  <ListItemIcon>{/* <PersonAdd fontSize="small" /> */}</ListItemIcon>
-                  Add another account
-                </MenuItem>
                 <MenuItem>
                   <ListItemIcon>{/* <Settings fontSize="small" /> */}</ListItemIcon>
                   Settings
