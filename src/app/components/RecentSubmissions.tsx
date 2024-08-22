@@ -4,14 +4,14 @@ import SongCard from "./SongCard";
 import { SongContext } from "../context/SongContext";
 import { useSession } from "next-auth/react";
 import { getAllSongSubmissions } from "../services/phishin";
+import { Typography } from "@mui/material";
 
 const RecentSubmissions = () => {
   const session = useSession();
   const [refetchVote, setRefetchVote] = useState(false);
   const [comment, setComment] = useState("");
-  const { songSubmissions, setSongSubmissions, fetchSubmissions } =
+  const { songSubmissions, setSongSubmissions, fetchSubmissions, error, setError } =
     useContext(SongContext);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchSubmissions();
@@ -62,14 +62,20 @@ const RecentSubmissions = () => {
             commentTyped={setComment}
             addComment={(event) => submitComment(event, el._id)}
             upVote={() => handleUpvote(el._id)}
-            voteCount={el.voteCount}
             key={el._id}
+            //TODO: form data
+            voteCount={el.voteCount}
             date={el.date}
             songName={el.songName}
             venueLocation={el.venueLocation}
             venueName={el.venueName}
             description={el.description}
             comments={el.comments}
+            children={
+              <Typography variant="subtitle1" color={"error"}>
+                {error}
+              </Typography>
+            }
           />
         );
       })}

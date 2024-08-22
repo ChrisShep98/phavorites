@@ -9,7 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import React, { FormEvent } from "react";
+import { SongContext } from "../context/SongContext";
+import React, { FormEvent, useContext } from "react";
 
 // TODO: extend this with songSubmissionCard
 interface SongSubmissionCardProps {
@@ -24,6 +25,7 @@ interface SongSubmissionCardProps {
   comments: { comment: string; username: string; _id: string }[];
   upVote: () => Promise<void>;
   comment: string;
+  children: React.ReactNode;
 }
 
 const SongCard = ({
@@ -38,11 +40,14 @@ const SongCard = ({
   commentTyped,
   comments,
   comment,
+  children,
 }: SongSubmissionCardProps) => {
+  const { setError } = useContext(SongContext);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const closeComments = () => {
     setAnchorEl(null);
+    setError("");
   };
   const openComments = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -96,13 +101,13 @@ const SongCard = ({
             >
               {comments.map(({ username, comment, _id }) => {
                 return (
-                  <Stack direction={"row"} gap={1} key={_id} p={1}>
+                  <Stack direction={"row"} gap={1} key={_id} p={2}>
                     <Typography color={"primary"}>{username}:</Typography>
                     <Typography color={"primary"}>{comment}</Typography>
                   </Stack>
                 );
               })}
-              <form onSubmit={addComment}>
+              <form style={{ padding: 20 }} onSubmit={addComment}>
                 <TextField
                   value={comment}
                   sx={{ display: "flex", alignItems: "center" }}
@@ -111,8 +116,9 @@ const SongCard = ({
                   fullWidth
                   label="comment"
                 ></TextField>
+                <Typography>{children}</Typography>
                 <Button
-                  sx={{ borderRadius: 2, color: "white" }}
+                  sx={{ borderRadius: 2, color: "white", marginTop: 2 }}
                   variant="contained"
                   type="submit"
                 >

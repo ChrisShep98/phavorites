@@ -8,6 +8,7 @@ export const SongContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [songSubmissions, setSongSubmissions] = useState<songSubmissionCard[]>([]);
+  const [error, setError] = useState("");
 
   const fetchSubmissions = async () => {
     const allSubmissions = await getAllSongSubmissions();
@@ -17,7 +18,7 @@ export const SongContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <SongContext.Provider
-      value={{ songSubmissions, setSongSubmissions, fetchSubmissions }}
+      value={{ songSubmissions, setSongSubmissions, fetchSubmissions, setError, error }}
     >
       {children}
     </SongContext.Provider>
