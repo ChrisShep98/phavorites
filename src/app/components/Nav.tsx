@@ -24,6 +24,8 @@ import { useRouter } from "next/navigation";
 import SubmitPostModal from "./SubmitPostModal";
 import phishLogo from "../../../public/images/phishlogo.webp";
 import Image from "next/image";
+import "animate.css";
+import dog from "../../../public/images/dog.jpg";
 
 const Nav = () => {
   const session = useSession();
@@ -93,6 +95,7 @@ const Nav = () => {
             }}
           >
             <Image
+              className="animate__animated animate__bounceInDown"
               src={phishLogo}
               height={100}
               width={100}
@@ -128,20 +131,6 @@ const Nav = () => {
               )}
             />
           </Popover>
-          {/* <Button sx={{ textTransform: "none" }}>
-            <Typography color={"primary.main"} letterSpacing={"0.10rem"}>
-              Search
-            </Typography>
-          </Button>
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={songs}
-            sx={{ width: 300, backgroundColor: "white" }}
-            renderInput={(params) => (
-              <TextField sx={{ color: "white" }} {...params} label="Songs" />
-            )}
-          /> */}
           <Button onClick={openModal} sx={{ textTransform: "none" }}>
             <Typography color={"primary.main"} letterSpacing={"0.10rem"}>
               Submit Song
@@ -171,13 +160,17 @@ const Nav = () => {
                 aria-haspopup="true"
                 aria-expanded={openProfileMenu ? "true" : undefined}
               >
-                <Avatar sx={{ width: 32, height: 32 }}>
+                <Avatar
+                  sx={{
+                    width: 62,
+                    height: 62,
+                  }}
+                >
+                  <Image fill={true} src={dog} alt="profile picture"></Image>
                   {/* set loading state for this later */}
                   {session.data?.user.username ? session.data?.user.username[0] : ""}
                 </Avatar>
               </IconButton>
-              {/* <Avatar sx={{ bgcolor: "black" }}>CS</Avatar> */}
-              {/* </Box> */}
               <Menu
                 anchorEl={profileAnchorEl}
                 id="account-menu"
