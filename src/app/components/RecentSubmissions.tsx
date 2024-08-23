@@ -63,14 +63,15 @@ const RecentSubmissions = () => {
             addComment={(event) => submitComment(event, el._id)}
             upVote={() => handleUpvote(el._id)}
             key={el._id}
-            //TODO: form data
-            voteCount={el.voteCount}
-            date={el.date}
-            songName={el.songName}
-            venueLocation={el.venueLocation}
-            venueName={el.venueName}
-            description={el.description}
-            comments={el.comments}
+            songCardData={{
+              voteCount: el.voteCount,
+              date: el.date,
+              songName: el.songName,
+              description: el.description,
+              venueName: el.venueName,
+              venueLocation: el.venueLocation,
+              comments: el.comments,
+            }}
             children={
               <Typography variant="subtitle1" color={"error"}>
                 {error}

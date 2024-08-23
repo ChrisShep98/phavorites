@@ -12,33 +12,31 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { SongContext } from "../context/SongContext";
 import React, { FormEvent, useContext } from "react";
 
-// TODO: extend this with songSubmissionCard
-interface SongSubmissionCardProps {
+interface SongCardData {
   songName: string;
   venueLocation: string;
   venueName: string;
   date: string;
   description: string;
   voteCount: string;
+  comments: { comment: string; username: string; _id: string }[];
+}
+
+// TODO: extend this with songSubmissionCard
+interface SongSubmissionCardProps {
+  songCardData: SongCardData;
   addComment: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   commentTyped: React.Dispatch<React.SetStateAction<string>>;
-  comments: { comment: string; username: string; _id: string }[];
   upVote: () => Promise<void>;
   comment: string;
   children: React.ReactNode;
 }
 
 const SongCard = ({
-  songName,
-  venueLocation,
-  venueName,
-  date,
-  description,
-  voteCount,
+  songCardData,
   upVote,
   addComment,
   commentTyped,
-  comments,
   comment,
   children,
 }: SongSubmissionCardProps) => {
@@ -80,20 +78,20 @@ const SongCard = ({
             fontWeight={600}
             padding={"10px 17px"}
           >
-            {voteCount}
+            {songCardData.voteCount}
           </Typography>
         </Stack>
         <Stack gap={1}>
-          <Typography fontWeight={500}>{songName}</Typography>
+          <Typography fontWeight={500}>{songCardData.songName}</Typography>
           <Divider />
           <Typography>
-            {date} - {venueLocation}, {venueName}
+            {songCardData.date} - {songCardData.venueLocation}, {songCardData.venueName}
           </Typography>
           {/* TODO set a new Typography variant with correct styles using rem or em */}
           <Typography fontSize={"13px"} color={"grey"}>
             Description:
           </Typography>
-          <Typography>{description}</Typography>
+          <Typography>{songCardData.description}</Typography>
           <Stack direction={"row"} gap={1}>
             <Button onClick={openComments}>View Comments</Button>
             <Menu
@@ -103,7 +101,7 @@ const SongCard = ({
               TransitionComponent={Fade}
               anchorOrigin={{ horizontal: "right", vertical: "center" }}
             >
-              {comments.map(({ username, comment, _id }) => {
+              {songCardData.comments.map(({ username, comment, _id }) => {
                 return (
                   <Stack direction={"row"} gap={1} key={_id} p={2}>
                     <Typography color={"primary"}>{username}:</Typography>
