@@ -10,6 +10,7 @@ import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { SongContext } from "../context/SongContext";
+import { ModalContext } from "../context/ModalContext";
 
 const style = {
   position: "absolute" as "absolute",
@@ -40,6 +41,8 @@ interface DateSelectedType {
 
 export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   //TODO: form data (change into an object later on probably)
+
+  const { closeModal } = useContext(ModalContext);
 
   const { fetchSubmissions } = useContext(SongContext);
   const [songSelected, setSongSelected] = useState("");
@@ -84,8 +87,8 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
         });
       } else {
         fetchSubmissions();
-        // TODO: maybe close modal here?
-        // router.replace("/dashboard"); // old code
+        //TODO: some kind of success message?
+        closeModal();
       }
     } catch (error) {}
   };

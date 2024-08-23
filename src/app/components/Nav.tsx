@@ -17,7 +17,7 @@ import {
   Menu,
 } from "@mui/material";
 import { signOut } from "next-auth/react";
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { songs } from "@/app/constants/songs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -26,14 +26,14 @@ import phishLogo from "../../../public/images/phishlogo.webp";
 import Image from "next/image";
 import "animate.css";
 import dog from "../../../public/images/dog.jpg";
+import { ModalContext } from "../context/ModalContext";
 
 const Nav = () => {
+  //TODO: move all the fetching and statemanagement going on in SubmitPostModal to this parent container?
   const session = useSession();
   const router = useRouter();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const { isModalOpen, closeModal, openModal } = useContext(ModalContext);
 
   const date = new Date(String(session.data?.user.createdAt));
   const formattedDate = date.toLocaleDateString("en-US", {
@@ -41,10 +41,6 @@ const Nav = () => {
     day: "numeric",
     year: "numeric",
   });
-  // const [openSongSearch, setOpenSongSearch] = useState(false);
-  // const toggleSongsList = () => {
-  //   setOpenSongSearch(!openSongSearch);
-  // };
 
   const [songAnchorEl, setSongAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [profileAnchorEl, setProfileAnchorEl] = React.useState<HTMLButtonElement | null>(
