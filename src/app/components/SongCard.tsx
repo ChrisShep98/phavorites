@@ -98,6 +98,7 @@ const SongCard = ({
               onClose={closeComments}
               anchorEl={anchorEl}
               open={open}
+              sx={{ maxHeight: "600px" }}
               TransitionComponent={Fade}
               anchorOrigin={{ horizontal: "right", vertical: "center" }}
             >
@@ -109,7 +110,7 @@ const SongCard = ({
                   </Stack>
                 );
               })}
-              <form style={{ padding: 20 }} onSubmit={addComment}>
+              <form style={{ padding: 15 }} onSubmit={addComment}>
                 <TextField
                   value={comment}
                   sx={{ display: "flex", alignItems: "center" }}
@@ -120,7 +121,12 @@ const SongCard = ({
                 ></TextField>
                 <Typography>{children}</Typography>
                 <Button
-                  sx={{ borderRadius: 2, color: "white", marginTop: 2 }}
+                  sx={{
+                    borderRadius: 2,
+                    color: "white",
+                    marginTop: 2,
+                    position: "",
+                  }}
                   variant="contained"
                   type="submit"
                 >
