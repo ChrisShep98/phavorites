@@ -56,9 +56,13 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   //TODO: add error to UI providing link and name of user who posted or no description
   const [error, setError] = useState("");
   const session = useSession();
-  const router = useRouter();
 
   const [allDatesOfSong, setAllDatesOfSong] = useState<string[]>([]);
+
+  const slug =
+    songSelected == null
+      ? setSongSelected("")
+      : songSelected.toLowerCase().replaceAll(" ", "-").replaceAll("/", "-");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -79,6 +83,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
           userWhoPosted: session.data?.user.username,
           venueLocation: myVenueInfo?.venueLocation,
           venueName: myVenueInfo?.venueName,
+          slug,
         }),
       });
       if (res.status === 400) {
@@ -94,29 +99,22 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   };
 
   useEffect(() => {
-    if (songSelected !== null) {
-      const apiFriendlyString = songSelected
-        .toLowerCase()
-        .replaceAll(" ", "-")
-        .replaceAll("/", "-");
+    if (songSelected) {
+      console.log("useEffect is run");
       const fetchData = async () => {
         try {
-          if (songSelected !== "") {
-            const myData = await getAllPreformancesOfSongs(apiFriendlyString);
-            // TODO: filter through allDatesOfSongs and remove duplicates because there are some
-            setAllDatesOfSong(myData.map((el) => el.date));
-            if (dateSelected !== "") {
-              const myDateData = myData.find((obj) => obj.date === dateSelected);
-              setMyVenueInfo(myDateData);
-            }
-          } else {
-            return null;
+          const myData = await getAllPreformancesOfSongs(slug!);
+          // remove duplicates with new Set()
+          const dates = [...new Set(myData.map((el) => el.date))];
+          setAllDatesOfSong(dates);
+          if (dateSelected !== "") {
+            const myDateData = myData.find((obj) => obj.date === dateSelected);
+            setMyVenueInfo(myDateData);
           }
         } catch (error) {
           console.log(error);
         }
       };
-
       fetchData();
     }
   }, [songSelected, dateSelected]);
