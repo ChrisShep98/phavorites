@@ -11,6 +11,7 @@ import {
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { SongContext } from "../context/SongContext";
 import React, { FormEvent, useContext } from "react";
+import Link from "next/link";
 
 interface SongCardData {
   songName: string;
@@ -20,6 +21,7 @@ interface SongCardData {
   description: string;
   voteCount: string;
   comments: { comment: string; username: string; _id: string }[];
+  slug: string;
 }
 
 // TODO: extend this with songSubmissionCard
@@ -30,6 +32,7 @@ interface SongSubmissionCardProps {
   upVote: () => Promise<void>;
   comment: string;
   children: React.ReactNode;
+  setSlug: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const SongCard = ({
@@ -39,6 +42,7 @@ const SongCard = ({
   commentTyped,
   comment,
   children,
+  setSlug,
 }: SongSubmissionCardProps) => {
   const { setError } = useContext(SongContext);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -82,7 +86,12 @@ const SongCard = ({
           </Typography>
         </Stack>
         <Stack gap={1}>
-          <Typography fontWeight={500}>{songCardData.songName}</Typography>
+          <Link
+            onClick={() => setSlug(songCardData.slug)}
+            href={`/song/${songCardData.slug}`}
+          >
+            <Typography fontWeight={500}>{songCardData.songName}</Typography>
+          </Link>
           <Divider />
           <Typography>
             {songCardData.date} - {songCardData.venueLocation}, {songCardData.venueName}

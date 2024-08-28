@@ -2,23 +2,24 @@
 import React, { useState } from "react";
 import { songSubmissionCard } from "../types/showTypes";
 import { SongContext } from "../context/SongContext";
-import { getAllSongSubmissions } from "../services/phishin";
 
 export const SongContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [songSubmissions, setSongSubmissions] = useState<songSubmissionCard[]>([]);
   const [error, setError] = useState("");
-
-  const fetchSubmissions = async () => {
-    const allSubmissions = await getAllSongSubmissions();
-
-    setSongSubmissions(allSubmissions);
-  };
+  const [slug, setSlug] = useState("");
 
   return (
     <SongContext.Provider
-      value={{ songSubmissions, setSongSubmissions, fetchSubmissions, setError, error }}
+      value={{
+        songSubmissions,
+        setSongSubmissions,
+        setError,
+        error,
+        slug,
+        setSlug,
+      }}
     >
       {children}
     </SongContext.Provider>

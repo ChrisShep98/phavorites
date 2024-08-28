@@ -7,10 +7,10 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { getAllPreformancesOfSongs } from "@/app/services/phishin";
 import { songs } from "../constants/songs";
 import { Button } from "@mui/material";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { SongContext } from "../context/SongContext";
 import { ModalContext } from "../context/ModalContext";
+import { getAllSongSubmissions } from "@/app/services/phishin";
 
 const style = {
   position: "absolute" as "absolute",
@@ -44,7 +44,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
 
   const { closeModal } = useContext(ModalContext);
 
-  const { fetchSubmissions } = useContext(SongContext);
+  const { setSongSubmissions } = useContext(SongContext);
   const [songSelected, setSongSelected] = useState("");
   const [dateSelected, setDateSelected] = useState("");
   const [myVenueInfo, setMyVenueInfo] = useState<DateSelectedType | undefined>({
@@ -58,6 +58,12 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   const session = useSession();
 
   const [allDatesOfSong, setAllDatesOfSong] = useState<string[]>([]);
+
+  //TODO: I'm using this kinda of function frequently thought out the app, probably make a global func I can use instead of this wet code
+  const fetchSubmissions = async () => {
+    const allSubmissions = await getAllSongSubmissions();
+    setSongSubmissions(allSubmissions);
+  };
 
   const slug =
     songSelected == null
@@ -160,7 +166,6 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
               onChange={(event, newValue) => {
                 setDateSelected(newValue!);
               }}
-              // onChange={() => handleChange}
               sx={{ backgroundColor: "white" }}
               renderInput={(params) => (
                 <TextField sx={{ color: "white" }} {...params} label="Dates" />
@@ -171,7 +176,6 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
               fullWidth
               label="Description"
             ></TextField>
-            {/* TODO: close modal after submit */}
             <Button
               sx={{ borderRadius: 2 }}
               color={"primary"}

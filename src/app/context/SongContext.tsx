@@ -5,9 +5,10 @@ import React from "react";
 export type SongContextProps = {
   songSubmissions: songSubmissionCard[];
   setSongSubmissions: React.Dispatch<React.SetStateAction<songSubmissionCard[]>>;
-  fetchSubmissions: () => Promise<void>;
   setError: React.Dispatch<React.SetStateAction<string>>;
   error: string;
+  slug: string;
+  setSlug: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const SongContext = createContext<SongContextProps>({} as SongContextProps);

@@ -3,18 +3,20 @@ import React, { useEffect, useContext, useState, FormEvent } from "react";
 import SongCard from "./SongCard";
 import { SongContext } from "../context/SongContext";
 import { useSession } from "next-auth/react";
-import { getAllSongSubmissions } from "../services/phishin";
 import { Typography } from "@mui/material";
 
-const RecentSubmissions = () => {
+interface SubmissionProps {
+  fetchRequest: () => Promise<void>;
+}
+
+const RecentSubmissions = ({ fetchRequest }: SubmissionProps) => {
   const session = useSession();
   const [refetchVote, setRefetchVote] = useState(false);
   const [comment, setComment] = useState("");
-  const { songSubmissions, setSongSubmissions, fetchSubmissions, error, setError } =
-    useContext(SongContext);
+  const { songSubmissions, error, setError, setSlug } = useContext(SongContext);
 
   useEffect(() => {
-    fetchSubmissions();
+    fetchRequest();
   }, [refetchVote]);
 
   const handleUpvote = async (id: string) => {
@@ -28,8 +30,8 @@ const RecentSubmissions = () => {
       }),
     });
     // Weird stuff - if I fetch from the api on the line below and set the state to the return value then call the api again via useEffect with refetchVote state change then the upvote/downvote weirdness goes away. My take is setting the songSubmissions state twice here just assures the state will reflect correctly in the UI. There is definitely a better way to do this but going to leave for now.
-    const allSubmissions = await getAllSongSubmissions();
-    setSongSubmissions(allSubmissions);
+    // const submissions = await fetchRequest();
+    // setSongSubmissions(submissions);
     setRefetchVote((prevState) => !prevState);
   };
 
@@ -63,6 +65,7 @@ const RecentSubmissions = () => {
             addComment={(event) => submitComment(event, el._id)}
             upVote={() => handleUpvote(el._id)}
             key={el._id}
+            setSlug={() => setSlug(el.slug)}
             songCardData={{
               voteCount: el.voteCount,
               date: el.date,
@@ -71,6 +74,7 @@ const RecentSubmissions = () => {
               venueName: el.venueName,
               venueLocation: el.venueLocation,
               comments: el.comments,
+              slug: el.slug,
             }}
             children={
               <Typography variant="subtitle1" color={"error"}>

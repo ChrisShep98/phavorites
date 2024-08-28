@@ -68,4 +68,5 @@ export interface songSubmissionCard {
   date: string;
   description: string; // possibly undefined?
   comments: { username: string; comment: string; _id: string }[]; // should be required
+  slug: string;
 }
