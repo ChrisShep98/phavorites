@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { SongContext } from "../context/SongContext";
 import { getSpecificSongSubmissions } from "../services/phishin";
 import { Box } from "@mui/material";
-import RecentSubmissions from "../components/RecentSubmissions";
+import SongSubmissions from "../components/SongSubmissions";
 import Nav from "../components/Nav";
 
 export default function SpecificSongSubmissions() {
@@ -18,7 +18,7 @@ export default function SpecificSongSubmissions() {
     <>
       <Nav />
       <Box height={"87vh"} display={"flex"} justifyContent={"center"}>
-        <RecentSubmissions fetchRequest={fetchSubmissions} />
+        <SongSubmissions fetchRequest={fetchSubmissions} />
       </Box>
     </>
   );

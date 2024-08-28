@@ -9,7 +9,7 @@ interface SubmissionProps {
   fetchRequest: () => Promise<void>;
 }
 
-const RecentSubmissions = ({ fetchRequest }: SubmissionProps) => {
+const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
   const session = useSession();
   const [refetchVote, setRefetchVote] = useState(false);
   const [comment, setComment] = useState("");
@@ -88,4 +88,4 @@ const RecentSubmissions = ({ fetchRequest }: SubmissionProps) => {
   );
 };
 
-export default RecentSubmissions;
+export default SongSubmissions;
