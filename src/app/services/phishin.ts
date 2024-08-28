@@ -53,7 +53,7 @@ export async function getAllSongSubmissions() {
 }
 
 export async function getSpecificSongSubmissions(slug: string) {
-  const response = await fetch(`http://localhost:8000/songs/${slug}`);
+  const response = await fetch(`http://localhost:8000/song/${slug}`);
   const specificSongSubmissions = await response.json();
   return specificSongSubmissions.data;
 }
