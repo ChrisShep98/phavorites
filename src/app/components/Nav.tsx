@@ -4,7 +4,7 @@ import {
   Avatar,
   Button,
   AppBar,
-  Link,
+  Link as MuiLink,
   Stack,
   Typography,
   Autocomplete,
@@ -27,6 +27,7 @@ import Image from "next/image";
 import "animate.css";
 import dog from "../../../public/images/dog.jpg";
 import { ModalContext } from "../context/ModalContext";
+import Link from "next/link";
 
 const Nav = () => {
   //TODO: move all the fetching and statemanagement going on in SubmitPostModal to this parent container?
@@ -34,13 +35,6 @@ const Nav = () => {
   const router = useRouter();
 
   const { isModalOpen, closeModal, openModal } = useContext(ModalContext);
-
-  const date = new Date(String(session.data?.user.createdAt));
-  const formattedDate = date.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
 
   const [songAnchorEl, setSongAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [profileAnchorEl, setProfileAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -82,7 +76,7 @@ const Nav = () => {
         sx={{ listStyleType: "none" }}
       >
         <Box display="flex" borderRadius={"35px"} px={2}>
-          <Link
+          <MuiLink
             href="/"
             style={{
               textDecoration: "none",
@@ -100,7 +94,7 @@ const Nav = () => {
               //   backgroundColor: "#fff",
               // }}
             />
-          </Link>
+          </MuiLink>
         </Box>
         <Stack flexDirection={"row"} alignItems={"center"} gap={4}>
           <Button sx={{ textTransform: "none" }} onClick={handleSongClick}>
@@ -176,11 +170,9 @@ const Nav = () => {
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
                 <MenuItem onClick={handleProfileClose}>
-                  <Avatar /> Profile
+                  <Link href={`/profile/${session.data.user.username}`}>Profile</Link>
                 </MenuItem>
-                <MenuItem onClick={handleProfileClose}>
-                  <Avatar /> My account
-                </MenuItem>
+
                 <Divider />
                 <MenuItem>
                   <ListItemIcon>{/* <Settings fontSize="small" /> */}</ListItemIcon>
