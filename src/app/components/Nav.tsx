@@ -18,15 +18,15 @@ import {
 } from "@mui/material";
 import { signOut } from "next-auth/react";
 import React, { useContext } from "react";
-import { songs } from "@/app/constants/songs";
+import { songs } from "@/constants/songs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import SubmitPostModal from "./SubmitPostModal";
-import phishLogo from "../../../public/images/phishlogo.webp";
+import phishLogo from "images/phishlogo.webp";
 import Image from "next/image";
 import "animate.css";
-import dog from "../../../public/images/dog.jpg";
-import { ModalContext } from "../context/ModalContext";
+import dog from "images/dog.jpg";
+import { ModalContext } from "@/context/ModalContext";
 import Link from "next/link";
 
 const Nav = () => {

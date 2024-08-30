@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { ModalContext } from "../context/ModalContext";
+import { ModalContext } from "@/context/ModalContext";
 
 export const ModalContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

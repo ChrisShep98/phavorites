@@ -4,13 +4,13 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { getAllPreformancesOfSongs } from "@/app/services/phishin";
-import { songs } from "../constants/songs";
+import { getAllPreformancesOfSongs } from "@/services/phishin";
+import { songs } from "@/constants/songs";
 import { Button } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { SongContext } from "../context/SongContext";
-import { ModalContext } from "../context/ModalContext";
-import { getAllSongSubmissions } from "@/app/services/phishin";
+import { SongContext } from "@/context/SongContext";
+import { ModalContext } from "@/context/ModalContext";
+import { getAllSongSubmissions } from "@/services/phishin";
 
 const style = {
   position: "absolute" as "absolute",

@@ -13,10 +13,10 @@ import {
 } from "@mui/material";
 import { signOut } from "next-auth/react";
 import React, { useState } from "react";
-import { songs } from "../../constants/songs";
+import { songs } from "@/constants/songs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import SubmitPostModal from "@/app/components/SubmitPostModal";
+import SubmitPostModal from "@/components/SubmitPostModal";
 
 const SideNavWithSlidingComponent = () => {
   const session = useSession();

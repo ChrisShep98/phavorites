@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { songSubmissionCard } from "../types/showTypes";
-import { SongContext } from "../context/SongContext";
+import { songSubmissionCard } from "@/types/showTypes";
+import { SongContext } from "@/context/SongContext";
 
 export const SongContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

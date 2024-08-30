@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useContext, useState, FormEvent } from "react";
 import SongCard from "./SongCard";
-import { SongContext } from "../context/SongContext";
+import { SongContext } from "@/context/SongContext";
 import { useSession } from "next-auth/react";
 import { Typography } from "@mui/material";
 

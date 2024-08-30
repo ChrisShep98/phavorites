@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { songSubmissionCard } from "../types/showTypes";
+import { songSubmissionCard } from "@/types/showTypes";
 import React from "react";
 
 export type SongContextProps = {

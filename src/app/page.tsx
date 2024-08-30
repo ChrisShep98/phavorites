@@ -1,10 +1,10 @@
 "use client";
 import { Box } from "@mui/material";
-import Nav from "./components/Nav";
-import SongSubmissions from "./components/SongSubmissions";
-import { getAllSongSubmissions } from "./services/phishin";
+import Nav from "@/components/Nav";
+import SongSubmissions from "@/components/SongSubmissions";
+import { getAllSongSubmissions } from "@/services/phishin";
 import { useContext } from "react";
-import { SongContext } from "../app/context/SongContext";
+import { SongContext } from "@/context/SongContext";
 
 export default function Home() {
   const { setSongSubmissions } = useContext(SongContext);

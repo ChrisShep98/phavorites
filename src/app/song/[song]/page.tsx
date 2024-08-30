@@ -1,10 +1,10 @@
 "use client";
 import React, { useContext, useState } from "react";
-import { SongContext } from "../../context/SongContext";
-import { getSpecificSongSubmissions } from "../../services/phishin";
+import { SongContext } from "@/context/SongContext";
+import { getSpecificSongSubmissions } from "@/services/phishin";
 import { Box } from "@mui/material";
-import SongSubmissions from "../../components/SongSubmissions";
-import Nav from "../../components/Nav";
+import SongSubmissions from "@/components/SongSubmissions";
+import Nav from "@/components/Nav";
 
 export default function SpecificSongSubmissions() {
   const { setSongSubmissions, slug } = useContext(SongContext);
