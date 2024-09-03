@@ -33,12 +33,13 @@ const RegisterForm = () => {
         const form = event.target;
         form.reset();
         router.push("/login");
-      } else if (res.status === 400) {
-        setError("User with that email already exists");
-        console.log("User with that email already exists");
+      } else {
+        const error = await res.json();
+        setError(error.message);
       }
     } catch (error) {
       setError("Error during registration");
+
       console.log("Error during registration", error);
     }
   };
