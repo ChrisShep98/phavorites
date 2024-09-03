@@ -1,5 +1,5 @@
 "use client";
-import { Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -32,7 +32,7 @@ const RegisterForm = () => {
       if (res.ok) {
         const form = event.target;
         form.reset();
-        router.push("/");
+        router.push("/login");
       } else if (res.status === 400) {
         setError("User with that email already exists");
         console.log("User with that email already exists");
@@ -44,34 +44,53 @@ const RegisterForm = () => {
   };
 
   return (
-    <Stack height={"100vh"} justifyContent={"center"}>
-      <Stack justifyContent={"center"} alignItems={"center"} spacing={1}>
-        <Typography>Register an account here!</Typography>
+    <Box
+      boxShadow={"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}
+      mx={"auto"}
+      width={"20rem"}
+      p={6}
+      borderRadius={"30px"}
+      mb={1}
+      mt={20}
+    >
+      <Stack spacing={2}>
+        <Typography variant="h3" color={"primary.main"} fontWeight={"600"}>
+          Sign up
+        </Typography>
+        <Typography color={"#1c203d"}>Welcome ! Sign up below</Typography>
         <form
           onSubmit={handleSubmit}
-          style={{ display: "flex", flexDirection: "column" }}
+          style={{ display: "flex", flexDirection: "column", gap: 15 }}
         >
-          <input
+          <TextField
             onChange={(e) => setUsername(e.target.value)}
             type="text"
-            placeholder="User Name"
-          ></input>
-          <input
+            size="small"
+            name="password"
+            label="Username"
+          />
+          <TextField
             onChange={(e) => setEmail(e.target.value)}
-            type="email"
-            placeholder="Email"
-          ></input>
-          <input
+            type="text"
+            size="small"
+            name="email"
+            label="Email"
+          />
+          <TextField
             onChange={(e) => setPassword(e.target.value)}
             type="password"
-            placeholder="Password"
-          ></input>
-          <button typeof="submit">Login</button>
+            size="small"
+            name="password"
+            label="Password"
+          />
+          <Button typeof="submit" variant="outlined" type="submit">
+            Sign up
+          </Button>
         </form>
         {error && <Typography color={"red"}>{error}</Typography>}
         <Link href={"/login"}>Already have an account? Login here</Link>
       </Stack>
-    </Stack>
+    </Box>
   );
 };
 
