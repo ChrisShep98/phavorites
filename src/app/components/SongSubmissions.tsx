@@ -13,7 +13,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
   const session = useSession();
   const [refetchVote, setRefetchVote] = useState(false);
   const [comment, setComment] = useState("");
-  const { songSubmissions, error, setError, setSlug } = useContext(SongContext);
+  const { songSubmissions, error, setError } = useContext(SongContext);
 
   useEffect(() => {
     fetchRequest();
@@ -65,7 +65,6 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
             addComment={(event) => submitComment(event, el._id)}
             upVote={() => handleUpvote(el._id)}
             key={el._id}
-            setSlug={() => setSlug(el.slug)}
             songCardData={{
               voteCount: el.voteCount,
               date: el.date,
@@ -75,6 +74,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
               venueLocation: el.venueLocation,
               comments: el.comments,
               slug: el.slug,
+              userWhoPosted: el.userWhoPosted,
             }}
             children={
               <Typography variant="subtitle1" color={"error"}>

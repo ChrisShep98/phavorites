@@ -8,7 +8,6 @@ export const SongContextProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [songSubmissions, setSongSubmissions] = useState<songSubmissionCard[]>([]);
   const [error, setError] = useState("");
-  const [slug, setSlug] = useState("");
 
   return (
     <SongContext.Provider
@@ -17,8 +16,6 @@ export const SongContextProvider: React.FC<{ children: React.ReactNode }> = ({
         setSongSubmissions,
         setError,
         error,
-        slug,
-        setSlug,
       }}
     >
       {children}
