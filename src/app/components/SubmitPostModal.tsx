@@ -53,7 +53,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
     venueLocation: "",
   });
   const [description, setDescription] = useState("");
-  //TODO: add error to UI providing link and name of user who posted or no description
+  //TODO: add error to UI providing k and name of user who posted or no description
   const [error, setError] = useState("");
   const session = useSession();
 
@@ -152,7 +152,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
               id="combo-box-demo"
               options={songs}
               onChange={(event, newValue) => {
-                setSongSelected(newValue!); // Update state with the selected value
+                setSongSelected(newValue!.song); // Update state with the selected value
               }}
               sx={{ backgroundColor: "white" }}
               renderInput={(params) => (

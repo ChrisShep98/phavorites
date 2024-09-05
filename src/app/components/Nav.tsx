@@ -17,7 +17,7 @@ import {
   Menu,
 } from "@mui/material";
 import { signOut } from "next-auth/react";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { songs } from "@/constants/songs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -36,10 +36,8 @@ const Nav = () => {
 
   const { isModalOpen, closeModal, openModal } = useContext(ModalContext);
 
-  const [songAnchorEl, setSongAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-  const [profileAnchorEl, setProfileAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
-  );
+  const [songAnchorEl, setSongAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [profileAnchorEl, setProfileAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleSongClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setSongAnchorEl(event.currentTarget);
@@ -115,6 +113,10 @@ const Nav = () => {
               disablePortal
               id="combo-box-demo"
               options={songs}
+              onChange={(event, newValue) => {
+                router.push(`song/${newValue?.slug}`);
+              }}
+              getOptionLabel={(option) => option.song}
               sx={{ width: 300, height: 300, backgroundColor: "white" }}
               renderInput={(params) => (
                 <TextField sx={{ color: "white" }} {...params} label="Songs" />
@@ -150,8 +152,13 @@ const Nav = () => {
                     height: 62,
                   }}
                 >
-                  <Image fill={true} src={dog} alt="profile picture"></Image>
-                  {/* set loading state for this later */}
+                  <Image
+                    fill={true}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    src={dog}
+                    alt="profile picture"
+                  ></Image>
+                  {/* TODO: set loading state for this later */}
                   {session.data?.user.username ? session.data?.user.username[0] : ""}
                 </Avatar>
               </IconButton>
