@@ -54,6 +54,11 @@ const Nav = () => {
     setProfileAnchorEl(null);
   };
 
+  const randomSong = () => {
+    const randomIdx = Math.floor(Math.random() * 950 + 1);
+    router.push(`/song/${songs[randomIdx].slug}`);
+  };
+
   const openSongSearchMenu = Boolean(songAnchorEl);
   const openProfileMenu = Boolean(profileAnchorEl);
 
@@ -128,7 +133,7 @@ const Nav = () => {
               Submit Song
             </Typography>
           </Button>
-          <Button sx={{ textTransform: "none" }}>
+          <Button onClick={randomSong} sx={{ textTransform: "none" }}>
             <Typography color={"primary.main"} letterSpacing={"0.10rem"}>
               Random Song
             </Typography>
