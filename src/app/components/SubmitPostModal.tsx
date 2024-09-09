@@ -151,6 +151,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
               disablePortal
               id="combo-box-demo"
               options={songs}
+              getOptionLabel={(option) => option.song}
               onChange={(event, newValue) => {
                 setSongSelected(newValue!.song); // Update state with the selected value
               }}
