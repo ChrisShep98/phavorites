@@ -119,7 +119,7 @@ const Nav = () => {
               id="combo-box-demo"
               options={songs}
               onChange={(event, newValue) => {
-                router.push(`song/${newValue?.slug}`);
+                router.push(`/song/${newValue?.slug}`);
               }}
               getOptionLabel={(option) => option.song}
               sx={{ width: 300, height: 300, backgroundColor: "white" }}
