@@ -5,7 +5,6 @@ import ProfileDetails from "@/components/ProfileDetails";
 const Profile = () => {
   return (
     <>
-      <Nav />
       <ProfileDetails />
     </>
   );

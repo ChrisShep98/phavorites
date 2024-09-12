@@ -4,7 +4,6 @@ import { SongContext } from "@/context/SongContext";
 import { getSpecificSongSubmissions } from "@/services/phishin";
 import { Box } from "@mui/material";
 import SongSubmissions from "@/components/SongSubmissions";
-import Nav from "@/components/Nav";
 import { usePathname } from "next/navigation";
 
 export default function SpecificSongSubmissions() {
@@ -19,7 +18,6 @@ export default function SpecificSongSubmissions() {
 
   return (
     <>
-      <Nav />
       <Box height={"87vh"} display={"flex"} justifyContent={"center"}>
         <SongSubmissions fetchRequest={fetchSubmissions} />
       </Box>

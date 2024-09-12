@@ -17,7 +17,7 @@ import {
   Menu,
 } from "@mui/material";
 import { signOut } from "next-auth/react";
-import React, { useContext, useState } from "react";
+import React, { ReactNode, useContext, useState } from "react";
 import { songs } from "@/constants/songs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -29,7 +29,11 @@ import dog from "images/dog.jpg";
 import { ModalContext } from "@/context/ModalContext";
 import Link from "next/link";
 
-const Nav = () => {
+interface NavProps {
+  children: ReactNode;
+}
+
+const Nav = ({ children }: NavProps) => {
   //TODO: move all the fetching and statemanagement going on in SubmitPostModal to this parent container?
   const session = useSession();
   const router = useRouter();
@@ -66,7 +70,7 @@ const Nav = () => {
     <AppBar
       className={"animate__animated animate__fadeIn"}
       position="static"
-      sx={{ backgroundColor: "white", boxShadow: "none" }}
+      sx={{ backgroundColor: "white", boxShadow: "none", color: "primary.main" }}
     >
       <SubmitPostModal isOpen={isModalOpen} onClose={closeModal} />
 
@@ -218,6 +222,7 @@ const Nav = () => {
           )}
         </Stack>
       </Box>
+      {children}
     </AppBar>
     // <Box
     //   display={"flex"}
