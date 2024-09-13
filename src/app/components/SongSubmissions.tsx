@@ -57,33 +57,37 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
 
   return (
     <div>
-      {songSubmissions?.map((el) => {
-        return (
-          <SongCard
-            comment={comment}
-            commentTyped={setComment}
-            addComment={(event) => submitComment(event, el._id)}
-            upVote={() => handleUpvote(el._id)}
-            key={el._id}
-            songCardData={{
-              voteCount: el.voteCount,
-              date: el.date,
-              songName: el.songName,
-              description: el.description,
-              venueName: el.venueName,
-              venueLocation: el.venueLocation,
-              comments: el.comments,
-              slug: el.slug,
-              userWhoPosted: el.userWhoPosted,
-            }}
-            children={
-              <Typography variant="subtitle1" color={"error"}>
-                {error}
-              </Typography>
-            }
-          />
-        );
-      })}
+      {songSubmissions.length == 0 ? (
+        <Typography mt={5}>No Submissions yet...maybe you could change that!</Typography>
+      ) : (
+        songSubmissions?.map((el) => {
+          return (
+            <SongCard
+              comment={comment}
+              commentTyped={setComment}
+              addComment={(event) => submitComment(event, el._id)}
+              upVote={() => handleUpvote(el._id)}
+              key={el._id}
+              songCardData={{
+                voteCount: el.voteCount,
+                date: el.date,
+                songName: el.songName,
+                description: el.description,
+                venueName: el.venueName,
+                venueLocation: el.venueLocation,
+                comments: el.comments,
+                slug: el.slug,
+                userWhoPosted: el.userWhoPosted,
+              }}
+              children={
+                <Typography variant="subtitle1" color={"error"}>
+                  {error}
+                </Typography>
+              }
+            />
+          );
+        })
+      )}
     </div>
   );
 };
