@@ -62,7 +62,6 @@ const SongCard = ({
         borderRadius={4}
         direction={"row"}
         p={1}
-        height={"204px"}
         mb={3}
         mt={2}
         boxShadow={
@@ -85,7 +84,11 @@ const SongCard = ({
             {songCardData.voteCount}
           </Typography>
         </Stack>
-        <Stack gap={1}>
+        <Stack
+          // flexBasis={"min-content"}
+          gap={1}
+          width={"inherit"}
+        >
           <Typography
             sx={{ cursor: "pointer" }}
             width={"fit-content"}
@@ -94,7 +97,7 @@ const SongCard = ({
           >
             {songCardData.songName}
           </Typography>
-          <Divider />
+          <Divider sx={{ width: "275px" }} />
           <Typography>
             {songCardData.date} - {songCardData.venueLocation}, {songCardData.venueName}
           </Typography>
@@ -103,49 +106,60 @@ const SongCard = ({
             Description:
           </Typography>
           <Typography>{songCardData.description}</Typography>
-          <Stack direction={"row"} gap={1}>
-            <Button onClick={openComments}>View Comments</Button>
-            <Menu
-              onClose={closeComments}
-              anchorEl={anchorEl}
-              open={open}
-              sx={{ maxHeight: "600px" }}
-              TransitionComponent={Fade}
-              anchorOrigin={{ horizontal: "right", vertical: "center" }}
-            >
-              {songCardData.comments.map(({ username, comment, _id }) => {
-                return (
-                  <Stack direction={"row"} gap={1} key={_id} p={2}>
-                    <Typography color={"primary"}>{username}:</Typography>
-                    <Typography color={"primary"}>{comment}</Typography>
-                  </Stack>
-                );
-              })}
-              <form style={{ padding: 15 }} onSubmit={addComment}>
-                <TextField
-                  value={comment}
-                  sx={{ display: "flex", alignItems: "center" }}
-                  color="primary"
-                  onChange={(e) => commentTyped(e.target.value)}
-                  fullWidth
-                  label="comment"
-                ></TextField>
-                <Typography>{children}</Typography>
-                <Button
-                  sx={{
-                    borderRadius: 2,
-                    color: "white",
-                    marginTop: 2,
-                    position: "",
-                  }}
-                  variant="contained"
-                  type="submit"
-                >
-                  Submit
-                </Button>
-              </form>
-            </Menu>
-          </Stack>
+          <Button
+            sx={{
+              mt: 1,
+              justifyContent: "left",
+              padding: 0,
+              width: "fit-content",
+            }}
+            onClick={openComments}
+          >
+            View Comments
+          </Button>
+          <Typography mr={1} textAlign={"end"}>
+            Posted by: {songCardData.userWhoPosted}
+          </Typography>
+          <Menu
+            onClose={closeComments}
+            anchorEl={anchorEl}
+            open={open}
+            sx={{ maxHeight: "600px" }}
+            TransitionComponent={Fade}
+            anchorOrigin={{ horizontal: "right", vertical: "center" }}
+          >
+            {songCardData.comments.map(({ username, comment, _id }) => {
+              return (
+                <Stack direction={"row"} gap={1} key={_id} p={2}>
+                  <Typography color={"primary"}>{username}:</Typography>
+                  <Typography color={"primary"}>{comment}</Typography>
+                </Stack>
+              );
+            })}
+            <form style={{ padding: 15 }} onSubmit={addComment}>
+              <TextField
+                value={comment}
+                sx={{ display: "flex", alignItems: "center" }}
+                color="primary"
+                onChange={(e) => commentTyped(e.target.value)}
+                fullWidth
+                label="comment"
+              ></TextField>
+              <Typography>{children}</Typography>
+              <Button
+                sx={{
+                  borderRadius: 2,
+                  color: "white",
+                  marginTop: 2,
+                  position: "",
+                }}
+                variant="contained"
+                type="submit"
+              >
+                Submit
+              </Button>
+            </form>
+          </Menu>
         </Stack>
       </Stack>
     </>
