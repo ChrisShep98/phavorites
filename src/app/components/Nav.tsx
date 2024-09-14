@@ -12,9 +12,8 @@ import {
   Popover,
   IconButton,
   MenuItem,
-  Divider,
-  ListItemIcon,
   Menu,
+  ListItemText,
 } from "@mui/material";
 import { signOut } from "next-auth/react";
 import React, { ReactNode, useContext, useState } from "react";
@@ -27,7 +26,6 @@ import Image from "next/image";
 import "animate.css";
 import dog from "images/dog.jpg";
 import { ModalContext } from "@/context/ModalContext";
-import Link from "next/link";
 
 interface NavProps {
   children: ReactNode;
@@ -186,17 +184,18 @@ const Nav = ({ children }: NavProps) => {
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
                 <MenuItem onClick={handleProfileClose}>
-                  <Link href={`/profile/${session.data.user.username}`}>Profile</Link>
+                  <ListItemText
+                    onClick={() => router.push(`/profile/${session.data.user.username}`)}
+                  >
+                    Profile
+                  </ListItemText>
                 </MenuItem>
 
-                <Divider />
                 <MenuItem>
-                  <ListItemIcon>{/* <Settings fontSize="small" /> */}</ListItemIcon>
-                  Settings
+                  <ListItemText>Settings</ListItemText>
                 </MenuItem>
-                <MenuItem onClick={() => signOut()}>
-                  <ListItemIcon>{/* <Logout fontSize="small" /> */}</ListItemIcon>
-                  Logout
+                <MenuItem>
+                  <ListItemText onClick={() => signOut()}>Logout</ListItemText>
                 </MenuItem>
               </Menu>
             </>

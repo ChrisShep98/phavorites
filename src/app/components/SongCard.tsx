@@ -11,7 +11,6 @@ import {
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { SongContext } from "@/context/SongContext";
 import React, { FormEvent, useContext } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 interface SongCardData {
