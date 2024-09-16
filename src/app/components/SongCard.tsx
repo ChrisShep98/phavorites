@@ -118,7 +118,10 @@ const SongCard = ({
             View Comments
           </Button>
           <Typography mr={1} textAlign={"end"}>
-            Posted by: {songCardData.userWhoPosted}
+            Posted by:{" "}
+            <Button onClick={() => router.push(`/profile/${songCardData.userWhoPosted}`)}>
+              {songCardData.userWhoPosted}
+            </Button>
           </Typography>
           <Menu
             onClose={closeComments}
