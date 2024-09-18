@@ -1,14 +1,14 @@
 "use client";
 import { Box } from "@mui/material";
 import SongSubmissions from "@/components/SongSubmissions";
-import { getAllSongSubmissions } from "@/services/phishin";
+import { getSubmissions } from "@/services/phishin";
 import { useContext } from "react";
 import { SongContext } from "@/context/SongContext";
 
 export default function Home() {
   const { setSongSubmissions } = useContext(SongContext);
   const fetchSubmissions = async () => {
-    const allSubmissions = await getAllSongSubmissions();
+    const allSubmissions = await getSubmissions();
     setSongSubmissions(allSubmissions);
   };
 

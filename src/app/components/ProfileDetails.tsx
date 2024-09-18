@@ -1,8 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import React, { useEffect, useState, useContext } from "react";
+import { Stack, Typography } from "@mui/material";
 import { getUserByUsername } from "@/services/userServices";
 import { usePathname } from "next/navigation";
+import { getSubmissions } from "@/services/phishin";
+import SongSubmissions from "./SongSubmissions";
+import { SongContext } from "@/context/SongContext";
 
 const ProfileDetails = () => {
   interface User {
@@ -11,15 +14,22 @@ const ProfileDetails = () => {
   }
 
   const [userDetails, setUserDetails] = useState<User>();
-  const usernameParam = usePathname().slice(9);
+  const param = usePathname().split("/").pop();
+  const { setSongSubmissions } = useContext(SongContext);
 
+  // TODO: Don't love that there are two fetchs being called in the component. Can simplify into just one fetch by updating the users schema and adding and array[] of their posts so you only need to fetch the user profile and then loop through that array in the UI, but this is fine for now.
   useEffect(() => {
     const fetchUserProfile = async () => {
-      const profile = await getUserByUsername(usernameParam);
+      const profile = await getUserByUsername(param!);
       setUserDetails(profile);
     };
     fetchUserProfile();
   }, []);
+
+  const fetchUserSubmissions = async () => {
+    const userSubmissions = await getSubmissions("userWhoPosted", param);
+    setSongSubmissions(userSubmissions);
+  };
 
   const date = new Date(String(userDetails?.createdAt));
   const formattedDate = date.toLocaleDateString("en-US", {
@@ -28,10 +38,16 @@ const ProfileDetails = () => {
     year: "numeric",
   });
   return (
-    <Box p={10}>
-      <Typography variant="h4">{userDetails?.username} </Typography>
-      <Typography variant="h5">Account created on: {formattedDate}</Typography>
-    </Box>
+    <Stack direction={"row"} p={10} justifyContent={"space-around"}>
+      <Stack>
+        <Typography variant="h6">User: {userDetails?.username} </Typography>
+        <Typography variant="h6">Account created on: {formattedDate}</Typography>
+      </Stack>
+      <Stack>
+        <Typography variant="h5">{userDetails?.username} posts:</Typography>
+        <SongSubmissions fetchRequest={fetchUserSubmissions}></SongSubmissions>
+      </Stack>
+    </Stack>
   );
 };
 
