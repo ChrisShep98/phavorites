@@ -58,7 +58,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
   return (
     <div>
       {songSubmissions.length == 0 ? (
-        <Typography mt={5}>No Submissions yet...maybe you could change that!</Typography>
+        <Typography mt={5}>No Submissions yet</Typography>
       ) : (
         songSubmissions?.map((el) => {
           return (
