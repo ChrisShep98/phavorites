@@ -46,14 +46,16 @@ export async function getAllPreformancesOfSongs(songSlug: string) {
   return dates;
 }
 
-export async function getAllSongSubmissions() {
-  const response = await fetch(`http://localhost:8000/allSubmissions`);
-  const allSubmissions = await response.json();
-  return allSubmissions.data;
-}
-
-export async function getSpecificSongSubmissions(slug: string) {
-  const response = await fetch(`http://localhost:8000/song/${slug}`);
-  const specificSongSubmissions = await response.json();
-  return specificSongSubmissions.data;
+export async function getSubmissions(filterName?: string, valueName?: string) {
+  if (filterName == undefined && valueName == undefined) {
+    const response = await fetch(`http://localhost:8000/submissions`);
+    const submissions = await response.json();
+    return submissions.data;
+  } else {
+    const response = await fetch(
+      `http://localhost:8000/submissions?filter=${filterName}&value=${valueName}`
+    );
+    const submissions = await response.json();
+    return submissions.data;
+  }
 }
