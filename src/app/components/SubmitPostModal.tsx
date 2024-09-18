@@ -10,7 +10,8 @@ import { Button } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { SongContext } from "@/context/SongContext";
 import { ModalContext } from "@/context/ModalContext";
-import { getAllSongSubmissions } from "@/services/phishin";
+import { getSubmissions } from "@/services/phishin";
+import { usePathname } from "next/navigation";
 
 const style = {
   position: "absolute" as "absolute",
@@ -40,9 +41,11 @@ interface DateSelectedType {
 }
 
 export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
-  //TODO: form data (change into an object later on probably)
-
   const { closeModal } = useContext(ModalContext);
+
+  // TODO: should be global variables? put in context?
+  const param = usePathname().split("/").pop();
+  const route = usePathname().split("/")[1];
 
   const { setSongSubmissions } = useContext(SongContext);
   const [songSelected, setSongSelected] = useState("");
@@ -60,11 +63,23 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   const [allDatesOfSong, setAllDatesOfSong] = useState<string[]>([]);
 
   //TODO: I'm using this kinda of function frequently thought out the app, probably make a global func I can use instead of this wet code
+  // hahah this is so gross I feel like, but I do like that we just have a single function to do all the work  now
+  // change profile route to user
+
   const fetchSubmissions = async () => {
-    const allSubmissions = await getAllSongSubmissions();
-    setSongSubmissions(allSubmissions);
+    if (route == "song") {
+      const singleSongSubmissions = await getSubmissions("slug", param);
+      setSongSubmissions(singleSongSubmissions);
+    } else if (route == "profile") {
+      const userSubmissions = await getSubmissions("userWhoPosted", param);
+      setSongSubmissions(userSubmissions);
+    } else {
+      const allSubmissions = await getSubmissions();
+      setSongSubmissions(allSubmissions);
+    }
   };
 
+  // TODO: Don't think we need this slug variable anymore since I changed around the song constant to provide a slug. Look into it
   const slug =
     songSelected == null
       ? setSongSelected("")
