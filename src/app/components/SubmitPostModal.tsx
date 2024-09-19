@@ -64,7 +64,6 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
 
   //TODO: I'm using this kinda of function frequently thought out the app, probably make a global func I can use instead of this wet code
   // hahah this is so gross I feel like, but I do like that we just have a single function to do all the work  now
-  // change profile route to user
 
   const fetchSubmissions = async () => {
     if (route == "song") {
