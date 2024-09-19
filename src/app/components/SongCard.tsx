@@ -119,7 +119,7 @@ const SongCard = ({
           </Button>
           <Typography mr={1} textAlign={"end"}>
             Posted by:{" "}
-            <Button onClick={() => router.push(`/profile/${songCardData.userWhoPosted}`)}>
+            <Button onClick={() => router.push(`/user/${songCardData.userWhoPosted}`)}>
               {songCardData.userWhoPosted}
             </Button>
           </Typography>

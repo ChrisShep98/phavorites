@@ -70,7 +70,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
     if (route == "song") {
       const singleSongSubmissions = await getSubmissions("slug", param);
       setSongSubmissions(singleSongSubmissions);
-    } else if (route == "profile") {
+    } else if (route == "user") {
       const userSubmissions = await getSubmissions("userWhoPosted", param);
       setSongSubmissions(userSubmissions);
     } else {

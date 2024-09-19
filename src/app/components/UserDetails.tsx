@@ -7,7 +7,7 @@ import { getSubmissions } from "@/services/phishin";
 import SongSubmissions from "./SongSubmissions";
 import { SongContext } from "@/context/SongContext";
 
-const ProfileDetails = () => {
+const UserDetails = () => {
   interface User {
     createdAt: string;
     username: string;
@@ -17,13 +17,13 @@ const ProfileDetails = () => {
   const param = usePathname().split("/").pop();
   const { setSongSubmissions } = useContext(SongContext);
 
-  // TODO: Don't love that there are two fetchs being called in the component. Can simplify into just one fetch by updating the users schema and adding and array[] of their posts so you only need to fetch the user profile and then loop through that array in the UI, but this is fine for now.
+  // TODO: Don't love that there are two fetchs being called in the component. Can simplify into just one fetch by updating the users schema and adding and array[] of their posts so you only need to fetch the user User and then loop through that array in the UI, but this is fine for now.
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      const profile = await getUserByUsername(param!);
-      setUserDetails(profile);
+    const fetchUser = async () => {
+      const user = await getUserByUsername(param!);
+      setUserDetails(user);
     };
-    fetchUserProfile();
+    fetchUser();
   }, []);
 
   const fetchUserSubmissions = async () => {
@@ -51,4 +51,4 @@ const ProfileDetails = () => {
   );
 };
 
-export default ProfileDetails;
+export default UserDetails;

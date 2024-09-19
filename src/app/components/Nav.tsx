@@ -185,7 +185,7 @@ const Nav = ({ children }: NavProps) => {
               >
                 <MenuItem onClick={handleProfileClose}>
                   <ListItemText
-                    onClick={() => router.push(`/profile/${session.data.user.username}`)}
+                    onClick={() => router.push(`/user/${session.data.user.username}`)}
                   >
                     Profile
                   </ListItemText>
