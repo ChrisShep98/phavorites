@@ -6,7 +6,10 @@ import { useSession } from "next-auth/react";
 import { Typography } from "@mui/material";
 
 interface SubmissionProps {
-  fetchRequest: () => Promise<void>;
+  fetchRequest: (
+    filterName?: string | undefined,
+    valueName?: string | undefined
+  ) => Promise<void>;
 }
 
 const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {

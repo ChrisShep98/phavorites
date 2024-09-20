@@ -10,7 +10,6 @@ import { Button } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { SongContext } from "@/context/SongContext";
 import { ModalContext } from "@/context/ModalContext";
-import { getSubmissions } from "@/services/phishin";
 
 const style = {
   position: "absolute" as "absolute",
@@ -42,7 +41,7 @@ interface DateSelectedType {
 export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   const { closeModal } = useContext(ModalContext);
 
-  const { setSongSubmissions, paramValue, route } = useContext(SongContext);
+  const { paramValue, route, fetchSongSubmissions } = useContext(SongContext);
   const [songSelected, setSongSelected] = useState("");
   const [dateSelected, setDateSelected] = useState("");
   const [myVenueInfo, setMyVenueInfo] = useState<DateSelectedType | undefined>({
@@ -62,14 +61,11 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
 
   const fetchSubmissions = async () => {
     if (route == "song") {
-      const singleSongSubmissions = await getSubmissions("slug", paramValue);
-      setSongSubmissions(singleSongSubmissions);
+      fetchSongSubmissions("slug", paramValue);
     } else if (route == "user") {
-      const userSubmissions = await getSubmissions("userWhoPosted", paramValue);
-      setSongSubmissions(userSubmissions);
+      fetchSongSubmissions("userWhoPosted", paramValue);
     } else {
-      const allSubmissions = await getSubmissions();
-      setSongSubmissions(allSubmissions);
+      fetchSongSubmissions();
     }
   };
 

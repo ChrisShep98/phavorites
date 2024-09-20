@@ -4,11 +4,14 @@ import React from "react";
 
 export type SongContextProps = {
   songSubmissions: songSubmissionCard[];
-  setSongSubmissions: React.Dispatch<React.SetStateAction<songSubmissionCard[]>>;
   setError: React.Dispatch<React.SetStateAction<string>>;
   error: string;
   paramValue: string | undefined;
   route: string;
+  fetchSongSubmissions: (
+    filterName?: string | undefined,
+    valueName?: string | undefined
+  ) => Promise<void>;
 };
 
 export const SongContext = createContext<SongContextProps>({} as SongContextProps);

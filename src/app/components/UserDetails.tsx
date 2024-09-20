@@ -2,7 +2,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Stack, Typography } from "@mui/material";
 import { getUserByUsername } from "@/services/userServices";
-import { getSubmissions } from "@/services/phishin";
 import SongSubmissions from "./SongSubmissions";
 import { SongContext } from "@/context/SongContext";
 
@@ -13,7 +12,7 @@ const UserDetails = () => {
   }
 
   const [userDetails, setUserDetails] = useState<User>();
-  const { setSongSubmissions, paramValue } = useContext(SongContext);
+  const { paramValue, fetchSongSubmissions } = useContext(SongContext);
 
   // TODO: Don't love that there are two fetchs being called in the component. Can simplify into just one fetch by updating the users schema and adding and array[] of their posts so you only need to fetch the user User and then loop through that array in the UI, but this is fine for now.
   useEffect(() => {
@@ -23,11 +22,6 @@ const UserDetails = () => {
     };
     fetchUser();
   }, []);
-
-  const fetchUserSubmissions = async () => {
-    const userSubmissions = await getSubmissions("userWhoPosted", paramValue);
-    setSongSubmissions(userSubmissions);
-  };
 
   const date = new Date(String(userDetails?.createdAt));
   const formattedDate = date.toLocaleDateString("en-US", {
@@ -43,7 +37,9 @@ const UserDetails = () => {
       </Stack>
       <Stack>
         <Typography variant="h5">{userDetails?.username} posts:</Typography>
-        <SongSubmissions fetchRequest={fetchUserSubmissions}></SongSubmissions>
+        <SongSubmissions
+          fetchRequest={() => fetchSongSubmissions("userWhoPosted", paramValue)}
+        ></SongSubmissions>
       </Stack>
     </Stack>
   );
