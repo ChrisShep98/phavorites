@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Divider,
   Fade,
@@ -72,17 +73,20 @@ const SongCard = ({
           <IconButton disableRipple onClick={upVote}>
             <ArrowUpwardIcon />
           </IconButton>
-          <Typography
+          <Box
             my={"auto"}
             mx={3}
             border={"3px solid #4162ff"}
-            p={2}
+            width={"32px"}
+            height={"32px"}
             borderRadius={"50%"}
-            fontWeight={600}
-            padding={"10px 17px"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            p={2.5}
           >
-            {songCardData.voteCount}
-          </Typography>
+            <Typography fontWeight={600}>{songCardData.voteCount}</Typography>
+          </Box>
         </Stack>
         <Stack
           // flexBasis={"min-content"}
