@@ -7,6 +7,8 @@ export type SongContextProps = {
   setSongSubmissions: React.Dispatch<React.SetStateAction<songSubmissionCard[]>>;
   setError: React.Dispatch<React.SetStateAction<string>>;
   error: string;
+  paramValue: string | undefined;
+  route: string;
 };
 
 export const SongContext = createContext<SongContextProps>({} as SongContextProps);

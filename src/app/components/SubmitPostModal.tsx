@@ -11,7 +11,6 @@ import { useSession } from "next-auth/react";
 import { SongContext } from "@/context/SongContext";
 import { ModalContext } from "@/context/ModalContext";
 import { getSubmissions } from "@/services/phishin";
-import { paramValue, route } from "@/constants/globalVariables";
 
 const style = {
   position: "absolute" as "absolute",
@@ -43,7 +42,7 @@ interface DateSelectedType {
 export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   const { closeModal } = useContext(ModalContext);
 
-  const { setSongSubmissions } = useContext(SongContext);
+  const { setSongSubmissions, paramValue, route } = useContext(SongContext);
   const [songSelected, setSongSelected] = useState("");
   const [dateSelected, setDateSelected] = useState("");
   const [myVenueInfo, setMyVenueInfo] = useState<DateSelectedType | undefined>({
