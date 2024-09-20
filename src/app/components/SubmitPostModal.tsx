@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 import { SongContext } from "@/context/SongContext";
 import { ModalContext } from "@/context/ModalContext";
 import { getSubmissions } from "@/services/phishin";
-import { usePathname } from "next/navigation";
+import { paramValue, route } from "@/constants/globalVariables";
 
 const style = {
   position: "absolute" as "absolute",
@@ -43,10 +43,6 @@ interface DateSelectedType {
 export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   const { closeModal } = useContext(ModalContext);
 
-  // TODO: should be global variables? put in context?
-  const param = usePathname().split("/").pop();
-  const route = usePathname().split("/")[1];
-
   const { setSongSubmissions } = useContext(SongContext);
   const [songSelected, setSongSelected] = useState("");
   const [dateSelected, setDateSelected] = useState("");
@@ -67,10 +63,10 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
 
   const fetchSubmissions = async () => {
     if (route == "song") {
-      const singleSongSubmissions = await getSubmissions("slug", param);
+      const singleSongSubmissions = await getSubmissions("slug", paramValue);
       setSongSubmissions(singleSongSubmissions);
     } else if (route == "user") {
-      const userSubmissions = await getSubmissions("userWhoPosted", param);
+      const userSubmissions = await getSubmissions("userWhoPosted", paramValue);
       setSongSubmissions(userSubmissions);
     } else {
       const allSubmissions = await getSubmissions();

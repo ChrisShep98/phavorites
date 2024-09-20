@@ -2,10 +2,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Stack, Typography } from "@mui/material";
 import { getUserByUsername } from "@/services/userServices";
-import { usePathname } from "next/navigation";
 import { getSubmissions } from "@/services/phishin";
 import SongSubmissions from "./SongSubmissions";
 import { SongContext } from "@/context/SongContext";
+import { paramValue } from "@/constants/globalVariables";
 
 const UserDetails = () => {
   interface User {
@@ -14,20 +14,19 @@ const UserDetails = () => {
   }
 
   const [userDetails, setUserDetails] = useState<User>();
-  const param = usePathname().split("/").pop();
   const { setSongSubmissions } = useContext(SongContext);
 
   // TODO: Don't love that there are two fetchs being called in the component. Can simplify into just one fetch by updating the users schema and adding and array[] of their posts so you only need to fetch the user User and then loop through that array in the UI, but this is fine for now.
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await getUserByUsername(param!);
+      const user = await getUserByUsername(paramValue!);
       setUserDetails(user);
     };
     fetchUser();
   }, []);
 
   const fetchUserSubmissions = async () => {
-    const userSubmissions = await getSubmissions("userWhoPosted", param);
+    const userSubmissions = await getSubmissions("userWhoPosted", paramValue);
     setSongSubmissions(userSubmissions);
   };
 
