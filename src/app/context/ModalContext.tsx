@@ -6,6 +6,10 @@ export type ModalContextProps = {
   isModalOpen: boolean;
   openModal: () => void;
   closeModal: () => void;
+  setIsProPicModalOPen: React.Dispatch<React.SetStateAction<boolean>>;
+  isProPicModalOpen: boolean;
+  openProPicModal: () => void;
+  closeProPicModal: () => void;
 };
 
 export const ModalContext = createContext<ModalContextProps>({} as ModalContextProps);
