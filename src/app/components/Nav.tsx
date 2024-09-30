@@ -16,7 +16,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { signOut } from "next-auth/react";
-import React, { ReactNode, useContext, useState } from "react";
+import React, { ReactNode, useContext, useEffect, useState } from "react";
 import { songs } from "@/constants/songs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -26,15 +26,35 @@ import Image from "next/image";
 import "animate.css";
 import dog from "images/dog.jpg";
 import { ModalContext } from "@/context/ModalContext";
+import { getUserByUsername } from "@/services/userServices";
+import { SongContext } from "@/context/SongContext";
 
 interface NavProps {
   children: ReactNode;
+}
+
+interface User {
+  createdAt: string;
+  username: string;
+  _id: string;
+  profilePicture: string;
 }
 
 const Nav = ({ children }: NavProps) => {
   //TODO: move all the fetching and statemanagement going on in SubmitPostModal to this parent container?
   const session = useSession();
   const router = useRouter();
+  const [userDetails, setUserDetails] = useState<User>();
+  const { paramValue } = useContext(SongContext);
+
+  //TODO: will throw en error when not on a /user/ route. Should only fetch the profile pic cloundinary url here instead of the entire user here probably
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getUserByUsername(paramValue!);
+      setUserDetails(user);
+    };
+    fetchUser();
+  }, []);
 
   const { isModalOpen, closeModal, openModal } = useContext(ModalContext);
 
@@ -159,12 +179,17 @@ const Nav = ({ children }: NavProps) => {
                     height: 62,
                   }}
                 >
-                  <Image
+                  {/* TODO: setup logic here to load default profile picture if no pic is set */}
+                  <img src={userDetails?.profilePicture} alt="profilePicture" />
+
+                  {/* <Image
                     fill={true}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    src={dog}
+                    src={
+                      userDetails?.profilePicture ? `/${userDetails.profilePicture}` : dog
+                    }
                     alt="profile picture"
-                  ></Image>
+                  /> */}
                   {/* TODO: set loading state for this later */}
                   {session.data?.user.username ? session.data?.user.username[0] : ""}
                 </Avatar>

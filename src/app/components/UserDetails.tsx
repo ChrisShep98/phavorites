@@ -1,18 +1,26 @@
 "use client";
 import React, { useEffect, useState, useContext } from "react";
-import { Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { getUserByUsername } from "@/services/userServices";
 import SongSubmissions from "./SongSubmissions";
 import { SongContext } from "@/context/SongContext";
+import { ModalContext } from "@/context/ModalContext";
+import { useSession } from "next-auth/react";
+import UploadProfilePicModal from "./UploadProfilePicModal";
 
 const UserDetails = () => {
   interface User {
     createdAt: string;
     username: string;
+    _id: string;
   }
 
   const [userDetails, setUserDetails] = useState<User>();
   const { paramValue, fetchSongSubmissions } = useContext(SongContext);
+  const { isProPicModalOpen, closeProPicModal, openProPicModal } =
+    useContext(ModalContext);
+  const session = useSession();
+  const loggedInUserId = session.data?.user.userId;
 
   // TODO: Don't love that there are two fetchs being called in the component. Can simplify into just one fetch by updating the users schema and adding and array[] of their posts so you only need to fetch the user User and then loop through that array in the UI, but this is fine for now.
   useEffect(() => {
@@ -31,15 +39,19 @@ const UserDetails = () => {
   });
   return (
     <Stack direction={"row"} p={10} justifyContent={"space-around"}>
+      <UploadProfilePicModal isOpen={isProPicModalOpen} onClose={closeProPicModal} />
       <Stack>
         <Typography variant="h6">User: {userDetails?.username} </Typography>
         <Typography variant="h6">Account created on: {formattedDate}</Typography>
+        {loggedInUserId == userDetails?._id ? (
+          <Button onClick={openProPicModal}>Change Profile Picture</Button>
+        ) : null}
       </Stack>
       <Stack>
         <Typography variant="h5">{userDetails?.username} posts:</Typography>
         <SongSubmissions
           fetchRequest={() => fetchSongSubmissions("userWhoPosted", paramValue)}
-        ></SongSubmissions>
+        />
       </Stack>
     </Stack>
   );
