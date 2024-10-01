@@ -2,29 +2,13 @@ import { Box, Button, Modal, Typography } from "@mui/material";
 import React, { FormEvent, useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { style } from "@/lib/reusableStyles/styles";
 
 // TODO: export this from a different file since being used multiple places
 interface ModalType {
   isOpen: boolean;
   onClose: () => void;
 }
-
-// TODO: duplicate style move to a global file
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  borderRadius: "25px",
-  boxShadow: 24,
-  p: 4,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  textAlign: "center",
-};
 
 const UploadProfilePicModal = ({ isOpen, onClose }: ModalType) => {
   const [imageUpload, setImageUpload] = useState<Blob>();
