@@ -3,12 +3,7 @@ import React, { FormEvent, useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { style } from "@/lib/reusableStyles/styles";
-
-// TODO: export this from a different file since being used multiple places
-interface ModalType {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { ModalType } from "@/types/propTypes";
 
 const UploadProfilePicModal = ({ isOpen, onClose }: ModalType) => {
   const [imageUpload, setImageUpload] = useState<Blob>();

@@ -11,11 +11,7 @@ import { useSession } from "next-auth/react";
 import { SongContext } from "@/context/SongContext";
 import { ModalContext } from "@/context/ModalContext";
 import { style } from "@/lib/reusableStyles/styles";
-
-interface ModalType {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { ModalType } from "@/types/propTypes";
 
 interface DateSelectedType {
   date: string;
