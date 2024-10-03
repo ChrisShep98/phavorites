@@ -16,3 +16,9 @@ export async function getUserByUsername(username: string) {
 
   return user.data[0];
 }
+
+export async function getProfilePicture(id: string) {
+  const response = await fetch(`http://localhost:8000/getProfilePicture/${id}`);
+  const profilePicture = await response.json();
+  return profilePicture.data;
+}
