@@ -59,7 +59,12 @@ const UploadProfilePicModal = ({ isOpen, onClose }: ModalType) => {
           <form
             encType="multipart/form-data"
             onSubmit={handleSubmit}
-            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+              alignItems: "center",
+            }}
           >
             <input type="file" onChange={handleImageUpload} name="profilePicture" />
             {imageUpload ? (

@@ -16,7 +16,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { signOut } from "next-auth/react";
-import React, { ReactNode, useContext, useState } from "react";
+import React, { ReactNode, useContext, useEffect, useState } from "react";
 import { songs } from "@/constants/songs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -43,15 +43,18 @@ const Nav = ({ children }: NavProps) => {
   const session = useSession();
   const router = useRouter();
   const [profilePicture, setProfilePicture] = useState("");
+  const { isProPicModalOpen } = useContext(ModalContext);
 
-  // TODO: this absolutely needs to get memoized. A lot of unnecessary rerenders
-  const fetchProfilePicture = async () => {
-    if (session.data !== null) {
-      const profilePicture = await getProfilePicture(session.data.user.userId);
-      setProfilePicture(profilePicture);
-    }
-  };
-  fetchProfilePicture();
+  // TODO: Don't love the isProPicModalOpen dependency here bcuz of necessary calls but will leave for now
+  useEffect(() => {
+    const fetchProfilePicture = async () => {
+      if (session.data !== null && session.data.user.userId !== undefined) {
+        const profilePicture = await getProfilePicture(session.data.user.userId);
+        setProfilePicture(profilePicture);
+      }
+    };
+    fetchProfilePicture();
+  }, [session.data?.user.userId, isProPicModalOpen]);
 
   const { isModalOpen, closeModal, openModal } = useContext(ModalContext);
 
