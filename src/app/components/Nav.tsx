@@ -16,7 +16,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { signOut } from "next-auth/react";
-import React, { ReactNode, useContext, useEffect, useState } from "react";
+import React, { ReactNode, useContext, useState } from "react";
 import { songs } from "@/constants/songs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -24,10 +24,8 @@ import SubmitPostModal from "./SubmitPostModal";
 import phishLogo from "images/phishlogo.webp";
 import Image from "next/image";
 import "animate.css";
-import dog from "images/dog.jpg";
 import { ModalContext } from "@/context/ModalContext";
-import { getUserByUsername } from "@/services/userServices";
-import { SongContext } from "@/context/SongContext";
+import { getProfilePicture } from "@/services/userServices";
 
 interface NavProps {
   children: ReactNode;
@@ -44,17 +42,14 @@ const Nav = ({ children }: NavProps) => {
   //TODO: move all the fetching and statemanagement going on in SubmitPostModal to this parent container?
   const session = useSession();
   const router = useRouter();
-  const [userDetails, setUserDetails] = useState<User>();
-  const { paramValue } = useContext(SongContext);
+  const [profilePicture, setProfilePicture] = useState("");
 
-  //TODO: will throw en error when not on a /user/ route. Should only fetch the profile pic cloundinary url here instead of the entire user here probably
-  useEffect(() => {
-    const fetchUser = async () => {
-      const user = await getUserByUsername(paramValue!);
-      setUserDetails(user);
-    };
-    fetchUser();
-  }, []);
+  // TODO: this absolutely needs to get memoized. A lot of unnecessary rerenders
+  const fetchProfilePicture = async () => {
+    const profilePicture = await getProfilePicture(session.data!.user.userId);
+    setProfilePicture(profilePicture);
+  };
+  fetchProfilePicture();
 
   const { isModalOpen, closeModal, openModal } = useContext(ModalContext);
 
@@ -115,9 +110,6 @@ const Nav = ({ children }: NavProps) => {
               height={100}
               width={100}
               alt="phishLogo"
-              // style={{
-              //   backgroundColor: "#fff",
-              // }}
             />
           </MuiLink>
         </Box>
@@ -167,32 +159,21 @@ const Nav = ({ children }: NavProps) => {
               <IconButton
                 onClick={handleProfileClick}
                 size="small"
-                sx={{ ml: 2 }}
                 aria-controls={openProfileMenu ? "account-menu" : undefined}
                 aria-haspopup="true"
                 aria-expanded={openProfileMenu ? "true" : undefined}
               >
                 <Avatar
                   className="animate__animated animate__bounceInDown"
+                  src={profilePicture}
                   sx={{
                     width: 62,
                     height: 62,
                   }}
-                >
-                  {/* TODO: setup logic here to load default profile picture if no pic is set */}
-                  <img src={userDetails?.profilePicture} alt="profilePicture" />
-
-                  {/* <Image
-                    fill={true}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    src={
-                      userDetails?.profilePicture ? `/${userDetails.profilePicture}` : dog
-                    }
-                    alt="profile picture"
-                  /> */}
-                  {/* TODO: set loading state for this later */}
-                  {session.data?.user.username ? session.data?.user.username[0] : ""}
-                </Avatar>
+                />
+                {/* TODO: handle a default avatar image */}
+                {/* {session.data?.user.username ? session.data?.user.username[0] : ""}
+                </Avatar> */}
               </IconButton>
               <Menu
                 anchorEl={profileAnchorEl}
@@ -248,111 +229,6 @@ const Nav = ({ children }: NavProps) => {
       </Box>
       {children}
     </AppBar>
-    // <Box
-    //   display={"flex"}
-    //   flexDirection="column"
-    //   width={"100vw"}
-    //   height={"100vh"}
-    //   justifyContent={"center"}
-    // >
-    //   <SubmitPostModal isOpen={isModalOpen} onClose={closeModal} />
-    //   <Box
-    //     position={"absolute"}
-    //     zIndex={999}
-    //     borderRadius={"25px"}
-    //     sx={{ backgroundColor: "primary.main" }}
-    //     width={"250px"}
-    //     height={"80%"}
-    //     ml={1}
-    //   >
-    //     <List sx={{ width: "100%", color: "#fff" }}>
-    //       <ListItem>
-    //         <ListItemAvatar>
-    //           <Avatar>{/* <ImageIcon /> */}</Avatar>
-    //         </ListItemAvatar>
-    //         <ListItemText
-    //           primary={
-    //             session.status == "authenticated"
-    //               ? `${session.data.user.username}`
-    //               : "Anonymous"
-    //           }
-    //           secondary={
-    //             session.status == "authenticated"
-    //               ? `Joined ${formattedDate}`
-    //               : "Date joined?"
-    //           }
-    //           sx={{
-    //             // kinda gross should fix this
-    //             ".css-83ijpv-MuiTypography-root": {
-    //               color: "#7c7c7c",
-    //             },
-    //           }}
-    //         />
-    //       </ListItem>
-    //       <Divider variant="middle" sx={{ borderColor: "#fff" }} />
-    //       <ListItem>
-    //         <ListItemButton>
-    //           {session.status == "unauthenticated" ? (
-    //             <ListItemText primary="Sign In" onClick={() => router.push("/login")} />
-    //           ) : (
-    //             <ListItemText
-    //               primary="Sign Out"
-    //               onClick={() => signOut({ callbackUrl: "/login" })}
-    //             />
-    //           )}
-    //         </ListItemButton>
-    //       </ListItem>
-    //       <ListItem>
-    //         {/* this will only direct user to dynamic route to show submitions of the song seleted */}
-    //         <ListItemButton>
-    //           <ListItemText onClick={() => toggleSongsList()} primary="Songs" />
-    //         </ListItemButton>
-    //       </ListItem>
-    //       <ListItem>
-    //         <ListItemButton>
-    //           <ListItemText primary="Search Shows" />
-    //         </ListItemButton>
-    //       </ListItem>
-    //       <ListItem>
-    //         <ListItemButton>
-    //           <ListItemText primary="Submit a song" onClick={openModal} />
-    //         </ListItemButton>
-    //       </ListItem>
-    //       <ListItem>
-    //         <ListItemButton>
-    //           <ListItemText primary="Random Song" />
-    //         </ListItemButton>
-    //       </ListItem>
-    //     </List>
-    //   </Box>
-
-    //   <Box
-    //     borderRadius={"25px"}
-    //     sx={{
-    //       backgroundColor: "#1c1c1c",
-    //       transition: "all 0.5s ease",
-    //       marginLeft: openSongSearch ? "250px" : 1,
-    //     }}
-    //     width={"250px"}
-    //     height={"80%"}
-    //   >
-    //     <List sx={{ width: "100%", color: "#fff" }}>
-    //       <ListItem>Phish Icon</ListItem>
-    //       <Divider variant="middle" sx={{ borderColor: "#fff" }} />
-    //       <ListItem color="#fff">
-    //         <Autocomplete
-    //           disablePortal
-    //           id="combo-box-demo"
-    //           options={songs}
-    //           sx={{ width: 300, backgroundColor: "white" }}
-    //           renderInput={(params) => (
-    //             <TextField sx={{ color: "white" }} {...params} label="Songs" />
-    //           )}
-    //         />
-    //       </ListItem>
-    //     </List>
-    //   </Box>
-    // </Box>
   );
 };
 
