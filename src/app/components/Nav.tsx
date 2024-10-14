@@ -46,8 +46,10 @@ const Nav = ({ children }: NavProps) => {
 
   // TODO: this absolutely needs to get memoized. A lot of unnecessary rerenders
   const fetchProfilePicture = async () => {
-    const profilePicture = await getProfilePicture(session.data!.user.userId);
-    setProfilePicture(profilePicture);
+    if (session.data !== null) {
+      const profilePicture = await getProfilePicture(session.data.user.userId);
+      setProfilePicture(profilePicture);
+    }
   };
   fetchProfilePicture();
 

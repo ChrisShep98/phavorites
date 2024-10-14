@@ -1,9 +1,10 @@
 import { Box, Button, Modal, Typography } from "@mui/material";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useState, useContext } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { style } from "@/lib/reusableStyles/styles";
 import { ModalType } from "@/types/propTypes";
+import { ModalContext } from "@/context/ModalContext";
 
 const UploadProfilePicModal = ({ isOpen, onClose }: ModalType) => {
   const [imageUpload, setImageUpload] = useState<Blob>();
@@ -32,6 +33,8 @@ const UploadProfilePicModal = ({ isOpen, onClose }: ModalType) => {
       });
     } catch (error) {
       console.log(error, "error");
+    } finally {
+      onClose();
     }
   };
 
