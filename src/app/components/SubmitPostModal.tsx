@@ -9,7 +9,6 @@ import { songs } from "@/constants/songs";
 import { Button } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { SongContext } from "@/context/SongContext";
-import { ModalContext } from "@/context/ModalContext";
 import { style } from "@/lib/reusableStyles/styles";
 import { ModalType } from "@/types/propTypes";
 
@@ -20,8 +19,6 @@ interface DateSelectedType {
 }
 
 export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
-  const { closeModal } = useContext(ModalContext);
-
   const { paramValue, route, fetchSongSubmissions } = useContext(SongContext);
   const [songSelected, setSongSelected] = useState("");
   const [dateSelected, setDateSelected] = useState("");
@@ -85,7 +82,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
       } else {
         fetchSubmissions();
         //TODO: some kind of success message?
-        closeModal();
+        onClose();
       }
     } catch (error) {}
   };
