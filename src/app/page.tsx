@@ -12,7 +12,7 @@ export default function Home() {
       {/* TODO: cheap fix with height on line 10, property subtrack of nav height and
       standardize */}
       <Box height={"87vh"} display={"flex"} justifyContent={"center"}>
-        <SongSubmissions fetchRequest={fetchSongSubmissions} />
+        <SongSubmissions fetchRequest={() => fetchSongSubmissions("limit", "10")} />
       </Box>
     </>
   );

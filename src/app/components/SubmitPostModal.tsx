@@ -43,7 +43,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
     } else if (route == "user") {
       fetchSongSubmissions("userWhoPosted", paramValue);
     } else {
-      fetchSongSubmissions();
+      fetchSongSubmissions("limit", "10");
     }
   };
 
