@@ -121,12 +121,24 @@ const SongCard = ({
           >
             View Comments
           </Button>
-          <Typography mr={1} textAlign={"end"}>
-            Posted by:{" "}
-            <Button onClick={() => router.push(`/user/${songCardData.userWhoPosted}`)}>
+          <Stack
+            gap={1}
+            mr={2}
+            direction={"row"}
+            alignItems={"center"}
+            justifyContent={"flex-end"}
+          >
+            <Typography>Posted by: </Typography>
+            <Typography
+              sx={{
+                cursor: "pointer",
+              }}
+              onClick={() => router.push(`/user/${songCardData.userWhoPosted}`)}
+            >
               {songCardData.userWhoPosted}
-            </Button>
-          </Typography>
+            </Typography>
+          </Stack>
+
           <Menu
             onClose={closeComments}
             anchorEl={anchorEl}
