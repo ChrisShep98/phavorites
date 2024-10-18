@@ -125,6 +125,7 @@ const Nav = ({ children }: NavProps) => {
             </Typography>
           </Button>
           <Popover
+            sx={{ "& .MuiPaper-root": { scrollbarWidth: "none" } }}
             open={openSongSearchMenu}
             anchorEl={songAnchorEl}
             onClose={handleSongClose}
