@@ -26,7 +26,6 @@ interface SongCardData {
   userWhoPosted: string;
 }
 
-// TODO: extend this with songSubmissionCard
 interface SongSubmissionCardProps {
   songCardData: SongCardData;
   addComment: (event: FormEvent<HTMLFormElement>) => Promise<void>;

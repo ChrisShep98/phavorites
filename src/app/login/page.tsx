@@ -4,7 +4,7 @@ import { Stack, Box } from "@mui/material";
 
 const Register = () => {
   return (
-    <Stack mt={10} gap={2}>
+    <Stack mt={4} gap={2}>
       <Box
         display="flex"
         justifyContent={"center"}

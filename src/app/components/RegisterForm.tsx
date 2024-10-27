@@ -52,7 +52,7 @@ const RegisterForm = () => {
       p={6}
       borderRadius={"30px"}
       mb={1}
-      mt={20}
+      mt={4}
     >
       <Stack spacing={2}>
         <Typography variant="h3" color={"primary.main"} fontWeight={"600"}>
