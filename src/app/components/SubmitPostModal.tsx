@@ -20,7 +20,7 @@ interface DateSelectedType {
 
 export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   const { paramValue, route, fetchSongSubmissions } = useContext(SongContext);
-  const [songSelected, setSongSelected] = useState("");
+  const [songSelected, setSongSelected] = useState({ song: "", slug: "" });
   const [dateSelected, setDateSelected] = useState("");
   const [myVenueInfo, setMyVenueInfo] = useState<DateSelectedType | undefined>({
     date: "",
@@ -47,18 +47,8 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
     }
   };
 
-  // TODO: Don't think we need this slug variable anymore since I changed around the song constant to provide a slug. Look into it
-  const slug =
-    songSelected == null
-      ? setSongSelected("")
-      : songSelected.toLowerCase().replaceAll(" ", "-").replaceAll("/", "-");
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!description) {
-      setError("Please provide a description");
-      return;
-    }
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     try {
       const res = await fetch("http://localhost:8000/songSubmittion", {
         method: "POST",
@@ -66,15 +56,18 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          songName: songSelected,
+          songName: songSelected.song,
           description,
           date: dateSelected,
           userWhoPosted: session.data?.user.username,
           venueLocation: myVenueInfo?.venueLocation,
           venueName: myVenueInfo?.venueName,
-          slug,
+          slug: songSelected.slug,
         }),
       });
+      if (!description) {
+        throw new Error("Please provide a description");
+      }
       if (res.status === 400) {
         res.json().then((data) => {
           setError(data.message);
@@ -84,7 +77,9 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
         //TODO: some kind of success message?
         onClose();
       }
-    } catch (error) {}
+    } catch (error: any) {
+      setError(error.message);
+    }
   };
 
   useEffect(() => {
@@ -92,7 +87,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
       console.log("useEffect is run");
       const fetchData = async () => {
         try {
-          const myData = await getAllPreformancesOfSongs(slug!);
+          const myData = await getAllPreformancesOfSongs(songSelected.slug);
           // remove duplicates with new Set()
           const dates = [...new Set(myData.map((el) => el.date))];
           setAllDatesOfSong(dates);
@@ -136,7 +131,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
               options={songs}
               getOptionLabel={(option) => option.song}
               onChange={(event, newValue) => {
-                setSongSelected(newValue!.song); // Update state with the selected value
+                setSongSelected(newValue!);
               }}
               sx={{ backgroundColor: "white" }}
               renderInput={(params) => (
@@ -169,7 +164,11 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
               Submit
             </Button>
           </form>
-          {error ? <Typography mt={2}>{error}</Typography> : null}
+          {error && (
+            <Typography color={"red"} mt={2}>
+              {error}
+            </Typography>
+          )}
         </Box>
       </Modal>
     </div>
