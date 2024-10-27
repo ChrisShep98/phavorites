@@ -2,7 +2,7 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 
 const RegisterForm = () => {
   const [username, setUsername] = useState("");
@@ -11,12 +11,8 @@ const RegisterForm = () => {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!username || !email || !password) {
-      setError("Please fill out all fields");
-      return;
-    }
     try {
       const res = await fetch("http://localhost:8000/register", {
         method: "POST",
@@ -29,18 +25,17 @@ const RegisterForm = () => {
           password,
         }),
       });
+      if (!username || !email || !password) {
+        throw new Error("Please fill out all fields");
+      }
       if (res.ok) {
-        const form = event.target;
-        form.reset();
         router.push("/login");
       } else {
         const error = await res.json();
         setError(error.message);
       }
-    } catch (error) {
-      setError("Error during registration");
-
-      console.log("Error during registration", error);
+    } catch (error: any) {
+      setError(error.message);
     }
   };
 

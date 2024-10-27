@@ -177,9 +177,6 @@ const Nav = ({ children }: NavProps) => {
                     height: 62,
                   }}
                 />
-                {/* TODO: handle a default avatar image */}
-                {/* {session.data?.user.username ? session.data?.user.username[0] : ""}
-                </Avatar> */}
               </IconButton>
               <Menu
                 anchorEl={profileAnchorEl}
