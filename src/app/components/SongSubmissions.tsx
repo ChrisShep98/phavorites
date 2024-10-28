@@ -23,19 +23,28 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
   }, [refetchVote]);
 
   const handleUpvote = async (id: string) => {
-    await fetch(`http://localhost:8000/${id}/upVote`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: session.data?.user.userId,
-      }),
-    });
-    // Weird stuff - if I fetch from the api on the line below and set the state to the return value then call the api again via useEffect with refetchVote state change then the upvote/downvote weirdness goes away. My take is setting the songSubmissions state twice here just assures the state will reflect correctly in the UI. There is definitely a better way to do this but going to leave for now.
-    // const submissions = await fetchRequest();
-    // setSongSubmissions(submissions);
-    setRefetchVote((prevState) => !prevState);
+    try {
+      const res = await fetch(`http://localhost:8000/${id}/upVote`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: session.data?.user.userId,
+        }),
+      });
+      // Weird stuff - if I fetch from the api on the line below and set the state to the return value then call the api again via useEffect with refetchVote state change then the upvote/downvote weirdness goes away. My take is setting the songSubmissions state twice here just assures the state will reflect correctly in the UI. There is definitely a better way to do this but going to leave for now.
+      // const submissions = await fetchRequest();
+      // setSongSubmissions(submissions);
+
+      if (res.status === 400) {
+        const error = await res.json();
+        alert(error.message);
+      }
+      setRefetchVote((prevState) => !prevState);
+    } catch (error: any) {
+      console.log(error.message);
+    }
   };
 
   const submitComment = async (event: FormEvent<HTMLFormElement>, postId: string) => {
