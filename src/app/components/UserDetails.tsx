@@ -50,7 +50,7 @@ const UserDetails = () => {
       <Stack>
         <Typography variant="h5">{userDetails?.username} posts:</Typography>
         <SongSubmissions
-          fetchRequest={() => fetchSongSubmissions("userWhoPosted", paramValue)}
+          fetchRequest={() => fetchSongSubmissions("userWhoPosted.username", paramValue)}
         />
       </Stack>
     </Stack>

@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Divider,
@@ -14,6 +15,7 @@ import { SongContext } from "@/context/SongContext";
 import React, { FormEvent, useContext } from "react";
 import { useRouter } from "next/navigation";
 
+// TODO: combine / extend this type with songSubmissionCard
 interface SongCardData {
   songName: string;
   venueLocation: string;
@@ -21,9 +23,12 @@ interface SongCardData {
   date: string;
   description: string;
   voteCount: string;
-  comments: { comment: string; username: string; _id: string }[];
+  comments: { comment: string; username: string; profilePicture: string; _id: string }[];
   slug: string;
-  userWhoPosted: string;
+  userWhoPosted: {
+    username: string;
+    profilePicture: string;
+  };
 }
 
 interface SongSubmissionCardProps {
@@ -132,10 +137,17 @@ const SongCard = ({
               sx={{
                 cursor: "pointer",
               }}
-              onClick={() => router.push(`/user/${songCardData.userWhoPosted}`)}
+              onClick={() => router.push(`/user/${songCardData.userWhoPosted.username}`)}
             >
-              {songCardData.userWhoPosted}
+              {songCardData.userWhoPosted.username}
             </Typography>
+            <Avatar
+              src={songCardData.userWhoPosted.profilePicture}
+              sx={{
+                width: 32,
+                height: 32,
+              }}
+            />
           </Stack>
 
           <Menu
@@ -146,9 +158,16 @@ const SongCard = ({
             TransitionComponent={Fade}
             anchorOrigin={{ horizontal: "right", vertical: "center" }}
           >
-            {songCardData.comments.map(({ username, comment, _id }) => {
+            {songCardData.comments.map(({ username, profilePicture, comment, _id }) => {
               return (
                 <Stack direction={"row"} gap={1} key={_id} p={2}>
+                  <Avatar
+                    src={profilePicture}
+                    sx={{
+                      width: 32,
+                      height: 32,
+                    }}
+                  />
                   <Typography color={"primary"}>{username}:</Typography>
                   <Typography color={"primary"}>{comment}</Typography>
                 </Stack>

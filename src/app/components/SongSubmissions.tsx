@@ -4,6 +4,7 @@ import SongCard from "./SongCard";
 import { SongContext } from "@/context/SongContext";
 import { useSession } from "next-auth/react";
 import { Typography } from "@mui/material";
+import { getProfilePicture } from "@/services/userServices";
 
 interface SubmissionProps {
   fetchRequest: (
@@ -14,6 +15,8 @@ interface SubmissionProps {
 
 const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
   const session = useSession();
+  const userId = session.data?.user.userId;
+  const username = session.data?.user.username;
   const [refetchVote, setRefetchVote] = useState(false);
   const [comment, setComment] = useState("");
   const { songSubmissions, error, setError } = useContext(SongContext);
@@ -30,7 +33,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: session.data?.user.userId,
+          userId,
         }),
       });
       // Weird stuff - if I fetch from the api on the line below and set the state to the return value then call the api again via useEffect with refetchVote state change then the upvote/downvote weirdness goes away. My take is setting the songSubmissions state twice here just assures the state will reflect correctly in the UI. There is definitely a better way to do this but going to leave for now.
@@ -50,6 +53,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
   const submitComment = async (event: FormEvent<HTMLFormElement>, postId: string) => {
     event.preventDefault();
     if (session.status == "authenticated") {
+      const profilePicture = await getProfilePicture(userId!);
       await fetch(`http://localhost:8000/addComment/${postId}`, {
         method: "POST",
         headers: {
@@ -57,7 +61,8 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
         },
         body: JSON.stringify({
           comment,
-          username: session.data?.user.username,
+          username,
+          profilePicture,
         }),
       });
       setRefetchVote((prevState) => !prevState);

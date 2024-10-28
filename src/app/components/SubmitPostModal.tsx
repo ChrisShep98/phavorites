@@ -11,6 +11,7 @@ import { useSession } from "next-auth/react";
 import { SongContext } from "@/context/SongContext";
 import { style } from "@/lib/reusableStyles/styles";
 import { ModalType } from "@/types/propTypes";
+import { getProfilePicture } from "@/services/userServices";
 
 interface DateSelectedType {
   date: string;
@@ -31,17 +32,20 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   //TODO: add error to UI providing k and name of user who posted or no description
   const [error, setError] = useState("");
   const session = useSession();
+  const userId = session.data?.user.userId;
+  const username = session.data?.user.username;
 
   const [allDatesOfSong, setAllDatesOfSong] = useState<string[]>([]);
 
   //TODO: I'm using this kinda of function frequently thought out the app, probably make a global func I can use instead of this wet code
   // hahah this is so gross I feel like, but I do like that we just have a single function to do all the work  now
 
+  // The purpose of this weird function is to get the page to update when and display correct data after submitting a post in this modal
   const fetchSubmissions = async () => {
     if (route == "song") {
       fetchSongSubmissions("slug", paramValue);
     } else if (route == "user") {
-      fetchSongSubmissions("userWhoPosted", paramValue);
+      fetchSongSubmissions("userWhoPosted.username", paramValue);
     } else {
       fetchSongSubmissions("limit", "10");
     }
@@ -50,6 +54,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
+      const profilePicture = await getProfilePicture(userId!);
       const res = await fetch("http://localhost:8000/songSubmittion", {
         method: "POST",
         headers: {
@@ -59,7 +64,10 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
           songName: songSelected.song,
           description,
           date: dateSelected,
-          userWhoPosted: session.data?.user.username,
+          userWhoPosted: {
+            username,
+            profilePicture,
+          },
           venueLocation: myVenueInfo?.venueLocation,
           venueName: myVenueInfo?.venueName,
           slug: songSelected.slug,
