@@ -225,7 +225,7 @@ const Nav = ({ children }: NavProps) => {
                 },
               }}
             >
-              <Typography color="#6273b3">Get Started</Typography>
+              <Typography color="#0a0a0a">Get Started</Typography>
             </Button>
           )}
         </Stack>

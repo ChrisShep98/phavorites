@@ -54,7 +54,7 @@ const UploadProfilePicModal = ({ isOpen, onClose }: ModalType) => {
             component="h2"
             mb={2}
           >
-            Upload a cool profile pic!
+            Upload a profile picture below!
           </Typography>
           <form
             encType="multipart/form-data"

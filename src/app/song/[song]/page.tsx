@@ -10,7 +10,7 @@ export default function SpecificSongSubmissions() {
 
   return (
     <>
-      <Box height={"87vh"} display={"flex"} justifyContent={"center"}>
+      <Box display={"flex"} justifyContent={"center"}>
         <SongSubmissions fetchRequest={() => fetchSongSubmissions("slug", paramValue)} />
       </Box>
     </>

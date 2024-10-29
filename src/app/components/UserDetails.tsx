@@ -41,10 +41,21 @@ const UserDetails = () => {
     <Stack direction={"row"} p={10} justifyContent={"space-around"}>
       <UploadProfilePicModal isOpen={isProPicModalOpen} onClose={closeProPicModal} />
       <Stack>
-        <Typography variant="h6">User: {userDetails?.username} </Typography>
-        <Typography variant="h6">Account created on: {formattedDate}</Typography>
+        <Typography textTransform={"none"} fontSize={"1rem"} variant="overline">
+          User: {userDetails?.username}{" "}
+        </Typography>
+        <Typography textTransform={"none"} fontSize={"1rem"} variant="overline">
+          Account created on: {formattedDate}
+        </Typography>
         {loggedInUserId == userDetails?._id ? (
-          <Button onClick={openProPicModal}>Change Profile Picture</Button>
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{ cursor: "pointer", fontWeight: "400", borderRadius: 4 }}
+            onClick={openProPicModal}
+          >
+            Change Profile Picture
+          </Button>
         ) : null}
       </Stack>
       <Stack>
