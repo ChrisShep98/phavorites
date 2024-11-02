@@ -19,9 +19,14 @@ interface DateSelectedType {
   venueLocation: string;
 }
 
+interface SongConstants {
+  song: string;
+  slug: string;
+}
+
 export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   const { paramValue, route, fetchSongSubmissions } = useContext(SongContext);
-  const [songSelected, setSongSelected] = useState({ song: "", slug: "" });
+  const [songSelected, setSongSelected] = useState<SongConstants>();
   const [dateSelected, setDateSelected] = useState("");
   const [myVenueInfo, setMyVenueInfo] = useState<DateSelectedType | undefined>({
     date: "",
@@ -61,7 +66,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          songName: songSelected.song,
+          songName: songSelected?.song,
           description,
           date: dateSelected,
           userWhoPosted: {
@@ -70,7 +75,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
           },
           venueLocation: myVenueInfo?.venueLocation,
           venueName: myVenueInfo?.venueName,
-          slug: songSelected.slug,
+          slug: songSelected?.slug,
         }),
       });
       if (!description) {
