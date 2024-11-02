@@ -26,7 +26,7 @@ const LoginForm = () => {
         redirect: false,
       });
       if (res?.error) {
-        setError("Invalid Credentials");
+        setError(res.error);
       } else {
         router.replace("/");
       }

@@ -7,7 +7,7 @@ export async function loginUser(username: string, password: string) {
     body: JSON.stringify({ username, password }),
   });
   const user = await response.json();
-  return user.data;
+  return user;
 }
 
 export async function getUserByUsername(username: string) {

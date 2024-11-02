@@ -18,9 +18,14 @@ const handler = NextAuth({
       async authorize(credentials: any) {
         try {
           const response = await loginUser(credentials.username, credentials.password);
-          return response;
+          // if the server sends back a response with a message value then an error occured
+          if (response.message !== undefined) {
+            return { error: response.message };
+          }
+          // if no error found then reponse.data is just the user info
+          return response.data;
         } catch (error) {
-          console.log("Error: ", error);
+          return console.log(error);
         }
       },
     }),
@@ -29,8 +34,15 @@ const handler = NextAuth({
     strategy: "jwt",
   },
   callbacks: {
+    async signIn({ user }: any) {
+      // For custom errors sent from backend
+      if (user.error) {
+        throw new Error(`${user.error}`);
+      }
+      return true;
+    },
     // I used these two callbacks to move some values around so that user.id is available in both the token and the session objects. might come in handy. this data is accessible in the client via getToken and getSession/useSession. since a token (token.jti) and the user id are both available in the token object, we'll call getToken to get those two values and use them as arguments for the me query
-    async jwt({ token, user }: any) {
+    async jwt({ token, user }) {
       // user is the value returned from the authorize function above
       user && (token.user = user);
       // console.log("token", token);
