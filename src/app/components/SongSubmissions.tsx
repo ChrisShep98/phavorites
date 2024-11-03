@@ -66,6 +66,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
         }),
       });
       setRefetchVote((prevState) => !prevState);
+      // Setting the comment to an empty string after submit doesn't work?
       setComment("");
     } else {
       setError("Please login to submit a comment");

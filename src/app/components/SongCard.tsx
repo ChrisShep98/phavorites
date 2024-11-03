@@ -3,16 +3,14 @@ import {
   Box,
   Button,
   Divider,
-  Fade,
   IconButton,
-  Menu,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { SongContext } from "@/context/SongContext";
-import React, { FormEvent, useContext } from "react";
+import React, { FormEvent, useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 
 // TODO: combine / extend this type with songSubmissionCard
@@ -48,24 +46,20 @@ const SongCard = ({
   comment,
   children,
 }: SongSubmissionCardProps) => {
-  const { setError } = useContext(SongContext);
+  const { error } = useContext(SongContext);
   const router = useRouter();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const closeComments = () => {
-    setAnchorEl(null);
-    setError("");
-  };
-  const openComments = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+
+  const [openComments, setOpenComments] = useState(false);
+  const toggleOpenComments = () => {
+    setOpenComments(!openComments);
   };
 
   return (
     <>
       <Stack
+        overflow={"hidden"}
         width={"30rem"}
         borderRadius={4}
-        direction={"row"}
         p={1}
         mb={3}
         mt={2}
@@ -73,90 +67,101 @@ const SongCard = ({
           "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px"
         }
       >
-        <Stack>
-          <IconButton disableRipple onClick={upVote}>
-            <ArrowUpwardIcon />
-          </IconButton>
-          <Box
-            my={"auto"}
-            mx={3}
-            border={"3px solid #4162ff"}
-            width={"32px"}
-            height={"32px"}
-            borderRadius={"50%"}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            p={2.5}
-          >
-            <Typography fontWeight={600}>{songCardData.voteCount}</Typography>
-          </Box>
-        </Stack>
-        <Stack
-          // flexBasis={"min-content"}
-          gap={1}
-          width={"inherit"}
-        >
-          <Typography
-            sx={{ cursor: "pointer" }}
-            width={"fit-content"}
-            onClick={() => router.push(`/song/${songCardData.slug}`)}
-            fontWeight={500}
-          >
-            {songCardData.songName}
-          </Typography>
-          <Divider sx={{ width: "275px" }} />
-          <Typography>
-            {songCardData.date} - {songCardData.venueLocation}, {songCardData.venueName}
-          </Typography>
-          {/* TODO set a new Typography variant with correct styles using rem or em */}
-          <Typography fontSize={"13px"} color={"grey"}>
-            Description:
-          </Typography>
-          <Typography>{songCardData.description}</Typography>
-          <Button
-            sx={{
-              mt: 1,
-              justifyContent: "left",
-              padding: 0,
-              width: "fit-content",
-            }}
-            onClick={openComments}
-          >
-            View Comments
-          </Button>
-          <Stack
-            gap={1}
-            mr={2}
-            direction={"row"}
-            alignItems={"center"}
-            justifyContent={"flex-end"}
-          >
-            <Typography>Posted by: </Typography>
-            <Typography
-              sx={{
-                cursor: "pointer",
-              }}
-              onClick={() => router.push(`/user/${songCardData.userWhoPosted.username}`)}
+        <Stack direction={"row"}>
+          <Stack>
+            <IconButton disableRipple onClick={upVote}>
+              <ArrowUpwardIcon />
+            </IconButton>
+            <Box
+              my={"auto"}
+              mx={3}
+              border={"3px solid #4162ff"}
+              width={"32px"}
+              height={"32px"}
+              borderRadius={"50%"}
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              p={2.5}
             >
-              {songCardData.userWhoPosted.username}
-            </Typography>
-            <Avatar
-              src={songCardData.userWhoPosted.profilePicture}
-              sx={{
-                width: 32,
-                height: 32,
-              }}
-            />
+              <Typography fontWeight={600}>{songCardData.voteCount}</Typography>
+            </Box>
           </Stack>
-
-          <Menu
-            onClose={closeComments}
-            anchorEl={anchorEl}
-            open={open}
-            sx={{ maxHeight: "600px" }}
-            TransitionComponent={Fade}
-            anchorOrigin={{ horizontal: "right", vertical: "center" }}
+          <Stack gap={1} width={"-webkit-fill-available"}>
+            <Typography
+              sx={{ cursor: "pointer" }}
+              width={"fit-content"}
+              onClick={() => router.push(`/song/${songCardData.slug}`)}
+              fontWeight={500}
+            >
+              {songCardData.songName}
+            </Typography>
+            <Divider sx={{ width: "275px" }} />
+            <Typography>
+              {songCardData.date} - {songCardData.venueLocation}, {songCardData.venueName}
+            </Typography>
+            {/* TODO set a new Typography variant with correct styles using rem or em */}
+            <Typography fontSize={"13px"} color={"grey"}>
+              Description:
+            </Typography>
+            <Typography>{songCardData.description}</Typography>
+            <Button
+              sx={{
+                mt: 1,
+                justifyContent: "left",
+                padding: 0,
+                width: "fit-content",
+              }}
+              onClick={() => toggleOpenComments()}
+            >
+              View Comments
+            </Button>
+            <Stack
+              gap={1}
+              mr={2}
+              direction={"row"}
+              alignItems={"center"}
+              justifyContent={"flex-end"}
+            >
+              <Typography>Posted by: </Typography>
+              <Typography
+                sx={{
+                  cursor: "pointer",
+                }}
+                onClick={() =>
+                  router.push(`/user/${songCardData.userWhoPosted.username}`)
+                }
+              >
+                {songCardData.userWhoPosted.username}
+              </Typography>
+              <Avatar
+                src={songCardData.userWhoPosted.profilePicture}
+                sx={{
+                  width: 32,
+                  height: 32,
+                }}
+              />
+            </Stack>
+          </Stack>
+        </Stack>
+        <Box
+          p={0}
+          flexDirection={"column"}
+          sx={{
+            transition: "all 1.0s ease",
+            maxHeight: openComments ? "550px" : "0px",
+            overflow: "hidden",
+          }}
+        >
+          <Box
+            sx={{
+              height:
+                songCardData.comments.length > 4
+                  ? "20rem"
+                  : songCardData.comments.length * 64,
+              overflowY: "auto",
+              padding: 0,
+            }}
           >
             {songCardData.comments.map(({ username, profilePicture, comment, _id }) => {
               return (
@@ -173,31 +178,28 @@ const SongCard = ({
                 </Stack>
               );
             })}
-            <form style={{ padding: 15 }} onSubmit={addComment}>
-              <TextField
-                value={comment}
-                sx={{ display: "flex", alignItems: "center" }}
-                color="primary"
-                onChange={(e) => commentTyped(e.target.value)}
-                fullWidth
-                label="comment"
-              ></TextField>
-              <Typography>{children}</Typography>
-              <Button
-                sx={{
-                  borderRadius: 2,
-                  color: "white",
-                  marginTop: 2,
-                  position: "",
-                }}
-                variant="contained"
-                type="submit"
-              >
-                Submit
-              </Button>
-            </form>
-          </Menu>
-        </Stack>
+          </Box>
+          <form
+            onSubmit={addComment}
+            style={{ display: "flex", gap: "2rem", justifyContent: "center" }}
+          >
+            <TextField
+              color="primary"
+              onChange={(e) => commentTyped(e.target.value)}
+              label="Comment"
+            />
+            <Button
+              sx={{ borderRadius: 4, color: "white" }}
+              variant="contained"
+              type="submit"
+            >
+              Submit
+            </Button>
+          </form>
+          <Typography textAlign={"center"} p={1} color={"red"}>
+            {error}
+          </Typography>
+        </Box>
       </Stack>
     </>
   );
