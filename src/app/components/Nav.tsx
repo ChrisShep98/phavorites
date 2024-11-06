@@ -159,10 +159,12 @@ const Nav = ({ children }: NavProps) => {
             </Typography>
           </Button>
         </Stack>
-        <Stack justifyContent={"center"}>
+        {/* width of 132 px to match phish icon and even out the nav bar */}
+        <Stack justifyContent={"center"} width={"132px"}>
           {session.status === "authenticated" && (
             <>
               <IconButton
+                disableRipple={true}
                 onClick={handleProfileClick}
                 size="small"
                 aria-controls={openProfileMenu ? "account-menu" : undefined}
@@ -189,8 +191,8 @@ const Nav = ({ children }: NavProps) => {
                     mr: 1,
                   },
                 }}
-                transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                transformOrigin={{ horizontal: "center", vertical: "top" }}
+                anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
               >
                 <MenuItem onClick={handleProfileClose}>
                   <ListItemText
@@ -198,10 +200,6 @@ const Nav = ({ children }: NavProps) => {
                   >
                     Profile
                   </ListItemText>
-                </MenuItem>
-
-                <MenuItem>
-                  <ListItemText>Settings</ListItemText>
                 </MenuItem>
                 <MenuItem>
                   <ListItemText onClick={() => signOut()}>Logout</ListItemText>
