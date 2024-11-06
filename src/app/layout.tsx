@@ -28,7 +28,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const session = await getServerSession();
   return (
     <html lang="en">
-      <body className={arOneSans.className} style={{ scrollbarGutter: "stable" }}>
+      <body className={arOneSans.className}>
         <ThemeProvider>
           <SongContextProvider>
             <ModalContextProvider>
