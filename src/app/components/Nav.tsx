@@ -26,6 +26,7 @@ import Image from "next/image";
 import "animate.css";
 import { ModalContext } from "@/context/ModalContext";
 import { getProfilePicture } from "@/services/userServices";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface NavProps {
   children: ReactNode;
@@ -44,6 +45,7 @@ const Nav = ({ children }: NavProps) => {
   const router = useRouter();
   const [profilePicture, setProfilePicture] = useState("");
   const { isProPicModalOpen } = useContext(ModalContext);
+  const [loading, setLoading] = useState(true);
 
   // TODO: Don't love the isProPicModalOpen dependency here bcuz of necessary calls but will leave for now
   useEffect(() => {
@@ -51,10 +53,11 @@ const Nav = ({ children }: NavProps) => {
       if (session.data !== null && session.data.user.userId !== undefined) {
         const profilePicture = await getProfilePicture(session.data.user.userId);
         setProfilePicture(profilePicture);
+        setLoading(false);
       }
     };
     fetchProfilePicture();
-  }, [session.data?.user.userId, isProPicModalOpen]);
+  }, [session.data, isProPicModalOpen]);
 
   const { isModalOpen, closeModal, openModal } = useContext(ModalContext);
 
@@ -120,9 +123,7 @@ const Nav = ({ children }: NavProps) => {
         </Box>
         <Stack flexDirection={"row"} alignItems={"center"} gap={4}>
           <Button sx={{ textTransform: "none" }} onClick={handleSongClick}>
-            <Typography color={"primary.main"} letterSpacing={"0.10rem"}>
-              Search
-            </Typography>
+            <Typography variant="overline">Search</Typography>
           </Button>
           <Popover
             sx={{ "& .MuiPaper-root": { scrollbarWidth: "none" } }}
@@ -149,14 +150,10 @@ const Nav = ({ children }: NavProps) => {
             />
           </Popover>
           <Button onClick={openModal} sx={{ textTransform: "none" }}>
-            <Typography color={"primary.main"} letterSpacing={"0.10rem"}>
-              Submit Song
-            </Typography>
+            <Typography variant="overline">Submit Song</Typography>
           </Button>
           <Button onClick={randomSong} sx={{ textTransform: "none" }}>
-            <Typography color={"primary.main"} letterSpacing={"0.10rem"}>
-              Random Song
-            </Typography>
+            <Typography variant="overline">Random Song</Typography>
           </Button>
         </Stack>
         {/* width of 132 px to match phish icon and even out the nav bar */}
@@ -171,14 +168,18 @@ const Nav = ({ children }: NavProps) => {
                 aria-haspopup="true"
                 aria-expanded={openProfileMenu ? "true" : undefined}
               >
-                <Avatar
-                  className="animate__animated animate__bounceInDown"
-                  src={profilePicture}
-                  sx={{
-                    width: 62,
-                    height: 62,
-                  }}
-                />
+                {loading ? (
+                  <CircularProgress size={30} />
+                ) : (
+                  <Avatar
+                    className="animate__animated animate__bounceInDown"
+                    src={profilePicture}
+                    sx={{
+                      width: 62,
+                      height: 62,
+                    }}
+                  />
+                )}
               </IconButton>
               <Menu
                 anchorEl={profileAnchorEl}

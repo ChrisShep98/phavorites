@@ -11,18 +11,22 @@ export const SongContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [error, setError] = useState("");
   const paramValue = usePathname().split("/").pop();
   const route = usePathname().split("/")[1];
+  const [loading, setLoading] = useState(true);
 
   async function fetchSongSubmissions(filterName?: string, valueName?: string) {
     if (filterName == undefined && valueName == undefined) {
+      console.log("hello this condition is run");
       const response = await fetch(`http://localhost:8000/submissions`);
       const submissions = await response.json();
       setSongSubmissions(submissions.data);
+      setLoading(false);
     } else {
       const response = await fetch(
         `http://localhost:8000/submissions?filter=${filterName}&value=${valueName}`
       );
       const submissions = await response.json();
       setSongSubmissions(submissions.data);
+      setLoading(false);
     }
   }
 
@@ -33,6 +37,7 @@ export const SongContextProvider: React.FC<{ children: React.ReactNode }> = ({
         setError,
         error,
         paramValue,
+        loading,
         route,
         fetchSongSubmissions,
       }}

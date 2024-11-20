@@ -19,6 +19,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     components: {},
     typography: {
       fontFamily: outfit.style.fontFamily,
+      overline: {
+        color: "#0a0a0a",
+        textTransform: "none",
+        fontSize: "1rem",
+      },
     },
   });
 

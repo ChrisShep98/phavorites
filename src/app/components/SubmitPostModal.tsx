@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 import { SongContext } from "@/context/SongContext";
 import { style } from "@/lib/reusableStyles/styles";
 import { ModalType } from "@/types/propTypes";
-import { getProfilePicture } from "@/services/userServices";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface DateSelectedType {
   date: string;
@@ -34,13 +34,13 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
     venueLocation: "",
   });
   const [description, setDescription] = useState("");
-  //TODO: add error to UI providing k and name of user who posted or no description
+  const [allDatesOfSong, setAllDatesOfSong] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const session = useSession();
   const userId = session.data?.user.userId;
-  const username = session.data?.user.username;
 
-  const [allDatesOfSong, setAllDatesOfSong] = useState<string[]>([]);
+  const username = session.data?.user.username;
 
   //TODO: I'm using this kinda of function frequently thought out the app, probably make a global func I can use instead of this wet code
   // hahah this is so gross I feel like, but I do like that we just have a single function to do all the work  now
@@ -59,7 +59,9 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const profilePicture = await getProfilePicture(userId!);
+      if (session.status == "unauthenticated") {
+        throw new Error("Please login to submit a post");
+      }
       const res = await fetch("http://localhost:8000/songSubmittion", {
         method: "POST",
         headers: {
@@ -71,7 +73,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
           date: dateSelected,
           userWhoPosted: {
             username,
-            profilePicture,
+            userId,
           },
           venueLocation: myVenueInfo?.venueLocation,
           venueName: myVenueInfo?.venueName,
@@ -97,13 +99,15 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
 
   useEffect(() => {
     if (songSelected) {
-      console.log("useEffect is run");
+      setLoading(true);
+      setAllDatesOfSong([]);
       const fetchData = async () => {
         try {
-          const myData = await getAllPreformancesOfSongs(songSelected.slug);
+          const myData = await getAllPreformancesOfSongs(songSelected!.slug);
           // remove duplicates with new Set()
           const dates = [...new Set(myData.map((el) => el.date))];
           setAllDatesOfSong(dates);
+          setLoading(false);
           if (dateSelected !== "") {
             const myDateData = myData.find((obj) => obj.date === dateSelected);
             setMyVenueInfo(myDateData);
@@ -151,9 +155,12 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
                 <TextField sx={{ color: "white" }} {...params} label="Songs" />
               )}
             />
+
             <Autocomplete
               disablePortal
               id="combo-box-demo"
+              loading={loading}
+              loadingText={<CircularProgress size={20} />}
               options={songSelected ? allDatesOfSong : []}
               onChange={(event, newValue) => {
                 setDateSelected(newValue!);

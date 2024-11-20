@@ -1,10 +1,21 @@
-import { Box, Button, Modal, Typography } from "@mui/material";
-import React, { FormEvent, useState, useContext } from "react";
-import Image from "next/image";
+import { Box, Button, Modal, styled, Typography } from "@mui/material";
+import React, { FormEvent, useState } from "react";
 import { useSession } from "next-auth/react";
 import { style } from "@/lib/reusableStyles/styles";
 import { ModalType } from "@/types/propTypes";
-import { ModalContext } from "@/context/ModalContext";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 
 const UploadProfilePicModal = ({ isOpen, onClose }: ModalType) => {
   const [imageUpload, setImageUpload] = useState<Blob>();
@@ -50,11 +61,10 @@ const UploadProfilePicModal = ({ isOpen, onClose }: ModalType) => {
           <Typography
             textAlign={"center"}
             id="modal-modal-title"
-            variant="h6"
-            component="h2"
             mb={2}
+            variant="overline"
           >
-            Upload a profile picture below!
+            Upload a profile picture below
           </Typography>
           <form
             encType="multipart/form-data"
@@ -66,18 +76,37 @@ const UploadProfilePicModal = ({ isOpen, onClose }: ModalType) => {
               alignItems: "center",
             }}
           >
-            <input type="file" onChange={handleImageUpload} name="profilePicture" />
-            {imageUpload ? (
-              <Image src={imagePreview!} alt="your image" height={250} width={250} />
-            ) : null}
             <Button
-              sx={{ borderRadius: 2 }}
-              color={"primary"}
-              variant="contained"
-              type="submit"
+              component={"label"}
+              variant="outlined"
+              startIcon={<CloudUploadIcon />}
             >
-              Submit
+              Upload File
+              <VisuallyHiddenInput type="file" onChange={handleImageUpload} />
             </Button>
+
+            {imageUpload ? (
+              <Box
+                width={300}
+                height={240}
+                sx={{
+                  backgroundImage: `url(${imagePreview})`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "contain",
+                  backgroundPosition: "center",
+                }}
+              />
+            ) : null}
+            {imageUpload ? (
+              <Button
+                sx={{ borderRadius: 2 }}
+                color={"primary"}
+                variant="contained"
+                type="submit"
+              >
+                Submit
+              </Button>
+            ) : null}
           </form>
           {/* {error ? <Typography mt={2}>{error}</Typography> : null} */}
         </Box>

@@ -7,10 +7,11 @@ export type SongContextProps = {
   setError: React.Dispatch<React.SetStateAction<string>>;
   error: string;
   paramValue: string | undefined;
+  loading: boolean;
   route: string;
   fetchSongSubmissions: (
-    filterName?: string | undefined,
-    valueName?: string | undefined
+    filterName: string | undefined,
+    valueName: string | undefined
   ) => Promise<void>;
 };
 

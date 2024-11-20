@@ -29,7 +29,7 @@ const UserDetails = () => {
       setUserDetails(user);
     };
     fetchUser();
-  }, []);
+  }, [paramValue]);
 
   const date = new Date(String(userDetails?.createdAt));
   const formattedDate = date.toLocaleDateString("en-US", {
@@ -41,12 +41,8 @@ const UserDetails = () => {
     <Stack direction={"row"} p={10} justifyContent={"space-around"}>
       <UploadProfilePicModal isOpen={isProPicModalOpen} onClose={closeProPicModal} />
       <Stack>
-        <Typography textTransform={"none"} fontSize={"1rem"} variant="overline">
-          User: {userDetails?.username}{" "}
-        </Typography>
-        <Typography textTransform={"none"} fontSize={"1rem"} variant="overline">
-          Account created on: {formattedDate}
-        </Typography>
+        <Typography variant="overline">User: {userDetails?.username} </Typography>
+        <Typography variant="overline">Account created on: {formattedDate}</Typography>
         {loggedInUserId == userDetails?._id ? (
           <Button
             variant="outlined"
@@ -59,7 +55,9 @@ const UserDetails = () => {
         ) : null}
       </Stack>
       <Stack>
-        <Typography variant="h5">{userDetails?.username} posts:</Typography>
+        <Typography fontSize={"1.3rem"} variant="overline">
+          {userDetails?.username} posts:
+        </Typography>
         <SongSubmissions
           fetchRequest={() => fetchSongSubmissions("userWhoPosted.username", paramValue)}
         />

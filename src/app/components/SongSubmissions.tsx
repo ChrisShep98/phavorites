@@ -5,6 +5,7 @@ import { SongContext } from "@/context/SongContext";
 import { useSession } from "next-auth/react";
 import { Typography } from "@mui/material";
 import { getProfilePicture } from "@/services/userServices";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface SubmissionProps {
   fetchRequest: (
@@ -19,7 +20,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
   const username = session.data?.user.username;
   const [refetchVote, setRefetchVote] = useState(false);
   const [comment, setComment] = useState("");
-  const { songSubmissions, error, setError } = useContext(SongContext);
+  const { songSubmissions, error, setError, loading } = useContext(SongContext);
 
   useEffect(() => {
     fetchRequest();
@@ -53,7 +54,6 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
   const submitComment = async (event: FormEvent<HTMLFormElement>, postId: string) => {
     event.preventDefault();
     if (session.status == "authenticated") {
-      const profilePicture = await getProfilePicture(userId!);
       await fetch(`http://localhost:8000/addComment/${postId}`, {
         method: "POST",
         headers: {
@@ -62,7 +62,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
         body: JSON.stringify({
           comment,
           username,
-          profilePicture,
+          userId,
         }),
       });
       setRefetchVote((prevState) => !prevState);
@@ -73,9 +73,14 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
     }
   };
 
+  const getPostedUserProfilePicture = async (userId: string): Promise<string> =>
+    await getProfilePicture(userId);
+
   return (
     <div>
-      {songSubmissions.length == 0 ? (
+      {loading ? (
+        <CircularProgress size={50} sx={{ color: "#4162ff" }} />
+      ) : songSubmissions.length == 0 ? (
         <Typography mt={5}>No Submissions yet</Typography>
       ) : (
         songSubmissions?.map((el) => {
@@ -85,6 +90,9 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
               commentTyped={setComment}
               addComment={(event) => submitComment(event, el._id)}
               upVote={() => handleUpvote(el._id)}
+              getPostedUserProfilePicture={() =>
+                getPostedUserProfilePicture(el.userWhoPosted.userId)
+              }
               key={el._id}
               songCardData={{
                 voteCount: el.voteCount,
@@ -97,11 +105,6 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
                 slug: el.slug,
                 userWhoPosted: el.userWhoPosted,
               }}
-              children={
-                <Typography variant="subtitle1" color={"error"}>
-                  {error}
-                </Typography>
-              }
             />
           );
         })

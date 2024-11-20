@@ -10,8 +10,9 @@ import {
 } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { SongContext } from "@/context/SongContext";
-import React, { FormEvent, useContext, useState } from "react";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { ModalContext } from "@/context/ModalContext";
 
 // TODO: combine / extend this type with songSubmissionCard
 interface SongCardData {
@@ -21,11 +22,11 @@ interface SongCardData {
   date: string;
   description: string;
   voteCount: string;
-  comments: { comment: string; username: string; profilePicture: string; _id: string }[];
+  comments: { comment: string; username: string; userId: string; _id: string }[];
   slug: string;
   userWhoPosted: {
     username: string;
-    profilePicture: string;
+    userId: string;
   };
 }
 
@@ -35,7 +36,7 @@ interface SongSubmissionCardProps {
   commentTyped: React.Dispatch<React.SetStateAction<string>>;
   upVote: () => Promise<void>;
   comment: string;
-  children: React.ReactNode;
+  getPostedUserProfilePicture: (userID: string) => Promise<string>;
 }
 
 const SongCard = ({
@@ -44,15 +45,27 @@ const SongCard = ({
   addComment,
   commentTyped,
   comment,
-  children,
+  getPostedUserProfilePicture,
 }: SongSubmissionCardProps) => {
   const { error } = useContext(SongContext);
+
   const router = useRouter();
 
   const [openComments, setOpenComments] = useState(false);
+  const { isProPicModalOpen } = useContext(ModalContext);
+  const [profilePicture, setProfilePicture] = useState("");
+
   const toggleOpenComments = () => {
     setOpenComments(!openComments);
   };
+
+  useEffect(() => {
+    const postedUserProfilePicFetch = async (userId: string) => {
+      const fetchedProfilePicture = await getPostedUserProfilePicture(userId);
+      setProfilePicture(fetchedProfilePicture);
+    };
+    postedUserProfilePicFetch(songCardData.userWhoPosted.userId);
+  }, [isProPicModalOpen]);
 
   return (
     <>
@@ -135,7 +148,7 @@ const SongCard = ({
                 {songCardData.userWhoPosted.username}
               </Typography>
               <Avatar
-                src={songCardData.userWhoPosted.profilePicture}
+                src={profilePicture}
                 sx={{
                   width: 32,
                   height: 32,
@@ -163,17 +176,25 @@ const SongCard = ({
               padding: 0,
             }}
           >
-            {songCardData.comments.map(({ username, profilePicture, comment, _id }) => {
+            {songCardData.comments.map(({ username, userId, comment, _id }) => {
               return (
                 <Stack direction={"row"} gap={1} key={_id} p={2}>
-                  <Avatar
-                    src={profilePicture}
+                  {/* <Avatar
+                    // src={profilePicture}
                     sx={{
                       width: 32,
                       height: 32,
                     }}
-                  />
-                  <Typography color={"primary"}>{username}:</Typography>
+                  /> */}
+                  <Typography
+                    color={"primary"}
+                    sx={{
+                      cursor: "pointer",
+                    }}
+                    onClick={() => router.push(`/user/${username}`)}
+                  >
+                    {username}:
+                  </Typography>
                   <Typography color={"primary"}>{comment}</Typography>
                 </Stack>
               );
@@ -186,6 +207,7 @@ const SongCard = ({
             <TextField
               color="primary"
               onChange={(e) => commentTyped(e.target.value)}
+              value={comment}
               label="Comment"
             />
             <Button

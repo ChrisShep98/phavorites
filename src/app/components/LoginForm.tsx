@@ -38,17 +38,13 @@ const LoginForm = () => {
   return (
     <Box
       boxShadow={"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}
-      mx={"auto"}
-      width={"20rem"}
+      position={"absolute"}
       p={6}
       borderRadius={"30px"}
       component="form"
       method="post"
       onSubmit={handleSubmit}
-      mb={1}
-      zIndex={1}
       sx={{ backgroundColor: "white" }}
-      mt={20}
     >
       <Stack rowGap={2}>
         <Typography variant="h3" color={"primary.main"} fontWeight={"600"}>
