@@ -62,7 +62,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
       if (session.status == "unauthenticated") {
         throw new Error("Please login to submit a post");
       }
-      const res = await fetch("http://localhost:8000/songSubmittion", {
+      const res = await fetch("https://phavorites-node.vercel.app/songSubmittion", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

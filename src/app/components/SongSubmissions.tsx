@@ -28,7 +28,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
 
   const handleUpvote = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:8000/${id}/upVote`, {
+      const res = await fetch(`https://phavorites-node.vercel.app/${id}/upVote`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +54,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
   const submitComment = async (event: FormEvent<HTMLFormElement>, postId: string) => {
     event.preventDefault();
     if (session.status == "authenticated") {
-      await fetch(`http://localhost:8000/addComment/${postId}`, {
+      await fetch(`https://phavorites-node.vercel.app/addComment/${postId}`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
