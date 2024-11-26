@@ -62,20 +62,14 @@ const handler = NextAuth({
         createdAt: token.user.createdAt,
         userId: token.user._id,
       };
-      // console.log("session", session)
-      // session {
-      //   user: {
-      //     id: 6
-      //     token: 'cdce51a6-7d61-4e2d-9bbc-6ed288bf91a2'
-      //   }
-      // }
+      // console.log("session", session);
       return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     // the route used to login
-    signIn: "/",
+    signIn: "/login",
   },
 });
 
