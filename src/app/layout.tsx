@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AuthProvder } from "./providers/SessionProvider";
 import "./globals.css";
-import { getServerSession } from "next-auth";
+import { Session } from "next-auth";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import { SongContextProvider } from "./providers/SongContextProvider";
 import { ModalContextProvider } from "./providers/ModalContextProvider";
@@ -19,21 +19,27 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const session = await getServerSession();
+export default async function RootLayout({
+  children,
+  session,
+}: {
+  children: React.ReactNode;
+  session: Session;
+}) {
+  // const session = await getServerSession();
   return (
-    <html lang="en">
-      <body>
-        <ThemeProvider>
-          <SongContextProvider>
-            <ModalContextProvider>
-              <AuthProvder session={session}>
+    <AuthProvder session={session}>
+      <html lang="en">
+        <body>
+          <ThemeProvider>
+            <SongContextProvider>
+              <ModalContextProvider>
                 <Nav>{children}</Nav>
-              </AuthProvder>
-            </ModalContextProvider>
-          </SongContextProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+              </ModalContextProvider>
+            </SongContextProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    </AuthProvder>
   );
 }

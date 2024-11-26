@@ -62,7 +62,6 @@ const handler = NextAuth({
         createdAt: token.user.createdAt,
         userId: token.user._id,
       };
-      // console.log("session", session);
       return session;
     },
   },

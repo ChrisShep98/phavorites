@@ -50,7 +50,7 @@ const Nav = ({ children }: NavProps) => {
   // TODO: Don't love the isProPicModalOpen dependency here bcuz of necessary calls but will leave for now
   useEffect(() => {
     const fetchProfilePicture = async () => {
-      if (session.data !== null && session.data.user.userId !== undefined) {
+      if (session.data) {
         const profilePicture = await getProfilePicture(session.data.user.userId);
         setProfilePicture(profilePicture);
         setLoading(false);
