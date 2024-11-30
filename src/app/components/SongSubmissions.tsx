@@ -28,7 +28,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
 
   const handleUpvote = async (id: string) => {
     try {
-      const res = await fetch(`https://phavorites-express.vercel.app/${id}/upVote`, {
+      const res = await fetch(`http://localhost:8000/${id}/upVote`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
