@@ -14,6 +14,7 @@ import {
   MenuItem,
   Menu,
   ListItemText,
+  useTheme,
 } from "@mui/material";
 import { signOut } from "next-auth/react";
 import React, { ReactNode, useContext, useEffect, useState } from "react";
@@ -86,6 +87,13 @@ const Nav = ({ children }: NavProps) => {
 
   const openSongSearchMenu = Boolean(songAnchorEl);
   const openProfileMenu = Boolean(profileAnchorEl);
+  const theme = useTheme();
+
+  const typographyBreakpoint = {
+    [theme.breakpoints.down(613)]: {
+      lineHeight: "1.8rem",
+    },
+  };
 
   return (
     <AppBar
@@ -150,10 +158,22 @@ const Nav = ({ children }: NavProps) => {
             />
           </Popover>
           <Button onClick={openModal} sx={{ textTransform: "none" }}>
-            <Typography variant="overline">Submit Song</Typography>
+            <Typography sx={typographyBreakpoint} variant="overline">
+              Submit Song
+            </Typography>
           </Button>
-          <Button onClick={randomSong} sx={{ textTransform: "none" }}>
-            <Typography variant="overline">Random Song</Typography>
+          <Button
+            onClick={randomSong}
+            sx={{
+              textTransform: "none",
+              [theme.breakpoints.down(500)]: {
+                display: "none",
+              },
+            }}
+          >
+            <Typography sx={typographyBreakpoint} variant="overline">
+              Random Song
+            </Typography>
           </Button>
         </Stack>
         {/* width of 132 px to match phish icon and even out the nav bar */}

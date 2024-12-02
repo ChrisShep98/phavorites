@@ -7,6 +7,7 @@ import {
   Stack,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { SongContext } from "@/context/SongContext";
@@ -50,6 +51,7 @@ const SongCard = ({
   const { error } = useContext(SongContext);
 
   const router = useRouter();
+  const theme = useTheme();
 
   const [openComments, setOpenComments] = useState(false);
   const { isProPicModalOpen } = useContext(ModalContext);
@@ -70,6 +72,11 @@ const SongCard = ({
   return (
     <>
       <Stack
+        sx={{
+          [theme.breakpoints.down(482)]: {
+            width: "24rem",
+          },
+        }}
         overflow={"hidden"}
         width={"30rem"}
         borderRadius={4}

@@ -11,6 +11,15 @@ const outfit = Outfit({
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const theme = createTheme({
+    breakpoints: {
+      values: {
+        xs: 600,
+        sm: 745,
+        md: 800,
+        lg: 1000,
+        xl: 1200,
+      },
+    },
     palette: {
       primary: {
         main: "#0a0a0a",

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, useContext } from "react";
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography, useTheme } from "@mui/material";
 import { getUserByUsername } from "@/services/userServices";
 import SongSubmissions from "./SongSubmissions";
 import { SongContext } from "@/context/SongContext";
@@ -31,6 +31,7 @@ const UserDetails = () => {
     fetchUser();
   }, [paramValue]);
 
+  const theme = useTheme();
   const date = new Date(String(userDetails?.createdAt));
   const formattedDate = date.toLocaleDateString("en-US", {
     month: "long",
@@ -38,7 +39,19 @@ const UserDetails = () => {
     year: "numeric",
   });
   return (
-    <Stack direction={"row"} p={10} justifyContent={"space-around"}>
+    <Stack
+      sx={{
+        [theme.breakpoints.down("sm")]: {
+          flexDirection: "column",
+        },
+        [theme.breakpoints.down(400)]: {
+          padding: 0,
+        },
+      }}
+      direction={"row"}
+      p={2}
+      justifyContent={"space-around"}
+    >
       <UploadProfilePicModal isOpen={isProPicModalOpen} onClose={closeProPicModal} />
       <Stack>
         <Typography variant="overline">User: {userDetails?.username} </Typography>
@@ -47,7 +60,12 @@ const UserDetails = () => {
           <Button
             variant="outlined"
             size="small"
-            sx={{ cursor: "pointer", fontWeight: "400", borderRadius: 4 }}
+            sx={{
+              cursor: "pointer",
+              fontWeight: "400",
+              borderRadius: 4,
+              maxWidth: "282px",
+            }}
             onClick={openProPicModal}
           >
             Change Profile Picture

@@ -1,6 +1,12 @@
 "use client";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
-import Link from "next/link";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  Link as MuiLink,
+} from "@mui/material";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 
@@ -42,6 +48,8 @@ const RegisterForm = () => {
   return (
     <Box
       boxShadow={"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}
+      position={"absolute"}
+      sx={{ backgroundColor: "white" }}
       mx={"auto"}
       width={"20rem"}
       p={6}
@@ -84,7 +92,9 @@ const RegisterForm = () => {
           </Button>
         </form>
         {error && <Typography color={"red"}>{error}</Typography>}
-        <Link href={"/login"}>Already have an account? Login here</Link>
+        <MuiLink href={"/login"}>
+          <Typography color={"#1c203d"}>Already have an account? Login here</Typography>
+        </MuiLink>
       </Stack>
     </Box>
   );
