@@ -76,68 +76,6 @@ const LoginForm = () => {
         )}
       </Stack>
     </Box>
-    // <Stack height={"100vh"} flexDirection={"row"}>
-    //   <Stack
-    //     sx={{
-    //       height: "100vh",
-    //       width: "89%",
-    //       // backgroundImage: "url(/images/PHISH-LEMONWHEEL.jpg)",
-    //       backgroundSize: "contain",
-    //       backgroundPosition: "center",
-    //     }}
-    //   />
-    //   <Box
-    //     // className="animate__animated animate__fadeIn"
-    //     boxShadow={"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}
-    //     mx={"auto"}
-    //     width={"250px"}
-    //     p={6}
-    //     borderRadius={"30px"}
-    //     component="form"
-    //     method="post"
-    //     mb={1}
-    //   >
-    //     <Stack rowGap={2}>
-    //       <TextField
-    //         name="username"
-    //         label="Username"
-    //         type="text"
-    //         size="small"
-    //         onChange={(e) => setUsername(e.target.value)}
-    //       />
-    //       <TextField
-    //         name="password"
-    //         label="Password"
-    //         type="password"
-    //         size="small"
-    //         onChange={(e) => setPassword(e.target.value)}
-    //       />
-    //       <TextField name="email" label="Email" type="email" size="small" />
-    //       <Button type="submit" variant="outlined"></Button>
-    //     </Stack>
-    //   </Box>
-    //   <Stack justifyContent={"center"} ml={5} width={"30%"}>
-    //     <Typography variant="h3" color={"blue"} fontWeight={""}>
-    //       Login
-    //     </Typography>
-    //     <Typography>Welcome ! Login below</Typography>
-    //     <form onSubmit={handleSubmit} className="loginForm">
-    //       <TextField
-    //         onChange={(e) => setUsername(e.target.value)}
-    //         placeholder="Username"
-    //         type="text"
-    //       ></TextField>
-    //       <TextField
-    //         onChange={(e) => setPassword(e.target.value)}
-    //         type="password"
-    //         placeholder="Password"
-    //       ></TextField>
-    //       <Button type="submit">Login</Button>
-    //     </form>
-    //     {error && <Typography color={"red"}>{error}</Typography>}
-    //     <Link href={"/register"}>Don't have an account? Register here</Link>
-    //   </Stack>
-    // </Stack>
   );
 };
 
