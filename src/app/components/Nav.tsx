@@ -123,14 +123,13 @@ const Nav = ({ children }: NavProps) => {
           </MuiLink>
         </Box>
         <Stack flexDirection={"row"} alignItems={"center"} gap={4}>
-          <Button sx={{ textTransform: "none" }} onClick={handleSongClick}>
+          <Button disableRipple sx={{ textTransform: "none" }} onClick={handleSongClick}>
             <Typography variant="overline">Search</Typography>
           </Button>
           <Popover
             sx={{ "& .MuiPaper-root": { scrollbarWidth: "none" } }}
             open={openSongSearchMenu}
             anchorEl={songAnchorEl}
-            onClose={handleSongClose}
             anchorOrigin={{
               vertical: "bottom",
               horizontal: "left",
@@ -142,6 +141,7 @@ const Nav = ({ children }: NavProps) => {
               options={songs}
               onChange={(event, newValue) => {
                 router.push(`/song/${newValue?.slug}`);
+                handleSongClose();
               }}
               getOptionLabel={(option) => option.song}
               sx={{ width: 300, height: 300, backgroundColor: "white" }}

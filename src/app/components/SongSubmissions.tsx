@@ -79,7 +79,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
   return (
     <div>
       {loading ? (
-        <CircularProgress size={50} sx={{ color: "#4162ff" }} />
+        <CircularProgress size={50} />
       ) : songSubmissions.length == 0 ? (
         <Typography mt={5}>No Submissions yet</Typography>
       ) : (
