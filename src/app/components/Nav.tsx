@@ -33,13 +33,6 @@ interface NavProps {
   children: ReactNode;
 }
 
-interface User {
-  createdAt: string;
-  username: string;
-  _id: string;
-  profilePicture: string;
-}
-
 const Nav = ({ children }: NavProps) => {
   //TODO: move all the fetching and statemanagement going on in SubmitPostModal to this parent container?
   const session = useSession();
