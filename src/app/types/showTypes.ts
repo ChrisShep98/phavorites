@@ -67,7 +67,13 @@ export interface songSubmissionCard {
   venueName: string;
   date: string;
   description: string; // possibly undefined?
-  comments: { username: string; userId: string; comment: string; _id: string }[]; // should be required
+  comments: {
+    username: string;
+    userId: string;
+    comment: string;
+    _id: string;
+    profilePicture: string;
+  }[]; // should be required
   slug: string;
   userWhoPosted: {
     username: string;
