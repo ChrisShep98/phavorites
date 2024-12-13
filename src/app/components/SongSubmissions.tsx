@@ -20,7 +20,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
   const username = session.data?.user.username;
   const [refetchVote, setRefetchVote] = useState(false);
   const [comment, setComment] = useState("");
-  const { songSubmissions, error, setError, loading } = useContext(SongContext);
+  const { songSubmissions, setError, loading } = useContext(SongContext);
 
   useEffect(() => {
     fetchRequest();
@@ -53,23 +53,28 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
 
   const submitComment = async (event: FormEvent<HTMLFormElement>, postId: string) => {
     event.preventDefault();
-    if (session.status == "authenticated") {
-      await fetch(`https://phavorites-express.vercel.app/addComment/${postId}`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          comment,
-          username,
-          userId,
-        }),
-      });
-      setRefetchVote((prevState) => !prevState);
-      // Setting the comment to an empty string after submit doesn't work?
-      setComment("");
+    if (comment == "") {
+      setError("Please type a comment");
     } else {
-      setError("Please login to submit a comment");
+      if (session.status == "authenticated") {
+        await fetch(`https://phavorites-express.vercel.app/addComment/${postId}`, {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            comment,
+            username,
+            userId,
+          }),
+        });
+        setRefetchVote((prevState) => !prevState);
+        // Setting the comment to an empty string after submit doesn't work?
+        setComment("");
+        setError("");
+      } else {
+        setError("Please login to submit a comment");
+      }
     }
   };
 
