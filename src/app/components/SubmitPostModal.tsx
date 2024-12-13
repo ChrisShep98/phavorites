@@ -91,6 +91,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
         fetchSubmissions();
         //TODO: some kind of success message?
         onClose();
+        setDescription("");
       }
     } catch (error: any) {
       setError(error.message);

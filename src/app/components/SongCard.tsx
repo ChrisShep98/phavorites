@@ -23,7 +23,13 @@ interface SongCardData {
   date: string;
   description: string;
   voteCount: string;
-  comments: { comment: string; username: string; userId: string; _id: string }[];
+  comments: {
+    comment: string;
+    username: string;
+    userId: string;
+    _id: string;
+    profilePicture: string;
+  }[];
   slug: string;
   userWhoPosted: {
     username: string;
@@ -183,16 +189,16 @@ const SongCard = ({
               padding: 0,
             }}
           >
-            {songCardData.comments.map(({ username, userId, comment, _id }) => {
+            {songCardData.comments.map(({ username, comment, _id, profilePicture }) => {
               return (
                 <Stack direction={"row"} gap={1} key={_id} p={2}>
-                  {/* <Avatar
-                    // src={profilePicture}
+                  <Avatar
+                    src={profilePicture}
                     sx={{
                       width: 32,
                       height: 32,
                     }}
-                  /> */}
+                  />
                   <Typography
                     color={"primary"}
                     sx={{
