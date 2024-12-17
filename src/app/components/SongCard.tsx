@@ -215,7 +215,12 @@ const SongCard = ({
           </Box>
           <form
             onSubmit={addComment}
-            style={{ display: "flex", gap: "2rem", justifyContent: "center" }}
+            style={{
+              display: "flex",
+              gap: "2rem",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
             <TextField
               color="primary"
@@ -223,11 +228,7 @@ const SongCard = ({
               value={comment}
               label="Comment"
             />
-            <Button
-              sx={{ borderRadius: 4, color: "white" }}
-              variant="contained"
-              type="submit"
-            >
+            <Button sx={{ borderRadius: 2 }} variant="contained" type="submit">
               Submit
             </Button>
           </form>
