@@ -29,7 +29,7 @@ export default async function RootLayout({
   return (
     <AuthProvder session={session}>
       <html lang="en">
-        <body>
+        <body style={{ scrollbarGutter: "stable" }}>
           <ThemeProvider>
             <SongContextProvider>
               <ModalContextProvider>
