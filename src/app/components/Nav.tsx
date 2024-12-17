@@ -129,6 +129,7 @@ const Nav = ({ children }: NavProps) => {
           <Popover
             sx={{ "& .MuiPaper-root": { scrollbarWidth: "none" } }}
             open={openSongSearchMenu}
+            onClose={handleSongClose}
             anchorEl={songAnchorEl}
             anchorOrigin={{
               vertical: "bottom",
