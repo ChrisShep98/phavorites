@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
+import { isReadable } from "stream";
 
 const RegisterForm = () => {
   const [username, setUsername] = useState("");
@@ -33,6 +34,8 @@ const RegisterForm = () => {
       });
       if (!username || !email || !password) {
         throw new Error("Please fill out all fields");
+      } else if (username.length > 15) {
+        throw new Error("Username must be less than 15 characters");
       }
       if (res.ok) {
         router.push("/login");
