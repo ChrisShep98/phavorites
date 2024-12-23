@@ -5,7 +5,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
-  const [username, setUsername] = useState("");
+  const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const session = useSession();
@@ -21,7 +21,7 @@ const LoginForm = () => {
     event.preventDefault();
     try {
       const res = await signIn("credentials", {
-        username,
+        usernameOrEmail,
         password,
         redirect: false,
       });
@@ -53,11 +53,11 @@ const LoginForm = () => {
         <Typography color={"#1c203d"}>Welcome ! Login below</Typography>
 
         <TextField
-          name="username"
-          label="Username"
+          name="usernameOrEmail"
+          label="Username or Email"
           type="text"
           size="small"
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setUsernameOrEmail(e.target.value)}
         />
         <TextField
           name="password"
