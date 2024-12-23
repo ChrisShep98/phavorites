@@ -12,12 +12,15 @@ const handler = NextAuth({
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        username: { label: "Username", type: "text" },
+        usernameOrEmail: { label: "UsernameOrEmail", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any) {
         try {
-          const response = await loginUser(credentials.username, credentials.password);
+          const response = await loginUser(
+            credentials.usernameOrEmail,
+            credentials.password
+          );
           // if the server sends back a response with a message value then an error occured
           if (response.message !== undefined) {
             return { error: response.message };
