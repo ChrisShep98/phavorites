@@ -1,5 +1,5 @@
 export async function loginUser(usernameOrEmail: string, password: string) {
-  const response = await fetch(`http://localhost:8000/login`, {
+  const response = await fetch(`https://phavorites-express.vercel.app/login`, {
     method: "POST",
     headers: {
       "Content-type": "application/json",
