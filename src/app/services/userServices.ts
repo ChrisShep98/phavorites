@@ -1,5 +1,5 @@
 export async function loginUser(usernameOrEmail: string, password: string) {
-  const response = await fetch(`https://phavorites-express.vercel.app/login`, {
+  const response = await fetch(`${process.env.PHAVORITES_EXPRESS}/login`, {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -11,7 +11,7 @@ export async function loginUser(usernameOrEmail: string, password: string) {
 }
 
 export async function getUserByUsername(username: string) {
-  const response = await fetch(`https://phavorites-express.vercel.app/user/${username}`);
+  const response = await fetch(`${process.env.PHAVORITES_EXPRESS}/user/${username}`);
   const user = await response.json();
 
   return user.data;
@@ -19,7 +19,7 @@ export async function getUserByUsername(username: string) {
 
 export async function getProfilePicture(id: string) {
   const response = await fetch(
-    `https://phavorites-express.vercel.app/getProfilePicture/${id}`
+    `${process.env.PHAVORITES_EXPRESS}/getProfilePicture/${id}`
   );
   const profilePicture = await response.json();
   return profilePicture.data;

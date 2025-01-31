@@ -21,7 +21,7 @@ const RegisterForm = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const res = await fetch("https://phavorites-express.vercel.app/register", {
+      const res = await fetch(`${process.env.PHAVORITES_EXPRESS}/register`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",

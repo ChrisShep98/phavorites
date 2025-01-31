@@ -28,7 +28,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
 
   const handleUpvote = async (id: string) => {
     try {
-      const res = await fetch(`https://phavorites-express.vercel.app/${id}/upVote`, {
+      const res = await fetch(`${process.env.PHAVORITES_EXPRESS}/${id}/upVote`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -57,7 +57,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
       setError("Please type a comment");
     } else {
       if (session.status == "authenticated") {
-        await fetch(`https://phavorites-express.vercel.app/addComment/${postId}`, {
+        await fetch(`${process.env.PHAVORITES_EXPRESS}/addComment/${postId}`, {
           method: "POST",
           headers: {
             "Content-type": "application/json",

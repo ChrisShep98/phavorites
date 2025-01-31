@@ -38,7 +38,7 @@ const UploadProfilePicModal = ({ isOpen, onClose }: ModalType) => {
     const formData = new FormData();
     formData.append("profilePicture", imageUpload!);
     try {
-      await fetch(`https://phavorites-express.vercel.app/uploadProfilePic/${userId}`, {
+      await fetch(`${process.env.PHAVORITES_EXPRESS}/uploadProfilePic/${userId}`, {
         method: "PUT",
         body: formData,
       });
