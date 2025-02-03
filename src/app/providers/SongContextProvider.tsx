@@ -12,6 +12,7 @@ export const SongContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const paramValue = usePathname().split("/").pop();
   const route = usePathname().split("/")[1];
   const [loading, setLoading] = useState(true);
+  const [postIdToDelete, setPostIdToDelete] = useState("");
 
   async function fetchSongSubmissions(filterName?: string, valueName?: string) {
     if (filterName == undefined && valueName == undefined) {
@@ -40,6 +41,8 @@ export const SongContextProvider: React.FC<{ children: React.ReactNode }> = ({
         loading,
         route,
         fetchSongSubmissions,
+        setPostIdToDelete,
+        postIdToDelete,
       }}
     >
       {children}

@@ -14,9 +14,12 @@ import { SongContext } from "@/context/SongContext";
 import React, { FormEvent, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ModalContext } from "@/context/ModalContext";
+import DeleteOutline from "@mui/icons-material/DeleteOutline";
+import { useSession } from "next-auth/react";
 
 // TODO: combine / extend this type with songSubmissionCard
 interface SongCardData {
+  _id: string;
   songName: string;
   venueLocation: string;
   venueName: string;
@@ -54,13 +57,14 @@ const SongCard = ({
   comment,
   getPostedUserProfilePicture,
 }: SongSubmissionCardProps) => {
-  const { error } = useContext(SongContext);
+  const { error, setPostIdToDelete } = useContext(SongContext);
 
   const router = useRouter();
   const theme = useTheme();
+  const session = useSession();
 
   const [openComments, setOpenComments] = useState(false);
-  const { isProPicModalOpen } = useContext(ModalContext);
+  const { isProPicModalOpen, openDelPostModal } = useContext(ModalContext);
   const [profilePicture, setProfilePicture] = useState("");
 
   const toggleOpenComments = () => {
@@ -114,14 +118,25 @@ const SongCard = ({
             </Box>
           </Stack>
           <Stack gap={1} width={"-webkit-fill-available"}>
-            <Typography
-              sx={{ cursor: "pointer" }}
-              width={"fit-content"}
-              onClick={() => router.push(`/song/${songCardData.slug}`)}
-              fontWeight={500}
-            >
-              {songCardData.songName}
-            </Typography>
+            <Stack direction={"row"} justifyContent={"space-between"}>
+              <Typography
+                sx={{ cursor: "pointer" }}
+                width={"fit-content"}
+                onClick={() => router.push(`/song/${songCardData.slug}`)}
+                fontWeight={500}
+              >
+                {songCardData.songName}
+              </Typography>
+              {session.data?.user.userId == songCardData.userWhoPosted.userId && (
+                <DeleteOutline
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => {
+                    setPostIdToDelete(songCardData._id);
+                    openDelPostModal();
+                  }}
+                />
+              )}
+            </Stack>
             <Divider sx={{ width: "275px" }} />
             <Typography>
               {songCardData.date} - {songCardData.venueLocation}, {songCardData.venueName}

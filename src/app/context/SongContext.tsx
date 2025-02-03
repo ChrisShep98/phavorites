@@ -5,6 +5,8 @@ import React from "react";
 export type SongContextProps = {
   songSubmissions: songSubmissionCard[];
   setError: React.Dispatch<React.SetStateAction<string>>;
+  setPostIdToDelete: React.Dispatch<React.SetStateAction<string>>;
+  postIdToDelete: string;
   error: string;
   paramValue: string | undefined;
   loading: boolean;

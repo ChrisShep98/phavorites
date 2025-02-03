@@ -6,6 +6,8 @@ import { useSession } from "next-auth/react";
 import { Typography } from "@mui/material";
 import { getProfilePicture } from "@/services/userServices";
 import CircularProgress from "@mui/material/CircularProgress";
+import DeletePostModal from "./DeletePostModal";
+import { ModalContext } from "@/context/ModalContext";
 
 interface SubmissionProps {
   fetchRequest: (
@@ -20,7 +22,9 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
   const username = session.data?.user.username;
   const [refetchVote, setRefetchVote] = useState(false);
   const [comment, setComment] = useState("");
-  const { songSubmissions, setError, loading } = useContext(SongContext);
+  const { songSubmissions, setError, loading, postIdToDelete, setPostIdToDelete } =
+    useContext(SongContext);
+  const { isDeletePostModalOpen, closeDelPostModal } = useContext(ModalContext);
 
   useEffect(() => {
     fetchRequest();
@@ -83,6 +87,14 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
 
   return (
     <div>
+      <DeletePostModal
+        isOpen={isDeletePostModalOpen}
+        onClose={() => {
+          closeDelPostModal();
+          setPostIdToDelete("");
+        }}
+        postId={postIdToDelete}
+      />
       {loading ? (
         <CircularProgress size={50} />
       ) : songSubmissions.length == 0 ? (
@@ -100,6 +112,7 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
               }
               key={el._id}
               songCardData={{
+                _id: el._id,
                 voteCount: el.voteCount,
                 date: el.date,
                 songName: el.songName,
