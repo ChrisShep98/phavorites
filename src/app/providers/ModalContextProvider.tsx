@@ -14,6 +14,12 @@ export const ModalContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const openProPicModal = () => setIsProPicModalOPen(true);
   const closeProPicModal = () => setIsProPicModalOPen(false);
 
+  const [isDeletePostModalOpen, setIsDeletePostModalOpen] = useState(false);
+  const openDelPostModal = () => setIsDeletePostModalOpen(true);
+  const closeDelPostModal = () => setIsDeletePostModalOpen(false);
+
+  // TODO: get them to toggle like below?
+  // const toggleDelPostModal = setDeletePostModal((currentState) => currentState!);
   return (
     <ModalContext.Provider
       value={{
@@ -25,6 +31,10 @@ export const ModalContextProvider: React.FC<{ children: React.ReactNode }> = ({
         isProPicModalOpen,
         openProPicModal,
         closeProPicModal,
+        setIsDeletePostModalOpen,
+        isDeletePostModalOpen,
+        openDelPostModal,
+        closeDelPostModal,
       }}
     >
       {children}

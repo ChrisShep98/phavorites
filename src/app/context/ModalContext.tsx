@@ -10,6 +10,10 @@ export type ModalContextProps = {
   isProPicModalOpen: boolean;
   openProPicModal: () => void;
   closeProPicModal: () => void;
+  isDeletePostModalOpen: boolean;
+  setIsDeletePostModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  openDelPostModal: () => void;
+  closeDelPostModal: () => void;
 };
 
 export const ModalContext = createContext<ModalContextProps>({} as ModalContextProps);
