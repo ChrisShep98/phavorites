@@ -31,6 +31,17 @@ export const SongContextProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
+  // Purpose of this function is to refetch submissions in any of the three routes. So when deleteing or submitting a post whether you're in "/", "/song/[song]", or "/user/[user]" it will fetch the posts after the POST or DELETE. This can definitely be simplified, look into how you're refetching comments and upvotes.
+  const fetchSubmissionsAllRoutes = async () => {
+    if (route == "song") {
+      fetchSongSubmissions("slug", paramValue);
+    } else if (route == "user") {
+      fetchSongSubmissions("userWhoPosted.username", paramValue);
+    } else {
+      fetchSongSubmissions("limit", "10");
+    }
+  };
+
   return (
     <SongContext.Provider
       value={{
@@ -43,6 +54,7 @@ export const SongContextProvider: React.FC<{ children: React.ReactNode }> = ({
         fetchSongSubmissions,
         setPostIdToDelete,
         postIdToDelete,
+        fetchSubmissionsAllRoutes,
       }}
     >
       {children}

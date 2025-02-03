@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Button, Stack } from "@mui/material";
 import { style } from "@/lib/reusableStyles/styles";
 import { DeleteModal } from "@/types/propTypes";
+import { SongContext } from "@/context/SongContext";
 
 export default function DeletePostModal({ isOpen, onClose, postId }: DeleteModal) {
   //TODO: set error and loading states
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { fetchSubmissionsAllRoutes } = useContext(SongContext);
 
   const deletePost = async (postId: string) => {
     try {
@@ -19,6 +21,7 @@ export default function DeletePostModal({ isOpen, onClose, postId }: DeleteModal
           "Content-type": "application/json",
         },
       });
+      fetchSubmissionsAllRoutes();
     } catch (error) {
       console.log(error);
     }
@@ -45,8 +48,8 @@ export default function DeletePostModal({ isOpen, onClose, postId }: DeleteModal
           <Stack flexDirection={"row"} justifyContent={"space-evenly"}>
             <Button
               onClick={() => {
-                onClose();
                 deletePost(postId);
+                onClose();
               }}
               variant="contained"
             >

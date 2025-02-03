@@ -25,7 +25,7 @@ interface SongConstants {
 }
 
 export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
-  const { paramValue, route, fetchSongSubmissions } = useContext(SongContext);
+  const { fetchSubmissionsAllRoutes } = useContext(SongContext);
   const [songSelected, setSongSelected] = useState<SongConstants>();
   const [dateSelected, setDateSelected] = useState("");
   const [myVenueInfo, setMyVenueInfo] = useState<DateSelectedType | undefined>({
@@ -41,20 +41,6 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
   const userId = session.data?.user.userId;
 
   const username = session.data?.user.username;
-
-  //TODO: I'm using this kinda of function frequently thought out the app, probably make a global func I can use instead of this wet code
-  // hahah this is so gross I feel like, but I do like that we just have a single function to do all the work  now
-
-  // The purpose of this weird function is to get the page to update when and display correct data after submitting a post in this modal
-  const fetchSubmissions = async () => {
-    if (route == "song") {
-      fetchSongSubmissions("slug", paramValue);
-    } else if (route == "user") {
-      fetchSongSubmissions("userWhoPosted.username", paramValue);
-    } else {
-      fetchSongSubmissions("limit", "10");
-    }
-  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -88,7 +74,7 @@ export default function SubmitPostModal({ isOpen, onClose }: ModalType) {
           setError(data.message);
         });
       } else {
-        fetchSubmissions();
+        fetchSubmissionsAllRoutes();
         //TODO: some kind of success message?
         onClose();
         setDescription("");

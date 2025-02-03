@@ -15,6 +15,7 @@ export type SongContextProps = {
     filterName: string | undefined,
     valueName: string | undefined
   ) => Promise<void>;
+  fetchSubmissionsAllRoutes: () => Promise<void>;
 };
 
 export const SongContext = createContext<SongContextProps>({} as SongContextProps);
