@@ -3,11 +3,11 @@ import React, { useEffect, useContext, useState, FormEvent } from "react";
 import SongCard from "./SongCard";
 import { SongContext } from "@/context/SongContext";
 import { useSession } from "next-auth/react";
-import { Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { getProfilePicture } from "@/services/userServices";
-import CircularProgress from "@mui/material/CircularProgress";
 import DeletePostModal from "./DeletePostModal";
 import { ModalContext } from "@/context/ModalContext";
+import Skeleton from "@mui/material/Skeleton";
 
 interface SubmissionProps {
   fetchRequest: (
@@ -96,7 +96,16 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
         postId={postIdToDelete}
       />
       {loading ? (
-        <CircularProgress size={50} />
+        <Stack gap={3} mt={2}>
+          {Array.from({ length: 3 }).map((_) => (
+            <Skeleton
+              sx={{ borderRadius: 4 }}
+              variant="rounded"
+              width={478}
+              height={220}
+            />
+          ))}
+        </Stack>
       ) : songSubmissions.length == 0 ? (
         <Typography mt={5}>No Submissions yet</Typography>
       ) : (
