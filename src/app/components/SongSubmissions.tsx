@@ -97,8 +97,9 @@ const SongSubmissions = ({ fetchRequest }: SubmissionProps) => {
       />
       {loading ? (
         <Stack gap={3} mt={2}>
-          {Array.from({ length: 3 }).map((_) => (
+          {Array.from({ length: 3 }).map((_, index) => (
             <Skeleton
+              key={index} // keys shouldn't be set to index but acception here since the key here doesn't matter, just doing it to not see lint issues
               sx={{ borderRadius: 4 }}
               variant="rounded"
               width={478}
