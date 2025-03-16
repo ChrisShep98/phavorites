@@ -9,7 +9,6 @@ import { SongContext } from "@/context/SongContext";
 
 export default function DeletePostModal({ isOpen, onClose, postId }: DeleteModal) {
   //TODO: set error and loading states
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { fetchSubmissionsAllRoutes } = useContext(SongContext);
 
@@ -22,16 +21,22 @@ export default function DeletePostModal({ isOpen, onClose, postId }: DeleteModal
         },
       });
       fetchSubmissionsAllRoutes();
-    } catch (error) {
-      console.log(error);
+      onClose();
+    } catch (error: any) {
+      setError(error.message);
     }
+  };
+
+  const handleModalClose = () => {
+    setError("");
+    onClose();
   };
 
   return (
     <div>
       <Modal
         open={isOpen}
-        onClose={onClose}
+        onClose={handleModalClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -49,7 +54,6 @@ export default function DeletePostModal({ isOpen, onClose, postId }: DeleteModal
             <Button
               onClick={() => {
                 deletePost(postId);
-                onClose();
               }}
               variant="contained"
             >
